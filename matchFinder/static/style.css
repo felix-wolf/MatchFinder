@@ -1,0 +1,40 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background: white;
+    margin: 0 0 100px;
+    padding: 25px;
+}
+
+h1 {
+    font-family: serif;
+    color: #0398fc;
+    margin: 1rem 0; }
+
+header {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    left: 0px;
+    overflow: auto;
+    color: #0498fc;
+    height: 50px;
+    width: 100%;
+}
+
+footer {
+    background-color: #0498fc;
+    color: #ffffff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+}
