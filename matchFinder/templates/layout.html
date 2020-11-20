@@ -4,26 +4,45 @@
   {% block head %}
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <title>{% block title %}{% endblock %} - My Webpage</title>
+  <title>
+    {% block title %}
+    {% endblock %} - MatchFinder
+  </title>
   {% endblock %}
 </head>
 
 <body>
-    <header id="header">
-      {% block header %}
-      <div class="header">
-        MatchFinder
-      </div>
+  <ul>
+    <li><a class="active" href="/">MatchFinder</a></li>
+    <li><a href="/docs">Dokumentation</a></li>
+    <li><a href="/upload">Zuordnung erstellen</a></li>
+    <li><a href="/Logout">Ausloggen</a></li>
+    <li><a class="bottom" href="/about">About</a></li>
+  </ul>
+  <div style="margin-left:20%;padding:1px 16px;height:1000px;">
+
+    <div class="header">
+      <h1>
+        {% block header %}
+        {% endblock %}
+      </h1>
+      <hr/>
+    </div>
+
+    <div id="content">
+      {% block body %}
       {% endblock %}
-    </header>
-      <div id="content">{% block body %}{% endblock %}</div>
+    </div>
+
+    {% block footer %}
     <footer id="footer">
-      {% block footer %}
       <div>
         &copy; Copyright 2020 by <a href="http://domain.invalid/">you</a>.
         <a class="github-button" href="https://github.com/felix-wolf/MatchFinder/fork" data-icon="octicon-repo-forked" aria-label="Fork felix-wolf/MatchFinder on GitHub">Fork on Github</a>
       </div>
-      {% endblock %}
     </footer>
+    {% endblock %}
+
+  </div>
 </body>
 </html>

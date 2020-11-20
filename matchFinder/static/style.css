@@ -5,8 +5,9 @@ html {
 
 body {
     background: white;
-    margin: 0 0 100px;
-    padding: 25px;
+    /*margin: 0 0 100px;*/
+    margin: 0;
+    padding: 0px;
 }
 
 h1 {
@@ -24,17 +25,51 @@ header {
     left: 0px;
     overflow: auto;
     color: #0498fc;
-    height: 50px;
+    height: 70px;
     width: 100%;
 }
 
 footer {
-    background-color: #0498fc;
-    color: #ffffff;
-    position: absolute;
-    left: 0;
+    background-color: #ffffff;
+    color: #0498fc;
+    position: fixed;
+    right: 0;
     bottom: 0;
     height: 50px;
-    width: 100%;
-    overflow: hidden;
+    width: 80%;
+    overflow: auto;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 20%;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+li a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+li a.active {
+  background-color: #0498fc;
+  color: white;
+}
+
+li a.bottom {
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+}
+
+li a:hover:not(.active) {
+  background-color: #555;
+  color: white;
 }

@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+<body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1><a id="MatchFinder_0"></a>MatchFinder</h1>
+<p class="has-line-data" data-line-start="1" data-line-end="2">Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Präferenzen ein faires Match findet.</p>
+<h3 class="code-line" data-line-start=3 data-line-end=4><a id="Inhaltsverzeichnis_3"></a>Inhaltsverzeichnis</h3>
+<ul>
+<li class="has-line-data" data-line-start="4" data-line-end="10"><a href="#dokumentation-spezifikation">Dokumentation &amp; Spezifikation</a>
+<ul>
+<li class="has-line-data" data-line-start="5" data-line-end="6"><a href="#projektziel">Projektziel</a></li>
+<li class="has-line-data" data-line-start="6" data-line-end="7"><a href="#anforderungen">Anforderungen</a></li>
+<li class="has-line-data" data-line-start="7" data-line-end="8"><a href="#m%C3%B6glicher-technologiestack">Möglicher Technologiestack</a></li>
+<li class="has-line-data" data-line-start="8" data-line-end="9"><a href="#bereits-bestehende-technologien">Bereits bestehende Technologien</a></li>
+<li class="has-line-data" data-line-start="9" data-line-end="10"><a href="#pr%C3%BCfungsleistung">Prüfungsleistung</a></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="10" data-line-end="16"><a href="#installation">Installation</a>
+<ul>
+<li class="has-line-data" data-line-start="11" data-line-end="12"><a href="#create-environment">Create Environment</a></li>
+<li class="has-line-data" data-line-start="12" data-line-end="13"><a href="#activate-the-environment">Activate the Environment</a></li>
+<li class="has-line-data" data-line-start="13" data-line-end="14"><a href="#install-flask">Install Flask</a></li>
+<li class="has-line-data" data-line-start="14" data-line-end="16"><a href="#run-the-application">Run the Application</a></li>
+</ul>
+</li>
+</ul>
+<h2 class="code-line" data-line-start=16 data-line-end=17><a id="Dokumentation__Spezifikation_16"></a>Dokumentation &amp; Spezifikation</h2>
+<p class="has-line-data" data-line-start="18" data-line-end="19">Die Software dieses Repositorys entsteht im Rahmen des Projekt <em>Parallelrechnerevaluation</em> an der Universität Hamburg im Wintersemester 2020. Dabei ist <a href="/cdn-cgi/l/email-protection#a49cc2d3cbc8c2e4cdcac2cbd6c9c5d0cdcf8ad1cacd89ccc5c9c6d1d6c38ac0c1">Felix Wolf</a> (ich) der alleinige Teilnehmer und Mitarbeiter dieses Projekts. Ansprechpartner sind <a href="/cdn-cgi/l/email-protection#5a3b34343b743c2f3932291a33343c3528373b2e3331742f343377323b37382f283d743e3f">Anna Fuchs</a> und <a href="/cdn-cgi/l/email-protection#ccbfbdb9adbe8ca5a2aaa3bea1adb8a5a7e2b9a2a5e1a4ada1aeb9beabe2a8a9">Jannek Squar</a>.</p>
+<h3 class="code-line" data-line-start=20 data-line-end=21><a id="Projektziel_20"></a>Projektziel</h3>
+<p class="has-line-data" data-line-start="22" data-line-end="23">Innerhalb des WS 2020 soll eine Software entstehen, die bei gegebenen Teilnehmer, einer Anzahl Gruppen bzw. Themen und Präferenzen der Teilnehmer für die Themen ein faires Match findet (siehe <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">ungarische Methode</a>). Als Grundlage dient ein Python-Script des Arbeitsbereichs, welches schon exisitert.</p>
+<h3 class="code-line" data-line-start=24 data-line-end=25><a id="Anforderungen_24"></a>Anforderungen</h3>
+<p class="has-line-data" data-line-start="26" data-line-end="27">Es ist anzumerken, dass nicht alle der unten genannten Anforderungen erfüllt werden müssen. Vielmehr geht es darum, dass in der Zeit Mögliche umzusetzen, anstatt Anforderungen als unwartbaren Spaghetticode einzubauen.</p>
+<ul>
+<li class="has-line-data" data-line-start="28" data-line-end="29">das System soll als eine Art Webapp in die Webseite des Arbeitsbereichs integriert werden</li>
+<li class="has-line-data" data-line-start="29" data-line-end="30">funktionierendes Script, das gefundene Match soll nachweisbar ideal sein</li>
+<li class="has-line-data" data-line-start="30" data-line-end="31">Liste der TeilnehmerInnen soll als Textdatei in einem Format, wie es durch STiNE ausgegeben wird, in das System ladbar sein</li>
+<li class="has-line-data" data-line-start="31" data-line-end="32">wenn es mehrere, gleichgute Lösungen gibt, sollen die als Alternativen angezeigt werden</li>
+<li class="has-line-data" data-line-start="32" data-line-end="33">Zuteilungsergebnisse sollen (auf ein Semester begrenzt) persistent gespeichert werden</li>
+<li class="has-line-data" data-line-start="33" data-line-end="38">Möglichkeit für Studis, von Zuhause die Präferenzen vorzunehmen. Das beinhaltet:
+<ul>
+<li class="has-line-data" data-line-start="34" data-line-end="35">Das System kennt im Voraus alle teilnehmenden StudentInnen mit Vor- und Nachnamen und Matrikelnummer.</li>
+<li class="has-line-data" data-line-start="35" data-line-end="36">Es gibt einen generischen Link, über den man zur gewünschten Verteilung kommt</li>
+<li class="has-line-data" data-line-start="36" data-line-end="37">Ein Studi kann sich gegenüber dem System authentifizieren, indem er/sie seine Matrikelnummer eingibt. Nur wenn die Matrikelnummer dem System bekannt ist, darf er/sie Präferenzen verteilen</li>
+<li class="has-line-data" data-line-start="37" data-line-end="38">Studis dürfen ein Veto für ein Thema/Gruppe abgeben, die sie unter keinen Umständen haben wollen</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="38" data-line-end="39">Studis, die eine objektive schlechte Wahl bekommen haben (ab 4. aufwärts?), sollen irgendwie vertröstet werden</li>
+<li class="has-line-data" data-line-start="39" data-line-end="44">Erstellung des Wahlszenarios
+<ul>
+<li class="has-line-data" data-line-start="40" data-line-end="41">Zuordnung Thema : Studi soll für 1:1 oder 1:n einstellbar sein</li>
+<li class="has-line-data" data-line-start="41" data-line-end="42">Themen/Gruppen sollen eine Obergrenze an Teilnehmern haben</li>
+<li class="has-line-data" data-line-start="42" data-line-end="43">Es soll einstellbar sein, wieviele Präferenzen mindestens vergeben werden müssen</li>
+<li class="has-line-data" data-line-start="43" data-line-end="44">ein Wahlszenario soll in die Nachmeldephase gehen können, hier gilt Sudden death</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="44" data-line-end="50">Sicherheitskonzepte in Theorie und/oder Umsetzung
+<ul>
+<li class="has-line-data" data-line-start="45" data-line-end="46">Anfragen pro Minute begrenzen</li>
+<li class="has-line-data" data-line-start="46" data-line-end="47">Rpbustheit gegenüber falschen Anfragen (ungültige Matrikelnummer?)</li>
+<li class="has-line-data" data-line-start="47" data-line-end="48">Korrektur der Auswahl im Nachhinein möglich?</li>
+<li class="has-line-data" data-line-start="48" data-line-end="50">Risikoanalyse für mögliche Angriffe?</li>
+</ul>
+</li>
+</ul>
+<h3 class="code-line" data-line-start=50 data-line-end=51><a id="Mglicher_Technologiestack_50"></a>Möglicher Technologiestack</h3>
+<ul>
+<li class="has-line-data" data-line-start="52" data-line-end="53">Python als Programmiersprache</li>
+<li class="has-line-data" data-line-start="53" data-line-end="54"><a href="https://flask.palletsprojects.com/en/1.1.x/">Flask</a> als Backend/Webapplication engine</li>
+<li class="has-line-data" data-line-start="54" data-line-end="55"><a href="https://jinja.palletsprojects.com/en/2.11.x/">Jinja2</a> als Templatesprache</li>
+<li class="has-line-data" data-line-start="55" data-line-end="57">Postresql als Datenbank (weil schon vorhanden)</li>
+</ul>
+<h3 class="code-line" data-line-start=57 data-line-end=58><a id="Bereits_bestehende_Technologien_57"></a>Bereits bestehende Technologien</h3>
+<ul>
+<li class="has-line-data" data-line-start="59" data-line-end="60">Python 3</li>
+<li class="has-line-data" data-line-start="60" data-line-end="61">Postgres DBS</li>
+<li class="has-line-data" data-line-start="61" data-line-end="62">Apache</li>
+<li class="has-line-data" data-line-start="62" data-line-end="63">Ubuntu Server</li>
+<li class="has-line-data" data-line-start="63" data-line-end="64">PHP 7.2</li>
+<li class="has-line-data" data-line-start="64" data-line-end="66">Dokuwiki Instanz</li>
+</ul>
+<h3 class="code-line" data-line-start=66 data-line-end=67><a id="Prfungsleistung_66"></a>Prüfungsleistung</h3>
+<p class="has-line-data" data-line-start="68" data-line-end="69">Der praktische Teil der Prüfungsleistung ist die Software selbst. Der theoretische Teil setzt sich zusammen aus einer Spezifikation und Dokumentation (dieses README, nur größer und besser) sowie einem kleinen Bericht, in dem der Arbeitsprozess zusammengefasst wird.</p>
+<h2 class="code-line" data-line-start=70 data-line-end=71><a id="Installation_70"></a>Installation</h2>
+<p class="has-line-data" data-line-start="72" data-line-end="73">For more information, see <a href="https://flask.palletsprojects.com/en/1.1.x/installation/#install-create-env">this setup guide</a> and <a href="https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/">this tutorial</a>.</p>
+<h5 class="code-line" data-line-start=74 data-line-end=75><a id="Create_Environment_74"></a>Create Environment</h5>
+<pre><code class="has-line-data" data-line-start="77" data-line-end="79" class="language-bash">python3 -m venv venv
+</code></pre>
+<h5 class="code-line" data-line-start=80 data-line-end=81><a id="Activate_the_Environment_80"></a>Activate the Environment</h5>
+<pre><code class="has-line-data" data-line-start="83" data-line-end="85" class="language-bash">. venv/bin/activate
+</code></pre>
+<h5 class="code-line" data-line-start=86 data-line-end=87><a id="Install_Flask_86"></a>Install Flask</h5>
+<p class="has-line-data" data-line-start="88" data-line-end="89">Install Flask within the activated environment</p>
+<pre><code class="has-line-data" data-line-start="91" data-line-end="93" class="language-bash">pip3 install Flask
+</code></pre>
+<h5 class="code-line" data-line-start=94 data-line-end=95><a id="Run_the_Application_94"></a>Run the Application</h5>
+<pre><code class="has-line-data" data-line-start="97" data-line-end="101" class="language-bash"><span class="hljs-built_in">export</span> FLASK_APP=matchFinder
+<span class="hljs-built_in">export</span> FLASK_ENV=development
+flask run
+</code></pre>
+{% endblock %}

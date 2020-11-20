@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,9 +24,13 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return render_template('hello.html')
+    @app.route('/home')
+    def home():
+        return render_template('home.html')
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html')
 
     from . import db
     db.init_app(app)
@@ -36,6 +40,8 @@ def create_app(test_config=None):
 
     from . import upload
     app.register_blueprint(upload.bp)
-    app.static_folder = 'static'
+
+    from . import docs
+    app.register_blueprint(docs.bp)
 
     return app
