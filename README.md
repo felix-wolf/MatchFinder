@@ -8,6 +8,11 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
     - [Möglicher Technologiestack](#möglicher-technologiestack)
     - [Bereits bestehende Technologien](#bereits-bestehende-technologien)
     - [Prüfungsleistung](#prüfungsleistung)
+- [Installation](#installation)
+	- [Create Environment](#create-environment)
+	- [Activate the Environment](#activate-the-environment)
+	- [Install Flask](#install-flask)
+	- [Run the Application](#run-the-application)
 
 ## Dokumentation & Spezifikation
 
@@ -30,12 +35,18 @@ Es ist anzumerken, dass nicht alle der unten genannten Anforderungen erfüllt we
 	- Das System kennt im Voraus alle teilnehmenden StudentInnen mit Vor- und Nachnamen und Matrikelnummer.
 	- Es gibt einen generischen Link, über den man zur gewünschten Verteilung kommt
 	- Ein Studi kann sich gegenüber dem System authentifizieren, indem er/sie seine Matrikelnummer eingibt. Nur wenn die Matrikelnummer dem System bekannt ist, darf er/sie Präferenzen verteilen
+	- Studis dürfen ein Veto für ein Thema/Gruppe abgeben, die sie unter keinen Umständen haben wollen
 - Studis, die eine objektive schlechte Wahl bekommen haben (ab 4. aufwärts?), sollen irgendwie vertröstet werden
 - Erstellung des Wahlszenarios
+	- Zuordnung Thema : Studi soll für 1:1 oder 1:n einstellbar sein
 	- Themen/Gruppen sollen eine Obergrenze an Teilnehmern haben
 	- Es soll einstellbar sein, wieviele Präferenzen mindestens vergeben werden müssen
 	- ein Wahlszenario soll in die Nachmeldephase gehen können, hier gilt Sudden death
-
+- Sicherheitskonzepte in Theorie und/oder Umsetzung
+	- Anfragen pro Minute begrenzen
+	- Rpbustheit gegenüber falschen Anfragen (ungültige Matrikelnummer?)
+	- Korrektur der Auswahl im Nachhinein möglich?
+	- Risikoanalyse für mögliche Angriffe?
 
 ### Möglicher Technologiestack
 
@@ -56,3 +67,35 @@ Es ist anzumerken, dass nicht alle der unten genannten Anforderungen erfüllt we
 ### Prüfungsleistung
 
 Der praktische Teil der Prüfungsleistung ist die Software selbst. Der theoretische Teil setzt sich zusammen aus einer Spezifikation und Dokumentation (dieses README, nur größer und besser) sowie einem kleinen Bericht, in dem der Arbeitsprozess zusammengefasst wird.
+
+## Installation
+
+For more information, see [this setup guide](https://flask.palletsprojects.com/en/1.1.x/installation/#install-create-env) and [this tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/).
+
+##### Create Environment
+
+```bash
+python3 -m venv venv
+```
+
+##### Activate the Environment
+
+```bash
+. venv/bin/activate
+```
+
+##### Install Flask
+
+Install Flask within the activated environment
+
+```bash
+pip3 install Flask
+```
+
+##### Run the Application
+
+```bash
+export FLASK_APP=matchFinder
+export FLASK_ENV=development
+flask run
+```
