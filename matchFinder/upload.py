@@ -24,6 +24,6 @@ def upload_files():
         file_ext = os.path.splitext(filename)[1]
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
-        matchCalculator.calculateMatch()
+        matchCalculator.calculateMatch(uploaded_file)
         #uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
     return redirect(url_for('upload.index'))
