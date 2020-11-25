@@ -35,7 +35,7 @@ footer {
     position: fixed;
     right: 0;
     bottom: 0;
-    height: 50px;
+    height: 30px;
     width: 80%;
     overflow: auto;
 }
@@ -44,7 +44,8 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 20%;
+  min-width: 50px;
+  /*width: 20%;*/
   background-color: #f1f1f1;
   position: fixed;
   height: 100%;
@@ -66,7 +67,7 @@ li a.active {
 li a.bottom {
   bottom: 0;
   position: fixed;
-  width: 100%;
+  width: 130px;
 }
 
 li a:hover:not(.active) {

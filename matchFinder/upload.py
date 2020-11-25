@@ -1,24 +1,29 @@
 from flask import (
-	Blueprint, flash, g, redirect, render_template, request, session, url_for)
+	Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort)
+import os
+from werkzeug.utils import secure_filename
+import imghdr
+from . import matchCalculator
+
+app = Flask(__name__)
+app.config['UPLOAD_PATH'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
+app.config['UPLOAD_EXTENSIONS'] = ['.csv', '.txt']
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
-@bp.route('/', methods=['GET', 'POST'])
-def upload():
-	if request.method == 'POST':
-		if 'file' not in request.files:
-			flash('Not file part')
-			return redirect(url_for('home'))
-		file = request.files['file']
-		if file.filename == '':
-			flash('No selected File')
-			return redirect(url_for('home'))
-		if file and allowedFile(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], file))
-			return redirect(url_for('home'))
-		else:
-			flash('Filetype not allowed')
-			return redirect(url_for('home'))
-
+@bp.route('/')
+def index():
 	return render_template('upload.html')
+
+@bp.route('/', methods=['POST'])
+def upload_files():
+    uploaded_file = request.files['file']
+    filename = secure_filename(uploaded_file.filename)
+    if filename != '':
+        file_ext = os.path.splitext(filename)[1]
+        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+            abort(400)
+        matchCalculator.calculateMatch()
+        #uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+    return redirect(url_for('upload.index'))
