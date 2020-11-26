@@ -24,3 +24,4 @@ def calculateMatch(file):
         total += value
         print(f'({row}, {column}) -> {value}')
     print(f'total cost: {total}')
+    
