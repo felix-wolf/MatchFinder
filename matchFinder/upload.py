@@ -4,6 +4,8 @@ import os
 from werkzeug.utils import secure_filename
 import imghdr
 from . import matchCalculator
+from . import results
+import requests
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'uploads'
@@ -25,5 +27,5 @@ def upload_files():
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         assignments = matchCalculator.calculateMatch(uploaded_file)
-        print(assignments)
-    return redirect(url_for('upload.index'))
+    return redirect(url_for('results.present', assignments=assignments))
+

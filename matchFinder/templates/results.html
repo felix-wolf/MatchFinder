@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}Resultate{% endblock %}
+
+{% block header %}Resultate{% endblock %}
+
+{% block body %}
+	<p>
+		Hier sind die Resultate der Auswertung:
+		{% for i in data %}
+			{{ i}}
+		<p>
+		{% endfor %}
+	</p>
+{% endblock %}

@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import random
 import copy
+import sys
 
 def calculateMatch(file):
     # csv datei einlesen
@@ -10,11 +11,11 @@ def calculateMatch(file):
     # strings mit zahlen ersetzen
     full_matrix = df.replace(
         [np.NAN, "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
-        [np.infty, int(6), int(5), int(4), int(3), int(2), int(1)])
+        [1000, 6, 5, 4, 3, 2, 1])
     #reduced_matrix = full_matrix.iloc[:,1:]
     # matrix zu 2d liste konvertieren
     full_matrix = np.array(full_matrix.values.tolist()).tolist()
-    assignment = {}
+    assignment = []
     # matrix mischen (um jede Kombination auszuprobieren)
     for x in range(len(full_matrix)):
         local_assignment = {}
@@ -27,7 +28,7 @@ def calculateMatch(file):
             for column in range(len(reduced_matrix[row]) - 1):
                 if column is 0:
                     reduced_matrix[row].pop(column)
-                reduced_matrix[row][column] = int(reduced_matrix[row][column])
+                reduced_matrix[row][column] = int(float(reduced_matrix[row][column]))
         # match berechnen
         indexes = Munkres().compute(reduced_matrix)
         #print(indexes)
@@ -38,11 +39,12 @@ def calculateMatch(file):
             total += value
             #print(f'({row}, {column}) -> {value}')
             local_assignment[str(full_matrix[row][0])] = value
+            local_assignment['total'] = total
         #print(f'total cost: {total}, lowest possible cost: {len(reduced_matrix)}')
         #print(local_assignment)
-        assignment[x] = dict(sorted(local_assignment.items()))
-        #assignment['total'] = total
-    for i in range(len(assignment) - 1):
+        assignment.append(dict(sorted(local_assignment.items())))
+    print(len(assignment))
+    for i in range(len(assignment) - 2):
         k = i + 1
         if assignment[i] == assignment[k]:
             assignment.pop(i)
