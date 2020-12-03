@@ -3,9 +3,8 @@ import pandas as pd
 import numpy as np
 import random
 import copy
-import sys
 
-def calculateMatch(file):
+def calculateFromCSV(file):
     # csv datei einlesen
     df = pd.read_csv(file)
     # strings mit zahlen ersetzen
@@ -15,6 +14,13 @@ def calculateMatch(file):
     #reduced_matrix = full_matrix.iloc[:,1:]
     # matrix zu 2d liste konvertieren
     full_matrix = np.array(full_matrix.values.tolist()).tolist()
+    return calculateMatchFromList(full_matrix)
+
+def calculateFromDatabase():
+    print("test")
+
+
+def calculateMatchFromList(full_matrix):
     assignment = []
     # matrix mischen (um jede Kombination auszuprobieren)
     for x in range(len(full_matrix)):
@@ -22,11 +28,11 @@ def calculateMatch(file):
         # liste kopieren
         reduced_matrix = copy.deepcopy(full_matrix)
         # liste rotieren
-        rotate(full_matrix, 1)
+        rotate_list(full_matrix, 1)
         # Namen entfernen, string to int konvert
         for row in range(len(reduced_matrix)):
             for column in range(len(reduced_matrix[row]) - 1):
-                if column is 0:
+                if column == 0:
                     reduced_matrix[row].pop(column)
                 reduced_matrix[row][column] = int(float(reduced_matrix[row][column]))
         # match berechnen
@@ -50,5 +56,5 @@ def calculateMatch(file):
             assignment.pop(i)
     return (assignment)
 
-def rotate(lst, x):
+def rotate_list(lst, x):
     lst[:] =  lst[-x:] + lst[:-x]
