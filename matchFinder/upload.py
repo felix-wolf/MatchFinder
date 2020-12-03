@@ -2,7 +2,6 @@ from flask import (
 	Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort, current_app as app)
 import os
 from werkzeug.utils import secure_filename
-import imghdr
 from . import matchCalculator
 from . import results
 from . import txt_parser
@@ -13,7 +12,13 @@ bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.route('/')
 def index():
-	return render_template('upload.html')
+    from matchFinder.models import member
+    db = SQLAlchemy(app)
+    db.create_all()
+    test_user_1 = Member(matr_nr = 12345, last_name = 'Felix', first_name = 'Wolf', list_nr = 2)
+    #db.session.add(test_user_1)
+    #db.session.commit()
+    return render_template('upload.html')
 
 @bp.route('/csv', methods=['POST'])
 def csv():
