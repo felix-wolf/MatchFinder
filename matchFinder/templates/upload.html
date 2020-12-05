@@ -8,12 +8,12 @@
 	<p>
 		Zuordnungen können auf mehreren Wegen erstellt werden.
 	</p>
-	{% if msg != None %}
+	{% if msg %}
 		<p>{{ request.args.get('msg') }} Einträge gespeichert!</p>
 	{% endif %}
 
 	<div class="upload">
-		<p>Bereits angegebene Präferenzen in .csv Format</p>
+		<h3>Bereits angegebene Präferenzen in .csv Format</h3>
 		<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
     		<input class='button' type=file name=file accept=".txt,.csv">
 			<input type=submit value=Upload>
@@ -21,7 +21,7 @@
 	</div>
 
 	<div class="upload">
-		<p>Teilnehmer und Themen seperat, jeweils in .txt Format</p>
+		<h3>Teilnehmer und Themen seperat, jeweils in .txt Format</h3>
 		<p>Teilnehmer:</p>
 		<form method='post' action='{{ url_for("results.present") }}' enctype='multipart/form-data'>
     		<input class='button' type=file name=file accept='.txt,.csv'>
@@ -35,7 +35,7 @@
 	</div>
 
 	<div class="upload">
-		<p>Themen erstellen und Teilnehmer geben später Präferenzen an:</p>
+		<h3>Themen erstellen und Teilnehmer geben später Präferenzen an:</h3>
 		<form method=post action="{{ url_for('upload.create_assignment') }}" enctype=multipart/form-data>
     		<input class='button' type=file name=file accept=".txt,.csv">
 			<input type=submit value=Upload>

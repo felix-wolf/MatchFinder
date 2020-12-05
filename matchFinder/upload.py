@@ -6,16 +6,19 @@ from . import matchCalculator
 from . import results
 from . import txt_parser
 from . import database_helper
+#from . import member
+import sys
+
+
+print("TEST")
+print(sys.path)
+
 
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.route('/')
 def index():
-    from matchFinder.models import member
-    db = SQLAlchemy(app)
-    db.create_all()
-    test_user_1 = Member(matr_nr = 12345, last_name = 'Felix', first_name = 'Wolf', list_nr = 2)
     #db.session.add(test_user_1)
     #db.session.commit()
     return render_template('upload.html')

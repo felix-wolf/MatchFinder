@@ -74,8 +74,10 @@ li a:hover:not(.active) {
 }
 
 .upload {
-  border: solid #0498fc;
+  float: left;
+  border: solid #c9c9c9;
   border-width: 1 1px;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 1em;
+  width: 20em;
 }
