@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
-
+{% block head %}
+{{super()}}
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+{% endblock %}
 {% block title %}Zuordnung erstellen{% endblock %}
 
 {% block header %}Zuordnung erstellen{% endblock %}
@@ -8,13 +11,14 @@
 <p>
 	Zuordnungen können auf mehreren Wegen erstellt werden.
 </p>
-
-<div class="upload">
-	<h3>Bereits angegebene Präferenzen in .csv Format</h3>
-	<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
+<div class="mb-3">
+<h5 class="mb-3">Bereits angegebene Präferenzen in .csv Format hochladen</h5>
+<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
+	<div class="input-group">
 		<input class='button' type=file name=file accept=".txt,.csv">
 		<input type=submit value=Upload>
-	</form>
+	</div>
+</form>
 </div>
 {% if (topics|length > 0) and (members|length > 0) %}
 <div class="upload">
@@ -38,5 +42,14 @@
 	</form>
 </div>
 {% endif %}
-
+{% block scripts %}
+<script>
+	$('#inputGroupFile01').on('change',function() {
+		//get the file name
+		var fileName = $(this).val();
+		//replace the "Choose a file" label
+		$(this).next('.custom-file-label').html(fileName);
+    })
+</script>
+{% endblock %}
 {% endblock %}
