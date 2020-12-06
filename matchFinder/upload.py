@@ -6,21 +6,12 @@ from . import matchCalculator
 from . import results
 from . import txt_parser
 from . import database_helper
-#from . import member
-import sys
-
-
-print("TEST")
-print(sys.path)
-
 
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.route('/')
 def index():
-    #db.session.add(test_user_1)
-    #db.session.commit()
     return render_template('upload.html')
 
 @bp.route('/csv', methods=['POST'])

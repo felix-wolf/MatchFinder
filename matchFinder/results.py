@@ -6,16 +6,22 @@ import os
 from . import matchCalculator
 from werkzeug.utils import secure_filename
 from . import member
+from . import db
 
 bp = Blueprint('results', __name__, url_prefix='/results')
 
 @bp.route('/')
 def index():
-    test_user_1 = member.Member(matr_nr = 12345, last_name = 'Felix', first_name = 'Wolf', list_id = 2)
+    test_user_1 = member.Member(
+        matr_nr = 12345, last_name = 'Felix', first_name = 'Wolf', list_id = 2
+        )
+    db.session.add(test_user_1)
+    db.session.commit()
+
     users = member.Member.query.all()
 
     for user in users:
-        print(user.name)
+        print(user.last_name)
     return render_template('404.html')
 
 @bp.route('present', methods=['POST'])

@@ -39,12 +39,6 @@ def create_app(test_config=None):
     def page_not_found(e):
         return render_template('404.html')
 
-    #from . import db
-    #db.init_app(app)
-
-    #db = SQLAlchemy(app)
-    #db.create_all()
-
     from . import upload
     app.register_blueprint(upload.bp)
 
@@ -53,8 +47,8 @@ def create_app(test_config=None):
 
     from . import results
     app.register_blueprint(results.bp)
-
+    from . import member
 
     db.init_app(app)
-    
+
     return app
