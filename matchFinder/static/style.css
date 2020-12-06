@@ -73,6 +73,15 @@ li a:hover:not(.active) {
   color: white;
 }
 
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.bottom-three {
+  margin-bottom: 3em;
+}
+
 .upload {
   float: left;
   border: solid #c9c9c9;
@@ -80,4 +89,6 @@ li a:hover:not(.active) {
   text-align: center;
   margin: 1em;
   width: 20em;
+  height: 20em;
+  padding: 1em;
 }

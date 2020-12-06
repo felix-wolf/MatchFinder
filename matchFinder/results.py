@@ -33,4 +33,5 @@ def present():
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         assignments = matchCalculator.calculateFromCSV(uploaded_file)
+        print(assignments)
     return render_template('results.html', data=assignments)

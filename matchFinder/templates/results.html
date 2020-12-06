@@ -5,11 +5,27 @@
 {% block header %}Resultate{% endblock %}
 
 {% block body %}
-	<p>
-		Hier sind die Resultate der Auswertung:
-		{% for i in data %}
-			{{ i}}
-		<p>
-		{% endfor %}
-	</p>
+	<h3>Hier sind die Resultate der Auswertung:</h3>
+	<div class="bottom-three">
+		Es gibt insgesamt {{data|length}} mögliche Verteilungen:
+	</div>
+	{% for i in data %}
+		<div class="bottom-three">
+			<table style="width: 40em;">
+				<tr>
+					<th>Studi</th>
+					<th>Thema / Gruppe</th>
+				</tr>
+				{% for key, value in i.items() %}
+					{% if key != "total" %}
+						<tr>
+							<td>{{ key }}</td>
+							<td>{{ value }}</td>
+						</tr>
+
+				{% endif %}
+			{% endfor %}
+			</table>
+		</div>
+	{% endfor %}
 {% endblock %}

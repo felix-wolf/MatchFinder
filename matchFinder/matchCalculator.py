@@ -11,24 +11,28 @@ def calculateFromCSV(file):
     full_matrix = df.replace(
         [np.NAN, "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
         [1000, 6, 5, 4, 3, 2, 1])
-    #reduced_matrix = full_matrix.iloc[:,1:]
+    # reduced_matrix = full_matrix.iloc[:,1:]
     # matrix zu 2d liste konvertieren
+    # create a list of all topcs
+    topics = full_matrix.columns.tolist()
+    topics.pop(0)
+    # convert matrix to list
     full_matrix = np.array(full_matrix.values.tolist()).tolist()
-    return calculateMatchFromList(full_matrix)
+    return calculateMatchFromList(full_matrix, topics)
 
 def calculateFromDatabase():
     print("test")
 
 
-def calculateMatchFromList(full_matrix):
+def calculateMatchFromList(full_matrix, topics):
     assignment = []
     # matrix mischen (um jede Kombination auszuprobieren)
     for x in range(len(full_matrix)):
         local_assignment = {}
-        # liste kopieren
-        reduced_matrix = copy.deepcopy(full_matrix)
         # liste rotieren
         rotate_list(full_matrix, 1)
+        # liste kopieren
+        reduced_matrix = copy.deepcopy(full_matrix)
         # Namen entfernen, string to int konvert
         for row in range(len(reduced_matrix)):
             for column in range(len(reduced_matrix[row]) - 1):
@@ -44,16 +48,19 @@ def calculateMatchFromList(full_matrix):
             value = reduced_matrix[row][column]
             total += value
             #print(f'({row}, {column}) -> {value}')
-            local_assignment[str(full_matrix[row][0])] = value
+            #print(full_matrix[row][column])
+            local_assignment[str(full_matrix[row][0])] = topics[column]
             local_assignment['total'] = total
         #print(f'total cost: {total}, lowest possible cost: {len(reduced_matrix)}')
         #print(local_assignment)
         assignment.append(dict(sorted(local_assignment.items())))
-    print(len(assignment))
-    for i in range(len(assignment) - 2):
-        k = i + 1
-        if assignment[i] == assignment[k]:
-            assignment.pop(i)
+
+    # remove all duplicates from the list
+    for firstassignment in assignment:
+        for secondAssignment in assignment:
+            if firstassignment == secondAssignment and firstassignment is not secondAssignment:
+                assignment.pop(assignment.index(secondAssignment))
+
     return (assignment)
 
 def rotate_list(lst, x):
