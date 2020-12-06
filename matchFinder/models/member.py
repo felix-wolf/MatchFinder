@@ -1,6 +1,6 @@
 from flask import current_app
 from flask_sqlalchemy import *
-from . import db
+from .. import db
 
 class Member(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

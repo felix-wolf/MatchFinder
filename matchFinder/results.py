@@ -5,7 +5,7 @@ import numpy as np
 import os
 from . import matchCalculator
 from werkzeug.utils import secure_filename
-from . import member
+from matchFinder.models import member
 from . import db
 
 bp = Blueprint('results', __name__, url_prefix='/results')
