@@ -1,7 +1,6 @@
 import os
-#from . import db
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, current_app as app
 
 
 db = SQLAlchemy()
@@ -43,8 +42,23 @@ def create_app(test_config=None):
 
     from . import results
     app.register_blueprint(results.bp)
-    from matchFinder.models import member
+
+    from . import create
+    app.register_blueprint(create.bp)
+
+    from .import share
+    app.register_blueprint(share.bp)
+
 
     db.init_app(app)
 
     return app
+
+with create_app().app_context():
+    from matchFinder.models import teilnehmer
+    from matchFinder.models import teilnehmer_list
+    from matchFinder.models import thema
+    from matchFinder.models import thema_list
+    from matchFinder.models import verteilung
+    #db.drop_all()
+    db.create_all()

@@ -14,42 +14,44 @@ bp = Blueprint('create', __name__, url_prefix='/create')
 def index():
     return render_template('create.html')
 
-@bp.route('/csv', methods=['POST'])
-def csv():
+@bp.route('/teilnehmer', methods=['POST'])
+def teilnehmer():
     uploaded_file = request.files['file']
-    filename = secure_filename(uploaded_file.filename)
+    if (validate_file(uploaded_file)):
+        list_name = request.form.get('list_name', 'error')
+        teilnehmer = txt_parser.array_from_teilnehmer(uploaded_file)
+        rtn = database_helper.save_teilnehmer(teilnehmer, list_name)
+        if rtn:
+            return redirect(url_for('create.index', items_saved=rtn))
+        else:
+            return redirect(url_for('create.index', items_saved=False))
+    else:
+        abort(400)
+    return redirect(url_for('create.index', items_saved=False))
+
+@bp.route('/themen', methods=['POST'])
+def themen():
+    uploaded_file = request.files['file']
+    if (validate_file(uploaded_file)):
+        list_name = request.form.get('themen_name', 'error')
+        max_teilnehmer = request.form.get('max_teilnehmer', None)
+        if max_teilnehmer == '':
+            max_teilnehmer = None
+        themen = txt_parser.array_from_themen(uploaded_file)
+        rtn = database_helper.save_themen(themen, list_name, max_teilnehmer)
+        if rtn:
+            return redirect(url_for('create.index', items_saved=rtn))
+        else:
+            return redirect(url_for('create.index', items_saved=False))
+    else:
+        abort(400)
+    return redirect(url_for('create.index', items_saved=False))
+
+def validate_file(file):
+    filename = secure_filename(file.filename)
     if filename != '':
         file_ext = os.path.splitext(filename)[1]
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-            abort(400)
-        assignments = matchCalculator.calculateFromCSV(uploaded_file)
-    return redirect(url_for('results.present', assignments=assignments))
-
-
-@bp.route('/participants', methods=['POST'])
-def participants():
-    uploaded_file = request.files['file']
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        file_ext = os.path.splitext(filename)[1]
-        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-            abort(400)
-        participants = txt_parser.array_from_participants(uploaded_file)
-        items_saved = database_helper.insert_participants(participants)
-        print(items_saved)
-    return redirect(url_for('upload.index', msg=items_saved))
-
-@bp.route('/topics', methods=['POST'])
-def topics():
-    uploaded_file = request.files['file']
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        file_ext = os.path.splitext(filename)[1]
-        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-            abort(400)
-        assignments = matchCalculator.calculateFromCSV(uploaded_file)
-    return redirect(url_for('results.present', assignments=assignments))
-
-@bp.route('/create_assignment', methods=['POST'])
-def create_assignment():
-    print("create")
+            return False
+        return True
+    return False

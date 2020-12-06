@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}Teilen{% endblock %}
+
+{% block header %}Teilen{% endblock %}
+
+{% block body %}
+
+{% if id %}
+
+<div>
+	<h3>Umfrage erfolgreich erstellt!</h3>
+	Die eingetragenen Studis können unter diesem Link ihre Stimmen abgeben:
+	<a href="/priorities?id={{id}}">LINK</a>
+</div>
+
+{% endif %}
+
+{% endblock %}

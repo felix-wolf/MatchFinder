@@ -5,40 +5,38 @@
 {% block header %}Zuordnung erstellen{% endblock %}
 
 {% block body %}
-	<p>
-		Zuordnungen können auf mehreren Wegen erstellt werden.
-	</p>
-	{% if msg %}
-		<p>{{ request.args.get('msg') }} Einträge gespeichert!</p>
-	{% endif %}
+<p>
+	Zuordnungen können auf mehreren Wegen erstellt werden.
+</p>
 
-	<div class="upload">
-		<h3>Bereits angegebene Präferenzen in .csv Format</h3>
-		<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
-    		<input class='button' type=file name=file accept=".txt,.csv">
-			<input type=submit value=Upload>
-    	</form>
-	</div>
+<div class="upload">
+	<h3>Bereits angegebene Präferenzen in .csv Format</h3>
+	<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
+		<input class='button' type=file name=file accept=".txt,.csv">
+		<input type=submit value=Upload>
+	</form>
+</div>
+{% if (topics|length > 0) and (members|length > 0) %}
+<div class="upload">
+	<h3>Von bestehenden Daten</h3>
+	<form method=post action="{{ url_for('share.index') }}" enctype=multipart/form-data>
+		<label for="topics">Gruppenliste auswählen:</label>
+		<select name="topics" id="topics">
+			{% for topic in topics %}
+			<option value="{{topic.name}}">{{topic.name}}</option>
+			{% endfor %}
+		</select>
+		<br><br>
+		<label for="members">Teilnehmerliste auswählen:</label>
+		<select name="members" id="members">
+			{% for member_list in members %}
+			<option value="{{member_list.name}}">{{member_list.name}}</option>
+			{% endfor %}
+		</select>
+		<br><br>
+		<input type="submit" value="Submit">
+	</form>
+</div>
+{% endif %}
 
-	<div class="upload">
-		<h3>Teilnehmer und Themen seperat, jeweils in .txt Format</h3>
-		<p>Teilnehmer:</p>
-		<form method='post' action='{{ url_for("results.present") }}' enctype='multipart/form-data'>
-    		<input class='button' type=file name=file accept='.txt,.csv'>
-			<input type='submit' value='Upload'>
-    	</form>
-    	<p>Themen:</p>
-		<form method=post action="{{ url_for('upload.topics') }}" enctype=multipart/form-data>
-    		<input class='button' type=file name=file accept=".txt,.csv">
-			<input type=submit value=Upload>
-    	</form>
-	</div>
-
-	<div class="upload">
-		<h3>Themen erstellen und Teilnehmer geben später Präferenzen an:</h3>
-		<form method=post action="{{ url_for('upload.create_assignment') }}" enctype=multipart/form-data>
-    		<input class='button' type=file name=file accept=".txt,.csv">
-			<input type=submit value=Upload>
-    	</form>
-	</div>
 {% endblock %}
