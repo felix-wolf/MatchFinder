@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}Prioritäten setzen{% endblock %}
+
+{% block header %}Prioritäten setzen{% endblock %}
+
+{% block body %}
+
+<h3>Hallo! Um deine Prioritäten setzen zu können, melde dich bitte mit deiner Matrikelnummer an:</h3>
+<div class="upload">
+		<h4>Anmelden</h4>
+		<form method=post action="{{ url_for('create.teilnehmer') }}" enctype=multipart/form-data>
+			<label for="list_name">Matrikelnnummer:</label>
+			<input type="text" id="list_name" name="list_name"></input>
+			<input type=submit value=Anmelden>
+    	</form>
+	</div>
+
+{% endblock %}
