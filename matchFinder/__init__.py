@@ -49,6 +49,9 @@ def create_app(test_config=None):
     from .import share
     app.register_blueprint(share.bp)
 
+    from . import preference
+    app.register_blueprint(preference.bp)
+
 
     db.init_app(app)
 
