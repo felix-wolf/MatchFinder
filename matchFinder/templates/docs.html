@@ -1,75 +1,11 @@
-<!doctype html>
-<html>
-<head>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!--<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
-  <style>
-  	body { position: relative; min-height: 100%; background: white; margin: 0; padding: 0px; }
-	h1 { font-family: serif; color: #0398fc; margin: 1rem 0; }
-	li a:hover:not(.active) { background-color: #555; color: white; }
-  </style>
-  <title>
-    Dokumentation - MatchFinder
-  </title>
-</head>
+{% extends "layout.html" %}
 
-<body>
-  <ul style="list-style-type: none; margin: 0;padding: 0; min-width: 50px;
-  	background-color: #f1f1f1; position: fixed; height: 100%; overflow: auto;">
+{% block title %}Resultate{% endblock %}
 
-    <li>
-  		<a style="display: block; color: #000000; padding: 8px 16px; text-decoration: none;
-  		background-color: #0498fc; color: white;" href="/">MatchFinder</a>
-  	</li>
-    <li>
-  		<a style="display: block; color: #000000; padding: 8px 16px; text-decoration: none;
-  		" href="/docs">Dokumentation</a>
-  	</li>
-    <li>
-    	<a style="display: block; color: #000000; padding: 8px 16px; text-decoration: none;
-    	" href="/upload">Zuordnung erstellen</a>
-    </li>
-    <li>
-    	<a style="display: block; color: #000000; padding: 8px 16px; text-decoration: none;
-    	" href="/Logout">Ausloggen</a>
-    </li>
-    <li>
-    	<a style="display: block; color: #000000; padding: 8px 16px; text-decoration: none;
-    	" href="/Logout">Test</a>
-    </li>
-    <li style="display: block; color: #000000; padding: 8px 16px; text-decoration: none;
-    	bottom: 0; position: fixed; width: 130px;">
-    	<a href="/about">About</a>
-    </li>
-  </ul>
+{% block header %}Resultate{% endblock %}
 
-  <div style="margin-left:150px;padding:1px 16px;">
-    <div class="header">
-      <h1>
-        {% block header %}
-        Dokumentation
-        {% endblock %}
-      </h1>
-      <hr/>
-    </div>
-
-    <div id="content">
-      {% block body %}
-      {% if html %}
-      	{{ html | safe }}
-      {% endif %}
-      {% endblock %}
-    </div>
-
-    {% block footer %}
-    <footer id="footer">
-      <div>
-        &copy; Copyright 2020 by <a href="http://domain.invalid/">you</a>.
-        <a class="github-button" href="https://github.com/felix-wolf/MatchFinder/fork"
-        data-icon="octicon-repo-forked" aria-label="Fork felix-wolf/MatchFinder on GitHub">Fork on Github</a>
-      </div>
-    </footer>
-    {% endblock %}
-  </div>
-</body>
-</html>
+{% block body %}
+{% if html %}
+  {{ html | safe }}
+{% endif %}
+{% endblock %}
