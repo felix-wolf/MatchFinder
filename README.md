@@ -44,7 +44,7 @@ Es ist anzumerken, dass nicht alle der unten genannten Anforderungen erfüllt we
 	- ein Wahlszenario soll in die Nachmeldephase gehen können, hier gilt Sudden death
 - Sicherheitskonzepte in Theorie und/oder Umsetzung
 	- Anfragen pro Minute begrenzen
-	- Rpbustheit gegenüber falschen Anfragen (ungültige Matrikelnummer?)
+	- Robustheit gegenüber falschen Anfragen (ungültige Matrikelnummer?)
 	- Korrektur der Auswahl im Nachhinein möglich?
 	- Risikoanalyse für mögliche Angriffe?
 
