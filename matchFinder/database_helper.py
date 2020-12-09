@@ -24,8 +24,6 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 
 def save_themen(themen, list_name, max_participants):
 	list_of_themen = []
-	print(max_participants)
-	print(themen)
 	for top in themen:
 		local_topic = thema.Thema(
 			stine_id = top['stine_id'].item(),

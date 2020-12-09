@@ -10,11 +10,12 @@
 		<p>{{ request.args.get('items_saved') }} Einträge gespeichert!</p>
 	{% endif %}
 	<h3>Teilnehmerliste anlegen</h3>
-	<div class="col-6">
+	<div class="container">
+	<div class="col-12">
 		<div class="form-row align-items-center mb-3">
 			<form method=post action="{{ url_for('create.teilnehmer') }}" enctype=multipart/form-data>
 				<label for="list_name">Name der Teilnehmerliste:</label>
-				<input type="text" id="list_name" name="list_name"></input>
+				<input type="text" id="list_name" name="list_name">
     			<input class='button' type=file name=file accept=".txt,.csv">
 				<input class="btn btn-primary" type=submit value=Upload>
     		</form>
@@ -25,13 +26,14 @@
 		<div class="form-row align-items-center mb-3">
 			<form method=post action="{{ url_for('create.themen') }}" enctype=multipart/form-data>
 				<label for="themen_name">Name der Themen / Gruppen:</label>
-				<input type="text" id="themen_name" name="themen_name"></input>
+				<input type="text" id="themen_name" name="themen_name">
 				<label for="max_teilnehmer">Teilnehmer pro Gruppe:</label>
-				<input type="text" id="max_teilnehmer" name="max_teilnehmer"></input>
+				<input type="text" id="max_teilnehmer" name="max_teilnehmer">
     			<input class='button' type=file name=file accept=".txt,.csv">
 				<input class="btn btn-primary" type=submit value=Upload>
     		</form>
     	</div>
 	</div>
+</div>
 
 {% endblock %}

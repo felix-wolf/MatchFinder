@@ -19,11 +19,14 @@
 
 <body>
   <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">MatchFinder</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">MatchFinder</a>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
-        <a class="nav-link" href="#">Sign out</a>
+        {% if session['is_authenticated'] == True %}
+          <a class="nav-link" href="/auth/logout">Ausloggen</a>
+        {% else %}
+          <a class="nav-link" href="/auth">Authentifizierung</a>
+        {% endif %}
       </li>
     </ul>
   </nav>
@@ -41,19 +44,27 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/upload">
-                <span data-feather="file"></span>
+                <span data-feather="plus"></span>
                 Verteilung erstellen
               </a>
             </li>
+            {% if session['is_authenticated'] == True %}
             <li class="nav-item">
               <a class="nav-link" href="/create">
-                <span data-feather="shopping-cart"></span>
+                <span data-feather="upload"></span>
                 Daten anlegen
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/edit">
+                <span data-feather="edit"></span>
+                Angelegte Daten
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
               <a class="nav-link" href="/docs">
-                <span data-feather="users"></span>
+                <span data-feather="file-text"></span>
                 Dokumentation
               </a>
             </li>
