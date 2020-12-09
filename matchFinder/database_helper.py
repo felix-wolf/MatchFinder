@@ -26,15 +26,16 @@ def save_themen(themen, list_name):
 	list_of_themen = []
 	for top in themen:
 		local_topic = thema.Thema(
-        	topic_name = top['topic_name'],
-        	tutor_last_name = top['tutor_last_name'],
-        	tutor_first_name = top['tutor_first_name']
+        	thema_name = top['thema_name'],
+        	tutor = top['tutor'],
+        	zeit = top['zeit']
         )
 		db.session.add(local_topic)
 		list_of_themen.append(local_topic)
 
 	list = thema_list.Thema_List(
-		name = list_name, themen = list_of_themen
+		name = list_name,
+		themen = list_of_themen
 		)
 	db.session.add(list)
 	db.session.commit()

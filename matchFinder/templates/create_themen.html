@@ -20,7 +20,7 @@
 					{{ form.themen_name(size=20, class="form-control", placeholder="required") }}
 				</div>
 				{% for single_thema_form in form.themen.entries %}
-					{{ single_thema_form.hidden_tag() }}
+				{{ single_thema_form.hidden_tag() }}
 				Thema / Gruppe {{loop.index}}
 				<div class="input-group mb-2">
 					<div class="input-group-prepend">
@@ -50,7 +50,5 @@
 		</div>
 	</div>
 </div>
-
-
 
 {% endblock %}

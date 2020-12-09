@@ -14,6 +14,7 @@ def array_from_teilnehmer(file):
 	return participants
 
 def array_from_themen(file):
+	'''
 	df = pd.read_csv(file, sep='\t', names=[
 		'stine_id', 'tutor_last_name', 'tutor_first_name', 'NaN1', 'topic_name', 'NaN2']
 		)
@@ -28,4 +29,5 @@ def array_from_themen(file):
 		topic['tutor_first_name'] = df['tutor_first_name'][ind]
 		topic['topic_name'] = df['topic_name'][ind]
 		topics.append(topic)
+		'''
 	return topics
