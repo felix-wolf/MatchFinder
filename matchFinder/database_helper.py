@@ -22,13 +22,11 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 
 	return len(teilnehmer_liste)
 
-def save_themen(themen, list_name, max_participants):
+def save_themen(themen, list_name):
 	list_of_themen = []
 	for top in themen:
 		local_topic = thema.Thema(
-			stine_id = top['stine_id'].item(),
         	topic_name = top['topic_name'],
-        	max_participants = max_participants,
         	tutor_last_name = top['tutor_last_name'],
         	tutor_first_name = top['tutor_first_name']
         )

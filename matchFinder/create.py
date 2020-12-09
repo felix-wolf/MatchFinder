@@ -6,6 +6,7 @@ from . import matchCalculator
 from . import results
 from . import txt_parser
 from . import database_helper
+from matchFinder.forms import thema_form as themen_form
 
 
 bp = Blueprint('create', __name__, url_prefix='/create')
@@ -21,44 +22,39 @@ def load_logged_in_user():
 def index():
     return render_template('create.html')
 
-@bp.route('/teilnehmer', methods=['POST'])
-def teilnehmer():
+
+@bp.route('/upload', methods=['POST'])
+def upload():
     uploaded_file = request.files['file']
     if (validate_file(uploaded_file)):
-        list_name = request.form.get('list_name', 'error')
-        teilnehmer = txt_parser.array_from_teilnehmer(uploaded_file)
-        rtn = database_helper.save_teilnehmer(teilnehmer, list_name)
-        if rtn:
-            return redirect(url_for('create.index', items_saved=rtn))
-        else:
-            return redirect(url_for('create.index', items_saved=False))
+        teilnehmer_name = request.form.get('teilnehmer_name', None)
+        themen_name = request.form.get('themen_name', None)
+        if themen_name == None:
+            teilnehmer = txt_parser.array_from_teilnehmer(uploaded_file)
+            rtn = database_helper.save_teilnehmer(teilnehmer, teilnehmer_name)
+        elif teilnehmer_name == None:
+            themen = txt_parser.array_from_themen(uploaded_file)
+            rtn = database_helper.save_themen(themen, themen_name)
+        return redirect(url_for('create.index', items_saved=rtn))
     else:
         abort(400)
     return redirect(url_for('create.index', items_saved=False))
 
-@bp.route('/themen', methods=['POST'])
-def themen():
-    uploaded_file = request.files['file']
-    if (validate_file(uploaded_file)):
-        list_name = request.form.get('themen_name', 'error')
-        max_teilnehmer = request.form.get('max_teilnehmer', None)
-        if max_teilnehmer == '':
-            max_teilnehmer = None
-        themen = txt_parser.array_from_themen(uploaded_file)
-        rtn = database_helper.save_themen(themen, list_name, max_teilnehmer)
-        if rtn:
-            return redirect(url_for('create.index', items_saved=rtn))
-        else:
-            return redirect(url_for('create.index', items_saved=False))
-    else:
-        abort(400)
-    return redirect(url_for('create.index', items_saved=False))
 
 @bp.route('/themen_manually', methods=['POST'])
 def themen_manually():
+    themenform = themen_form.ThemenForm()
+    if themenform.validate_on_submit():
+        for thema in themenform.themen.data:
+            print(thema['thema_name'])
     number_of_themen = request.form.get('number_themen', None)
     if number_of_themen != None and int(number_of_themen) > 0:
-        print(number_of_themen)
+        for i in range(int(number_of_themen)):
+            thema_form = themen_form.ThemaEntryForm()
+            themenform.themen.append_entry(thema_form)
+        return render_template('create_themen.html', form=themenform)
+    return redirect(url_for('create.index'))
+
 
 def validate_file(file):
     filename = secure_filename(file.filename)

@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}Daten anlegen{% endblock %}
+
+{% block header %}Daten anlegen{% endblock %}
+
+{% block body %}
+<p>Fülle die Listen mit Inhalt</p>
+
+
+<div class="container">
+	<div class="mb-5">
+		<div class="form-row align-items-center mb-3">
+			<form method="POST" action="{{ url_for('create.themen_manually') }}">
+				{{ form.csrf_token() }}
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Gruppen / Themen</span>
+					</div>
+					{{ form.themen_name(size=20, class="form-control", placeholder="required") }}
+				</div>
+				{% for single_thema_form in form.themen.entries %}
+					{{ single_thema_form.hidden_tag() }}
+				Thema / Gruppe {{loop.index}}
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name</span>
+					</div>
+					{{ single_thema_form.thema_name(value="", size=20, class="form-control", placeholder="required") }}
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="validationTooltipUsernamePrepend">Uhrzeit</span>
+					</div>
+					{{ single_thema_form.timeslot(value="", size=20, class="form-control", placeholder="optional") }}
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="validationTooltipUsernamePrepend">Betreuer</span>
+					</div>
+					{{ single_thema_form.tutor(value="", size=20, class="form-control", placeholder="optional") }}
+				</div>
+				{% endfor %}
+
+				<input class="btn btn-primary" type="submit" value="Erstellen">
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
