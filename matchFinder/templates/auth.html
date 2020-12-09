@@ -21,7 +21,6 @@
 	<form method=post action="{{ url_for('auth.validate') }}" enctype=multipart/form-data>
 		<div class="form-row mb-4">
 			<div class="col-8 mb-3">
-				<!--<label for="validationTooltipUsername">Username</label>-->
 				<div class="input-group">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="validationTooltipUsernamePrepend">
@@ -37,9 +36,6 @@
 		</div>
 	</form>
 	{% block scripts %}
-	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-	<script>
-		feather.replace()
-	</script>
+
 	{% endblock %}
 	{% endblock %}

@@ -25,10 +25,10 @@ def validate():
 	for pw_for in passwords:
 		if pw_hash == pw_for.password:
 			session['is_authenticated'] = True
-			return render_template('auth.html' , is_valid=True)
+			return render_template('home.html', is_valid=True)
 	return render_template('auth.html', is_valid=False)
 
 @bp.route('/logout')
 def logout():
 	session.clear()
-	return render_template('auth.html')
+	return render_template('home.html')

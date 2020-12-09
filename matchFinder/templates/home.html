@@ -1,14 +1,18 @@
 {% extends "layout.html" %}
-{% block title %}Home{% endblock %}
-{% block header %}
-  Home
+{% block head %}
+{{super()}}
 {% endblock %}
+{% block title %}Home{% endblock %}
+
+{% block header %}Home{% endblock %}
 
 {% block body %}
-  <p class="important">
-    Welcome on my awesome homepage.
-    <!--<form enctype=multipart/form-data>
-  		<input type="file" id="myFile" name="filename">
-  		<input type="submit">
-	</form>-->
+
+{% if is_valid == True %}
+
+	<div class="alert alert-success" role="alert">
+		Authentifizierung erfolgreich!
+	</div>
+	{% endif %}
+
 {% endblock %}

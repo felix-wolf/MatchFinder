@@ -10,6 +10,13 @@ from . import database_helper
 
 bp = Blueprint('create', __name__, url_prefix='/create')
 
+
+@bp.before_request
+def load_logged_in_user():
+    if session.get('is_authenticated') != True:
+        return redirect(url_for('home'))
+
+
 @bp.route('/')
 def index():
     return render_template('create.html')
@@ -46,6 +53,12 @@ def themen():
     else:
         abort(400)
     return redirect(url_for('create.index', items_saved=False))
+
+@bp.route('/themen_manually', methods=['POST'])
+def themen_manually():
+    number_of_themen = request.form.get('number_themen', None)
+    if number_of_themen != None and int(number_of_themen) > 0:
+        print(number_of_themen)
 
 def validate_file(file):
     filename = secure_filename(file.filename)

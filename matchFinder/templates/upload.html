@@ -13,15 +13,13 @@
 </p>
 <div class="mb-4">
 	<h5 class="mb-3">Bereits angegebene Präferenzen in .csv Format hochladen</h5>
-	<div class="col-6">
-		<div class="form-row align-items-center">
-			<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
-				<div class="input-group">
-					<input class='button' type=file name=file accept=".txt,.csv">
-					<input class="btn btn-primary" type=submit value=Upload>
-				</div>
-			</form>
-		</div>
+	<div class="form-row align-items-center">
+		<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
+			<div class="mb-2">
+				<input class='button mb' type=file name=file accept=".txt,.csv" required>
+			</div>
+			<input class="btn btn-primary" type=submit value=Erstellen>
+		</form>
 	</div>
 </div>
 {% if (topics|length > 0) and (members|length > 0) %}
@@ -55,7 +53,7 @@
 		var fileName = $(this).val();
 		//replace the "Choose a file" label
 		$(this).next('.custom-file-label').html(fileName);
-    })
+	})
 </script>
 {% endblock %}
 {% endblock %}

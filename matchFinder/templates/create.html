@@ -5,35 +5,78 @@
 {% block header %}Daten anlegen{% endblock %}
 
 {% block body %}
-	<p>Hier können Listen von Themen oder Teilnehmer gespeichert werden, um daraus später Verteilungen zu erstellen.</p>
-	{% if request.args.get('items_saved') %}
-		<p>{{ request.args.get('items_saved') }} Einträge gespeichert!</p>
-	{% endif %}
-	<h3>Teilnehmerliste anlegen</h3>
-	<div class="container">
-	<div class="col-12">
+<p>Hier können Listen von Themen oder Teilnehmer gespeichert werden, um daraus später Verteilungen zu erstellen.</p>
+{% if request.args.get('items_saved') %}
+<p>{{ request.args.get('items_saved') }} Einträge gespeichert!</p>
+{% endif %}
+<div class="container">
+	<div class="mb-5">
+		<h4 class="mb-4">Teilnehmerliste anlegen</h4>
 		<div class="form-row align-items-center mb-3">
 			<form method=post action="{{ url_for('create.teilnehmer') }}" enctype=multipart/form-data>
-				<label for="list_name">Name der Teilnehmerliste:</label>
-				<input type="text" id="list_name" name="list_name">
-    			<input class='button' type=file name=file accept=".txt,.csv">
-				<input class="btn btn-primary" type=submit value=Upload>
-    		</form>
-    	</div>
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Teilnehmerliste</span>
+					</div>
+					<input type="text" id="list_name" name="list_name" class="form-control" placeholder="Name" required>
+				</div>
+				<div class="input-group mb-2">
+					<input class='button' type=file name=file accept=".txt,.csv" required>
+				</div>
+				<div class="input-group mb-2">
+					<input class="btn btn-primary" type=submit value=Erstellen>
+				</div>
+			</form>
+		</div>
 	</div>
-	<h3>Themen / Gruppen anlegen</h3>
-	<div class="col-6">
-		<div class="form-row align-items-center mb-3">
-			<form method=post action="{{ url_for('create.themen') }}" enctype=multipart/form-data>
-				<label for="themen_name">Name der Themen / Gruppen:</label>
-				<input type="text" id="themen_name" name="themen_name">
-				<label for="max_teilnehmer">Teilnehmer pro Gruppe:</label>
-				<input type="text" id="max_teilnehmer" name="max_teilnehmer">
-    			<input class='button' type=file name=file accept=".txt,.csv">
-				<input class="btn btn-primary" type=submit value=Upload>
-    		</form>
-    	</div>
+
+
+	<h4 class="mb-4">Themen / Gruppen anlegen</h4>
+	<div class="row">
+		<div class="col-sm-5">
+			<h6>Aus Datei laden:</h6>
+			<div class="form-row align-items-center mb-3">
+				<form method=post action="{{ url_for('create.themen') }}" enctype=multipart/form-data>
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Themen / Gruppen</span>
+						</div>
+						<input type="text" id="themen_name" name="themen_name" class="form-control" placeholder="Name" required>
+					</div>
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="validationTooltipUsernamePrepend">Teilnehmer pro Thema / Gruppe</span>
+						</div>
+						<input type="number" id="max_teilnehmer" name="max_teilnehmer" class="form-control" value="1" required>
+					</div>
+					<div class="input-group mb-2">
+						<input class='button' type=file name=file accept=".txt,.csv" required>
+					</div>
+					<div class="input-group mb-2">
+						<input class="btn btn-primary" type=submit value=Erstellen>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-sm-5 offset-1">
+			<h6>Manuell erstellen:</h6>
+			<div class="form-row align-items-center mb-3">
+				<form method=post action="{{ url_for('create.themen_manually') }}" enctype=multipart/form-data>
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="validationTooltipUsernamePrepend">Anzahl der Themen / Gruppen</span>
+						</div>
+						<input type="number" id="number_themen" name="number_themen" class="form-control" value="1">
+					</div>
+					<div class="input-group mb-2">
+						<input class="btn btn-primary" type=submit value="Zur Erstellung">
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 </div>
+
+
 
 {% endblock %}
