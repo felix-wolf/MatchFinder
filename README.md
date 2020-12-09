@@ -99,3 +99,64 @@ export FLASK_APP=matchFinder
 export FLASK_ENV=development
 flask run
 ```
+
+# Mitschrift Treffen 07.12.2020 (Muss überarbeitet werden)
+
+### Fragen für Projekt:
+
+- Wie viele Auswertungen maximal?
+- was ist das für eine id bei den Gruppen?
+- Strengere Trennung von Gruppen und Themen?
+- Persistent speichern?
+
+
+
+- alle Verteilungen drin lassen
+    - nur 2 einblenden
+    - hat jemand was dagegen?
+    - wenn beide schlecht sind, eine würfeln
+- Prio mit einbinden
+- Alle Permutationen pro Matrix?
+- ist es für mich ein Vorteil, ganz oben zu stehen? (Belohnung, weil früher eingetragen)
+    - keine Permutation!
+- Exportierfunktion (DokuWiki Format (markdown)) ohne Prios
+- liste mit Übungen Enthalten Studenten, keine Tutoren!!!!!
+- Angabe für Anzahl der Gruppen -> Studis werden auf die Gruppen verteilt
+- Formular zum Gruppen erstellen
+- Authentifizierung:
+    - auch ohne Matrikelnummer?
+    - Checkbox für mit oder ohne Matrikelnummer
+- Editierfunktion
+- 2 Checkboxen
+    - Authentifizierung
+    - Editierbar
+- 2 root Passwörter (Brute Force Defence)
+- Begrenzung für Matrikelnummereingaben (Brute Force Defence)
+- Weitere Tabelleninhalte optional anzeigen (ausklappen?)
+- Datenbank Tabelle für Thema erweitern um weitere optionale Felder
+    - Studi und name sind safe
+- Studi Liste aus Stine (mit oder ohne Gruppe, Gruppen direkt verwerfen)
+- Themen in Formular erstellt oder aus simpler Liste (manuell erstellt)
+- Datenbankeinträge nach einiger Zeit löschen?
+- Nachwort im Bericht über mögliche Verbesserungen, ausstehende Features, Bugs
+- Bitpoll api für Prios setzen?
+    - beim button press csv von Bitpoll ziehen
+- Studis, die keine Prios gesetzt haben, kriegen irgendwas
+- QR-code zu link
+- hash statt id für prios angeben (Hash aus id + Salt)
+- immer max 10 Stimmen
+- Priorität: 1-10 (lower is better)
+- Themen, die keine Prio haben, sind alle gleich gerichtet
+
+Gruppe Schema
+- Name (required)
+- Zeitpunkt (optional)
+- Betreuer (optional)
+    - Name, Zeitraum, Betreuer,
+    - Name,,,
+
+Umfrageplattformen
+- Terminplaner4
+- Bitpoll
+- doodle
+- moodle
