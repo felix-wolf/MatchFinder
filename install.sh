@@ -13,3 +13,7 @@ pip3 install markdown
 pip3 install flask_limiter
 
 pip3 install Flask-WTF
+
+pip3 install qrcode
+
+pip3 install Pillow

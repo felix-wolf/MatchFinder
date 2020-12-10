@@ -1,17 +1,26 @@
 {% extends "layout.html" %}
 
-{% block title %}Teilen{% endblock %}
+{% block title %}Verteilung Teilen{% endblock %}
 
-{% block header %}Teilen{% endblock %}
+{% block header %}Verteilung Teilen{% endblock %}
 
 {% block body %}
 
 {% if id %}
 
 <div>
-	<h3>Umfrage erfolgreich erstellt!</h3>
-	Die eingetragenen Studis können unter diesem Link ihre Stimmen abgeben:
-	<a href="/preference?id={{id}}">LINK</a>
+	<h5 class="mb-4">Die Verteilung wurde erfolgreich erstellt! Jetzt können Präferenzen angeben werden</h5>
+
+	<div class="mb-3">
+		Die eingetragenen Studis können unter diesem Link ihre Stimmen abgeben:
+		<a class="btn btn-primary" href="/preference?id={{id}}">LINK</a>
+	</div>
+	{% if img %}
+	<div>
+		<p>Alternativ kann der QR-Code gescannt werden</p>
+		<img alt="tick" src="data:image/gif;base64,{{img}}">
+	</div>
+	{% endif %}
 </div>
 
 {% endif %}
