@@ -1,13 +1,14 @@
-import os
+from flask import Flask, session, render_template, abort, request, redirect, url_for, current_app as app
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, session, render_template, redirect, url_for, current_app as app
 import hashlib
+import os
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 
 db = SQLAlchemy()
 limiter = Limiter()
+blocked_ip = []
 
 def create_app(test_config=None):
     # create and configure the app
@@ -30,6 +31,18 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    @app.before_request
+    def block_ips():
+        if session.get('ip_blocked') == True:
+            abort(403)
+        elif session.get('ip_blocked') == False:
+            return
+        if any(request.environ.get('REMOTE_ADDR') in entry for entry in blocked_ip):
+            session['ip_blocked'] = True
+            abort(403)
+        else:
+            session['ip_blocked'] = False
 
     # a simple page that says hello
     @app.route('/')
@@ -65,6 +78,9 @@ def create_app(test_config=None):
     app.register_blueprint(edit.bp)
 
     db.init_app(app)
+
+    from . import txt_parser
+    blocked_ip = txt_parser.load_ips()
 
     return app
 

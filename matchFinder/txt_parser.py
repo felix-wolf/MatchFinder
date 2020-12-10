@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def array_from_teilnehmer(file):
 	df = pd.read_csv(file, sep='\t', names=['id', 'matr_nr', 'last_name', 'first_name', 'NaN1', 'uebung', 'NaN2'])
@@ -36,3 +37,7 @@ def array_from_themen(file):
 		topics.append(topic)
 		'''
 	return topics
+
+def load_ips():
+	with open('list_of_blocked_ips.txt', 'r') as f:
+		return f.read().split('\n')
