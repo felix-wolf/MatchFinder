@@ -6,5 +6,27 @@
 
 {% block body %}
 
+{% if teilnehmer_lists %}
+
+<h2>Teilnehmer-Listen</h2>
+<div class="table-responsive">
+	<table class="table table-striped table-sm">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		{% for teilnehmer_list in teilnehmer_lists %}
+		<tbody>
+			<tr>
+				<td>{{teilnehmer_list.id}}</td>
+				<td>{{teilnehmer_list.name}}</td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+</div>
+{% endif %}
 
 {% endblock %}

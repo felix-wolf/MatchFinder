@@ -6,6 +6,7 @@ from . import matchCalculator
 from . import results
 from . import txt_parser
 from . import database_helper
+from . import db
 
 
 bp = Blueprint('edit', __name__, url_prefix='/edit')
@@ -19,4 +20,16 @@ def load_logged_in_user():
 
 @bp.route('/')
 def index():
-    return render_template('edit.html')
+
+	from matchFinder.models import teilnehmer_list
+	from matchFinder.models import thema_list
+	from matchFinder.models import teilnehmer
+	teilnehmer_list_entries = teilnehmer_list.Teilnehmer_List.query.all()
+	teilnehmer_all = teilnehmer.Teilnehmer.query.all()
+	thema_list_entries = thema_list.Thema_List.query.all()
+
+	return render_template(
+		'edit.html',
+		teilnehmer_lists=teilnehmer_list_entries,
+		teilnehmer=teilnehmer_all
+		)
