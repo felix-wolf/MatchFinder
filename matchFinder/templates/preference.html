@@ -16,8 +16,8 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text">{{thema.thema_name}}</span>
 						</div>
-						<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{thema.id}}" id="{{thema.id}}">
-							<option v-for="(item, index) in validOptions({{thema.id}})">
+						<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{loop.index}}" id="{{loop.index}}">
+							<option v-for="(item, index) in validOptions({{loop.index}})">
 								${item}
 							</option>
 						</select>
@@ -114,7 +114,7 @@
 						}
 						if (this.mapping[key] == "") { index++ }
 					}
-					if (value != this.options[0] && index < element.options.length) {
+					if (element.selected != this.options[0] && index < element.options.length) {
 						element.options[index].selected = true
 					}
 				}
