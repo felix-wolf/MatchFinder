@@ -14,8 +14,8 @@ def array_from_teilnehmer(file):
 	for ind in df.index:
 		participant = {}
 		participant['matr_nr'] = df['matr_nr'][ind]
-		participant['last_name'] = df['last_name'][ind]
-		participant['first_name'] = df['first_name'][ind]
+		participant['last_name'] = df['last_name'][ind].strip()
+		participant['first_name'] = df['first_name'][ind].strip()
 		participants.append(participant)
 	return participants
 

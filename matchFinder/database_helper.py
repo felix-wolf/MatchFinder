@@ -118,11 +118,13 @@ def save_verteilung(teilnehmer_list_name, thema_list_name):
 
 def check_membership(verteilung_id, matr_nr):
 	verteilung_to_id = get_verteilung_by_id(verteilung_id)
-	teilnehmer_to_verteilung = get_teilnehmer_list_by_id(verteilung_to_id.teilnehmer_list_id)
-	for teil in teilnehmer_to_verteilung.teilnehmer:
-		if teil.matr_nr == matr_nr:
-			print("SUCCESS")
-
+	if verteilung_to_id != None:
+		teilnehmer_to_verteilung = get_teilnehmer_list_by_id(verteilung_to_id.teilnehmer_list_id)
+		if teilnehmer_to_verteilung != None:
+			for teil in teilnehmer_to_verteilung.teilnehmer:
+				if int(teil.matr_nr) == int(matr_nr):
+					return verteilung_to_id, teil
+	return None, None
 
 
 

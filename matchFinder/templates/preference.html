@@ -6,23 +6,27 @@
 
 {% block body %}
 <div class="container">
-	<h5>Hallo! Um deine Prioritäten setzen zu können, melde dich bitte mit deiner Matrikelnummer an:</h5>
-	<div class="mb-5">
-		<div class="form-row align-items-center mb-3">
-			<form method=post action="{{ url_for('preference.validate') }}" enctype="multipart/form-data">
-				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="validationTooltipUsernamePrepend">Matrikelnnummer</span>
-					</div>
-					<input type="text" id="matr_nr" name="matr_nr" class="form-control" placeholder="Matrikelnnummer" required>
-					<input type="hidden" id="id" name="id" value="{{id}}">
-				</div>
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Anmelden">
-				</div>
-			</form>
+	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
+	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
+		<div class="col-6">
+			<div class="form-row align-items-center">
+				<label class="mr-sm-2" for="members">Teilnehmerliste auswählen:</label>
+				<select class="custom-select mr-sm-2" name="members" id="members">
+					{% for member_list in members %}
+					<option value="{{member_list.name}}">{{member_list.name}}</option>
+					{% endfor %}
+				</select>
+				<label class="mr-sm-2" for="topics">Gruppenliste auswählen:</label>
+				<select class="custom-select mr-sm-2 mb-2" name="topics" id="topics">
+					{% for topic in topics %}
+					<option value="{{topic.name}}">{{topic.name}}</option>
+					{% endfor %}
+				</select>
+				<input class="btn btn-primary" type="submit" value="Submit">
+			</div>
 		</div>
-	</div>
+	</form>
+</div>
 </div>
 
 {% endblock %}
