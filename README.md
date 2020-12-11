@@ -1,6 +1,11 @@
 # MatchFinder
 Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Präferenzen ein faires Match findet.
 
+## TODO
+- Verteilung brauchen keine Verifizierung durch Matr.nr
+- angeben, wie viele pro thema erlaubt sind
+
+
 ### Inhaltsverzeichnis
 - [Dokumentation & Spezifikation](#dokumentation-spezifikation)
     - [Projektziel](#projektziel)

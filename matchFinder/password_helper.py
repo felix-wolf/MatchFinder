@@ -1,6 +1,5 @@
 import bcrypt
 from . import db
-from matchFinder.models import password
 from . import txt_parser
 
 def get_hashed_password(plain_text_password):
@@ -23,6 +22,6 @@ def create_passwords():
 	keys = txt_parser.load_passwords()
 	for key in keys:
 		hashed_password = get_hashed_password(key)
-		pw = password.Password(password=hashed_password)
+		pw = password_model.Password(password=hashed_password)
 		db.session.add(pw)
 	db.session.commit()

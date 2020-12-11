@@ -1,6 +1,5 @@
 from flask import Flask, session, render_template, abort, request, redirect, url_for, current_app as app
 from flask_sqlalchemy import SQLAlchemy
-import hashlib
 import os
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -85,12 +84,6 @@ def create_app(test_config=None):
     return app
 
 with create_app().app_context():
-    from matchFinder.models import teilnehmer
-    from matchFinder.models import teilnehmer_list
-    from matchFinder.models import thema
-    from matchFinder.models import thema_list
-    from matchFinder.models import verteilung
-    from matchFinder.models import password
     #db.drop_all()
     db.create_all()
 

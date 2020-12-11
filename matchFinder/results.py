@@ -1,12 +1,8 @@
 from flask import (
 	Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort, current_app as app)
-import json
-import numpy as np
 import os
 from . import matchCalculator
 from werkzeug.utils import secure_filename
-from matchFinder.models import teilnehmer
-from . import db
 
 bp = Blueprint('results', __name__, url_prefix='/results')
 

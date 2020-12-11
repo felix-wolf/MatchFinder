@@ -2,10 +2,10 @@ from flask import (
     Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort, current_app as app)
 import hashlib
 from . import db
-from matchFinder.models import password
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from . import limiter
+from . import database_helper
 from . import password_helper
 
 
@@ -19,7 +19,7 @@ def index():
 @limiter.limit("5 per minute", error_message="Too many requests! Try again later.")
 def validate():
 	entered_pw = request.form.get('password', None)
-	passwords = password.Password.query.all()
+	passwords = database_helper.get_all_passwords()
 	if len(passwords) == 0:
 		return render_template('auth.html', no_pws_found=True)
 	for pw in passwords:

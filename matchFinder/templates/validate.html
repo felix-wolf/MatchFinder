@@ -5,6 +5,14 @@
 {% block header %}Prioritäten setzen{% endblock %}
 
 {% block body %}
+
+{% if error %}
+
+	<div class="alert alert-danger" role="alert">
+		{{error}}
+	</div>
+{% endif %}
+
 <div class="container">
 	<h5>Hallo! Um deine Prioritäten setzen zu können, melde dich bitte mit deiner Matrikelnummer an:</h5>
 	<div class="mb-5">
