@@ -84,7 +84,6 @@
 					for (var key in this.mapping) {
 						if (this.mapping[key] == target.id) {
 							this.mapping[key] = ""
-							console.log(key)
 						}
 					}
 
@@ -98,7 +97,6 @@
 					for (var key in this.mapping) {
 						if (this.mapping[key] == target.id) {
 							this.mapping[key] = ""
-							console.log(key)
 						}
 					}
 				}
@@ -107,29 +105,19 @@
 				for (i = 1; i <= {{themen | length}}; i++) {
 
 					const element = document.getElementById(i)
-					var selectedValue = ""
-					var x = 0
-					var final = 0
+					var index = 0
+					var selected = ""
 					for (var key in this.mapping) {
 						if (this.mapping[key] == element.id) {
-							selectedValue = key
-							console.log(x)
-							final = x
+							selected = key
+							break
 						}
-						if (this.mapping[key] != "") {
-							x--
-						}
-						x++
+						if (this.mapping[key] == "") { index++ }
 					}
-					if (selectedValue != "") {
-						array = [].map.call(element, function(option) {
-							return option.value
-						})
-						index = array.indexOf(selectedValue)
-						element.options[final].selected = true
+					if (value != this.options[0] && index < element.options.length) {
+						element.options[index].selected = true
 					}
 				}
-				console.log(this.mapping)
 			}
 		}
 	})
