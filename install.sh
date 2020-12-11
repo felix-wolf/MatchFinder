@@ -17,3 +17,5 @@ pip3 install Flask-WTF
 pip3 install qrcode
 
 pip3 install Pillow
+
+pip3 install bcrypt

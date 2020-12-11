@@ -22,6 +22,7 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 
 	return len(teilnehmer_liste)
 
+# saves themen to the database
 def save_themen(themen, list_name):
 	list_of_themen = []
 	for top in themen:

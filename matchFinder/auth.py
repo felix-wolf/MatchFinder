@@ -6,6 +6,7 @@ from matchFinder.models import password
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from . import limiter
+from . import password_helper
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -17,13 +18,12 @@ def index():
 @bp.route('/validate', methods=['POST'])
 @limiter.limit("5 per minute", error_message="Too many requests! Try again later.")
 def validate():
-	pw = request.form.get('password', None)
+	entered_pw = request.form.get('password', None)
 	passwords = password.Password.query.all()
-	m = hashlib.sha256()
-	m.update(pw.encode('utf-8'))
-	pw_hash = m.hexdigest()
-	for pw_for in passwords:
-		if pw_hash == pw_for.password:
+	if len(passwords) == 0:
+		return render_template('auth.html', no_pws_found=True)
+	for pw in passwords:
+		if password_helper.check_password(entered_pw, pw.password):
 			session['is_authenticated'] = True
 			return render_template('home.html', is_valid=True)
 	return render_template('auth.html', is_valid=False)

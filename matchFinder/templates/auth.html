@@ -15,6 +15,12 @@
 		Authentifizierung fehlgeschlagen!
 	</div>
 	{% endif %}
+	{% if no_pws_found == True %}
+
+	<div class="alert alert-danger" role="alert">
+		Keine Passwörter gespeichert, kontaktiere einen Verantwortlichen!
+	</div>
+	{% endif %}
 	<p>
 		Authentifiziere dich, um bestimmte Funktionen dieser Seite nutzen zu können.
 	</p>

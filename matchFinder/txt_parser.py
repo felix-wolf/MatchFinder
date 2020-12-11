@@ -41,3 +41,7 @@ def array_from_themen(file):
 def load_ips():
 	with open('list_of_blocked_ips.txt', 'r') as f:
 		return f.read().split('\n')
+
+def load_passwords():
+	with open('passwords.txt', 'r') as f:
+		return f.read().split('\n')

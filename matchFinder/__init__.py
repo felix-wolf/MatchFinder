@@ -94,11 +94,5 @@ with create_app().app_context():
     #db.drop_all()
     db.create_all()
 
-    #keys = ["1234", "test"]
-    #for key in keys:
-    #    m = hashlib.sha256()
-    #    m.update(key.encode('utf-8'))
-    #    pw = password.Password(password=m.hexdigest())
-    #    db.session.add(pw)
-    #db.session.commit()
-
+    from . import password_helper
+    #password_helper.create_passwords()

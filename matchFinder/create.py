@@ -45,8 +45,11 @@ def upload():
 def themen_manually():
     themenform = themen_form.ThemenForm()
     if themenform.validate_on_submit():
-        for thema in themenform.themen.data:
-            print(thema['thema_name'])
+        # form is filled out and valid
+
+        database_helper.save_themen(themenform.themen, themenform.themen_name)
+
+
     number_of_themen = request.form.get('number_themen', None)
     if number_of_themen != None and int(number_of_themen) > 0:
         for i in range(int(number_of_themen)):
