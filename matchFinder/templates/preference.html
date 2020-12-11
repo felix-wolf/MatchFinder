@@ -5,28 +5,134 @@
 {% block header %}Prioritäten setzen{% endblock %}
 
 {% block body %}
-<div class="container">
-	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
-	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
-		<div class="col-6">
-			<div class="form-row align-items-center">
-				<label class="mr-sm-2" for="members">Teilnehmerliste auswählen:</label>
-				<select class="custom-select mr-sm-2" name="members" id="members">
-					{% for member_list in members %}
-					<option value="{{member_list.name}}">{{member_list.name}}</option>
+<div id=app>
+	<div class="container">
+		<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
+		<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
+			<div class="col-6">
+				<div class="form-row align-items-center">
+					{% for thema in themen %}
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<span class="input-group-text">{{thema.thema_name}}</span>
+						</div>
+						<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{thema.id}}" id="{{thema.id}}">
+							<option v-for="(item, index) in validOptions({{thema.id}})">
+								${item}
+							</option>
+						</select>
+					</div>
 					{% endfor %}
-				</select>
-				<label class="mr-sm-2" for="topics">Gruppenliste auswählen:</label>
-				<select class="custom-select mr-sm-2 mb-2" name="topics" id="topics">
-					{% for topic in topics %}
-					<option value="{{topic.name}}">{{topic.name}}</option>
-					{% endfor %}
-				</select>
-				<input class="btn btn-primary" type="submit" value="Submit">
+					<input class="btn btn-primary" type="submit" value="Submit">
+				</div>
 			</div>
-		</div>
-	</form>
-</div>
+		</form>
+	</div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
+<script type="text/javascript">
+
+
+	var app = new Vue({
+		el: "#app",
+		delimiters: ['${', '}'],
+		data: {
+
+			options : [
+			"Keine Präferenz",
+			"Erstwahl",
+			"Zweitwahl",
+			"Drittwahl",
+			"Viertwahl",
+			"Fünftwahl",
+			"Sechstwahl",
+			"Siebtwahl",
+			"Achtwahl",
+			"Neuntwahl",
+			"Zehntwahl",
+			],
+
+			mapping: {
+				"Keine Präferenz" : "",
+				"Erstwahl" : "",
+				"Zweitwahl" : "",
+				"Drittwahl" : "",
+				"Viertwahl" : "",
+				"Fünftwahl" : "",
+				"Sechstwahl" : "",
+				"Siebtwahl" : "",
+				"Achtwahl" : "",
+				"Neuntwahl" : "",
+				"Zehntwahl" : "",
+			}
+		},
+		methods: {
+			validOptions(object) {
+				return this.options.filter(
+					f => this.mapping[f] == "" || this.mapping[f] == object
+					)
+			},
+			onChange(event) {
+				const value = event.target.value
+				const target = event.target
+				if (value != this.options[0]) {
+					for (var key in this.mapping) {
+						if (this.mapping[key] == target.id) {
+							this.mapping[key] = ""
+							console.log(key)
+						}
+					}
+
+					for (var key in this.mapping) {
+						if (key == value) {
+							this.mapping[key] = target.id
+						}
+					}
+
+				} else {
+					for (var key in this.mapping) {
+						if (this.mapping[key] == target.id) {
+							this.mapping[key] = ""
+							console.log(key)
+						}
+					}
+				}
+
+
+				for (i = 1; i <= {{themen | length}}; i++) {
+
+					const element = document.getElementById(i)
+					var selectedValue = ""
+					var x = 0
+					var final = 0
+					for (var key in this.mapping) {
+						if (this.mapping[key] == element.id) {
+							selectedValue = key
+							console.log(x)
+							final = x
+						}
+						if (this.mapping[key] != "") {
+							x--
+						}
+						x++
+					}
+					if (selectedValue != "") {
+						array = [].map.call(element, function(option) {
+							return option.value
+						})
+						index = array.indexOf(selectedValue)
+						element.options[final].selected = true
+					}
+				}
+				console.log(this.mapping)
+			}
+		}
+	})
+
+</script>
 {% endblock %}

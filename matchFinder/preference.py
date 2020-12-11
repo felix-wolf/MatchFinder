@@ -29,7 +29,7 @@ def validate():
 		if verteilung_id != "":
 			verteilung, teilnehmer = database_helper.check_membership(verteilung_id, matr_nr)
 			if verteilung != None and teilnehmer != None:
-				themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id)
+				themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
 				return render_template("preference.html", teilnehmer=teilnehmer, themen=themen)
 			else:
 				return redirect(url_for("preference.set_preference", verteilung_id=verteilung_id))
