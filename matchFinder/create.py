@@ -47,7 +47,10 @@ def themen_manually():
     if themenform.validate_on_submit():
         # form is filled out and valid
 
-        database_helper.save_themen(themenform.themen, themenform.themen_name)
+        rtn = database_helper.save_themen(
+            themenform.themen.data,
+            themenform.themen_name.data)
+        return redirect(url_for('create.index', items_saved=rtn))
 
 
     number_of_themen = request.form.get('number_themen', None)

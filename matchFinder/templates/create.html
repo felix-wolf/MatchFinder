@@ -5,17 +5,19 @@
 {% block header %}Daten anlegen{% endblock %}
 
 {% block body %}
-<p>Hier können Listen von Themen oder Teilnehmer gespeichert werden, um daraus später Verteilungen zu erstellen.</p>
 {% if request.args.get('items_saved') %}
 <div class="alert alert-success" role="alert">
 	{{ request.args.get('items_saved') }} Einträge gespeichert!
 </div>
 {% endif %}
+
+<p>Hier können Listen von Themen oder Teilnehmer gespeichert werden, um daraus später Verteilungen zu erstellen.</p>
+
 <div class="container">
 	<div class="mb-5">
 		<h4 class="mb-4">Teilnehmerliste anlegen</h4>
 		<div class="form-row align-items-center mb-3">
-			<form method=post action="{{ url_for('create.upload') }}" enctype=multipart/form-data>
+			<form method=post action="{{ url_for('create.upload') }}" enctype="multipart/form-data">
 				<div class="input-group mb-2">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Teilnehmerliste</span>
@@ -23,10 +25,10 @@
 					<input type="text" id="teilnehmer_name" name="teilnehmer_name" class="form-control" placeholder="Name" required>
 				</div>
 				<div class="input-group mb-2">
-					<input class='button' type=file name=file accept=".txt,.csv" required>
+					<input class='button' type="file" name="file" accept=".txt,.csv" required>
 				</div>
 				<div class="input-group mb-2">
-					<input class="btn btn-primary" type=submit value=Erstellen>
+					<input class="btn btn-primary" type="submit" value="Erstellen">
 				</div>
 			</form>
 		</div>
@@ -38,7 +40,7 @@
 		<div class="col-sm-5">
 			<h6>Aus Datei laden:</h6>
 			<div class="form-row align-items-center mb-3">
-				<form method=post action="{{ url_for('create.upload') }}" enctype=multipart/form-data>
+				<form method=post action="{{ url_for('create.upload') }}" enctype="multipart/form-data">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Themen / Gruppen</span>
@@ -46,10 +48,10 @@
 						<input type="text" id="themen_name" name="themen_name" class="form-control" placeholder="Name" required>
 					</div>
 					<div class="input-group mb-2">
-						<input class='button' type=file name=file accept=".txt,.csv" required>
+						<input class='button' type="file" name="file" accept=".txt,.csv" required>
 					</div>
 					<div class="input-group mb-2">
-						<input class="btn btn-primary" type=submit value=Erstellen>
+						<input class="btn btn-primary" type="submit" value="Erstellen">
 					</div>
 				</form>
 			</div>

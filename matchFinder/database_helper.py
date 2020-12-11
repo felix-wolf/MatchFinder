@@ -26,13 +26,16 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 def save_themen(themen, list_name):
 	list_of_themen = []
 	for top in themen:
-		local_topic = thema.Thema(
+		local_thema = thema.Thema(
         	thema_name = top['thema_name'],
-        	tutor = top['tutor'],
+        	betreuer = top['betreuer'],
         	zeit = top['zeit']
         )
-		db.session.add(local_topic)
-		list_of_themen.append(local_topic)
+		print(local_thema.thema_name)
+		print(local_thema.betreuer)
+		print(local_thema.zeit)
+		db.session.add(local_thema)
+		list_of_themen.append(local_thema)
 
 	list = thema_list.Thema_List(
 		name = list_name,

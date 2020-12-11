@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired
 
 class ThemaEntryForm(FlaskForm):
 	thema_name = StringField('Name', validators=[DataRequired()])
-	timeslot = StringField('Zeitpunkt')
-	tutor = StringField('Betreuer')
+	zeit = StringField('Zeitpunkt')
+	betreuer = StringField('Betreuer')
 
 
 class ThemenForm(FlaskForm):
