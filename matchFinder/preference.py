@@ -1,13 +1,9 @@
 from flask import (
-	Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort, current_app as app)
-import os
-from werkzeug.utils import secure_filename
-from . import matchCalculator
-from . import results
-from . import txt_parser
+	Blueprint, Flask, redirect, render_template, request, url_for)
 from . import database_helper
 from . import limiter
 import json
+from matchFinder.models import praeferenz_model
 
 
 bp = Blueprint('preference', __name__, url_prefix='/preference')
@@ -57,6 +53,7 @@ def save():
 
 	obj = json.loads(information_object)
 	verteilung_id = obj["verteilung_id"]
+	teilnehmer_id = obj["teilnehmer_id"]
 	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
 	number_of_themen_in_verteilung = len(verteilung.thema_list.themen)
 	preference_string=""
@@ -66,7 +63,12 @@ def save():
 			preference = ""
 		preference_string = preference_string + preference + ","
 	preference_string = preference_string[:-1]
-	print(preference_string)
+	praeferenz = praeferenz_model.Praeferenz(
+		teilnehmer_id=teilnehmer_id,
+		verteilung_id=verteilung_id,
+		praeferenzen=preference_string
+		)
+	database_helper.insert_praeferenz(praeferenz)
 	return render_template('home.html')
 
 

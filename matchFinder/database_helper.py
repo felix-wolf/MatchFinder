@@ -5,6 +5,7 @@ from matchFinder.models import thema_list_model
 from matchFinder.models import teilnehmer_list_model
 from matchFinder.models import verteilung_model
 from matchFinder.models import password_model
+from matchFinder.models import praeferenz_model
 
 def get_all_teilnehmer():
 	return teilnehmer_model.Teilnehmer.query.all()
@@ -61,6 +62,10 @@ def delete_verteilung_by_id(id):
 
 def insert_password(password):
 	db.session.add(password)
+	db.session.commit()
+
+def insert_praeferenz(praeferenz):
+	db.session.add(praeferenz)
 	db.session.commit()
 
 
