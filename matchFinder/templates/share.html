@@ -1,24 +1,24 @@
 {% extends "layout.html" %}
 
-{% block title %}Verteilung Teilen{% endblock %}
+{% block title %}Verteilung teilen{% endblock %}
 
-{% block header %}Verteilung Teilen{% endblock %}
+{% block header %}Verteilung teilen{% endblock %}
 
 {% block body %}
 
 {% if id %}
 
 <div>
-	<h5 class="mb-4">Die Verteilung wurde erfolgreich erstellt! Jetzt können Präferenzen angeben werden</h5>
+	<h5 class="mb-4">Jetzt können Präferenzen angeben werden!</h5>
 
 	<div class="mb-3">
-		Die eingetragenen Studis können unter diesem Link ihre Stimmen abgeben:
-		<a class="btn btn-primary" href="/preference/{{id}}">LINK</a>
+		<p>Die eingetragenen Studis können unter diesem Link ihre Stimmen abgeben:</p>
+		<a class="btn btn-primary btn-lg" href="/preference/{{id}}">LINK</a>
 	</div>
 	{% if img %}
 	<div>
-		<p>Alternativ kann der QR-Code gescannt werden</p>
-		<img alt="tick" src="data:image/gif;base64,{{img}}">
+		<p>Alternativ kann der QR-Code gescannt werden:</p>
+		<img src="data:image/gif;base64,{{img}}">
 	</div>
 	{% endif %}
 </div>

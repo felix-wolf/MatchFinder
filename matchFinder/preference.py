@@ -7,6 +7,7 @@ from . import results
 from . import txt_parser
 from . import database_helper
 from . import limiter
+import json
 
 
 bp = Blueprint('preference', __name__, url_prefix='/preference')
@@ -30,7 +31,11 @@ def validate():
 			verteilung, teilnehmer = database_helper.check_membership(verteilung_id, matr_nr)
 			if verteilung != None and teilnehmer != None:
 				themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
-				return render_template("preference.html", teilnehmer=teilnehmer, themen=themen)
+				return render_template(
+					"preference.html",
+					teilnehmer=teilnehmer,
+					themen=themen,
+					verteilung_id=verteilung_id)
 			else:
 				return redirect(url_for("preference.set_preference", verteilung_id=verteilung_id))
 		else:
@@ -46,6 +51,31 @@ def validate():
 		error="Matrikelnummer muss eine Zahl sein!"
 		)
 
-@bp.route('save')
+@bp.route('save', methods=['POST'])
 def save():
+	information_object = request.form.get('information', None)
+
+	obj = json.loads(information_object)
+	verteilung_id = obj["verteilung_id"]
+	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
+	number_of_themen_in_verteilung = len(verteilung.thema_list.themen)
+	preference_string=""
+	for index in range(number_of_themen_in_verteilung):
+		preference = request.form.get(str(index + 1), None)
+		if preference == "Keine Präferenz":
+			preference = ""
+		preference_string = preference_string + preference + ","
+	preference_string = preference_string[:-1]
+	print(preference_string)
 	return render_template('home.html')
+
+
+
+
+
+
+
+
+
+
+

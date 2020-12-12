@@ -1,6 +1,5 @@
 from flask import (
-	Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort, current_app as app)
-from . import db
+	Blueprint, Flask, redirect, render_template, request, url_for)
 from . import database_helper
 import qrcode
 import base64
@@ -12,11 +11,15 @@ bp = Blueprint('share', __name__, url_prefix='/share')
 #make database entry, give link to enter site
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-	teilnehmer_list_name = request.form.get('members', None)
-	thema_list_name = request.form.get('topics', None)
+	teilnehmer_list_name = request.form.get('teilnehmer', None)
+	thema_list_name = request.form.get('thema', None)
 	id = database_helper.save_verteilung(teilnehmer_list_name, thema_list_name)
+	return redirect(url_for('share.show', verteilung_id=id))
+
+@bp.route('/show/<int:verteilung_id>')
+def show(verteilung_id):
 	root_url = request.url_root
-	url = root_url + 'preference?id=' + str(id)
+	url = root_url + 'preference?id=' + str(verteilung_id)
 	qr = qrcode.QRCode(
 		version=1,
 		error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -31,4 +34,4 @@ def index():
 	buffered = BytesIO()
 	img.save(buffered, format="PNG")
 	img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
-	return render_template('share.html', id=id, img=img_str)
+	return render_template('share.html', id=verteilung_id, img=img_str)

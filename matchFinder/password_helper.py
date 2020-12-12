@@ -1,6 +1,7 @@
 import bcrypt
-from . import db
 from . import txt_parser
+from . import database_helper
+from matchFinder.models import password_model
 
 def get_hashed_password(plain_text_password):
     '''Hash a password for the first time.
@@ -23,5 +24,4 @@ def create_passwords():
 	for key in keys:
 		hashed_password = get_hashed_password(key)
 		pw = password_model.Password(password=hashed_password)
-		db.session.add(pw)
-	db.session.commit()
+		database_helper.insert_password(pw)

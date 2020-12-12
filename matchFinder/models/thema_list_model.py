@@ -6,4 +6,4 @@ class Thema_List(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(80), nullable=False)
 	themen = db.relationship("Thema", cascade="all,delete", backref="list", lazy=True)
-	verteilungen = db.relationship("Verteilung", cascade="all,delete", backref="thema", lazy=True)
+	verteilungen = db.relationship("Verteilung", cascade="all,delete", backref="thema_list", lazy=True)

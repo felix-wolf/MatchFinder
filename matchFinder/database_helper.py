@@ -48,15 +48,19 @@ def delete_teilnehmer_list_by_id(id):
 	db.session.commit()
 
 def delete_thema_by_id(id):
-	db.session.delete(get_teilnehmer_thema_by_id(id))
+	db.session.delete(get_thema_by_id(id))
 	db.session.commit()
 
 def delete_thema_list_by_id(id):
-	db.session.delete(get_teilnehmer_thema_list_by_id(id))
+	db.session.delete(get_thema_list_by_id(id))
 	db.session.commit()
 
 def delete_verteilung_by_id(id):
 	db.session.delete(get_verteilung_by_id(id))
+	db.session.commit()
+
+def insert_password(password):
+	db.session.add(password)
 	db.session.commit()
 
 

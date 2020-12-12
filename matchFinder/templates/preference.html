@@ -6,28 +6,25 @@
 
 {% block body %}
 <div id=app>
-	<div class="container">
-		<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
-		<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
-			<div class="col-6">
-				<div class="form-row align-items-center">
-					{% for thema in themen %}
-					<div class="input-group mb-2">
-						<div class="input-group-prepend">
-							<span class="input-group-text">{{thema.thema_name}}</span>
-						</div>
-						<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{loop.index}}" id="{{loop.index}}">
-							<option v-for="(item, index) in validOptions({{loop.index}})">
-								${item}
-							</option>
-						</select>
-					</div>
-					{% endfor %}
-					<input class="btn btn-primary" type="submit" value="Submit">
+	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
+	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
+		<div class="form-row align-items-center">
+			{% for thema in themen %}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend">
+					<span class="input-group-text">{{thema.thema_name}}</span>
 				</div>
+				<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{loop.index}}" id="{{loop.index}}">
+					<option v-for="(item, index) in validOptions({{loop.index}})">
+						${item}
+					</option>
+				</select>
 			</div>
-		</form>
-	</div>
+			{% endfor %}
+			<input class="btn btn-primary" type="submit" value="Submit">
+			<input type="hidden" id="information" name="information" value='{"teilnehmer_id": "{{teilnehmer.id}}","verteilung_id":"{{verteilung_id}}"}'>
+		</div>
+	</form>
 </div>
 
 {% endblock %}
@@ -114,13 +111,13 @@
 						}
 						if (this.mapping[key] == "") { index++ }
 					}
-					if (element.selected != this.options[0] && index < element.options.length) {
-						element.options[index].selected = true
-					}
+				if (element.selected != this.options[0] && index < element.options.length) {
+					element.options[index].selected = true
 				}
 			}
 		}
-	})
+	}
+})
 
 </script>
 {% endblock %}

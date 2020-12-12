@@ -5,27 +5,30 @@
 {% block header %}Resultate{% endblock %}
 
 {% block body %}
-	<h3>Hier sind die Resultate der Auswertung:</h3>
-	<div class="bottom-three">
-		Es gibt insgesamt {{data|length}} mögliche Verteilungen:
-	</div>
-	{% for i in data %}
-		<div class="bottom-three">
-			<table style="width: 40em;">
-				<tr>
-					<th>Studi</th>
-					<th>Thema / Gruppe</th>
-				</tr>
-				{% for key, value in i.items() %}
-					{% if key != "total" %}
-						<tr>
-							<td>{{ key }}</td>
-							<td>{{ value }}</td>
-						</tr>
+<div class="mb-3">
+	Es gibt insgesamt {{data|length}} mögliche Verteilungen:
+</div>
+{% for i in data %}
+<div class="mb-5">
+	<h5>Variante {{loop.index}}</h5>
 
-				{% endif %}
-			{% endfor %}
-			</table>
-		</div>
-	{% endfor %}
+	<table class="table table-striped table-sm">
+		<tr>
+			<th style="width: 25%">Studi</th>
+			<th style="width: 60%">Thema / Gruppe</th>
+			<th style="width: 15%"># Wahl</th>
+		</tr>
+		{% for key, value in i.items() %}
+		{% if key != "total" %}
+		<tr>
+			<td>{{ key }}</td>
+			<td>{{ value }}</td>
+			<td>Erstwahl</td>
+		</tr>
+
+		{% endif %}
+		{% endfor %}
+	</table>
+</div>
+{% endfor %}
 {% endblock %}

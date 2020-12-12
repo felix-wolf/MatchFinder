@@ -23,22 +23,22 @@
 				{{ single_thema_form.hidden_tag() }}
 				Thema / Gruppe {{loop.index}}
 				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name</span>
+					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Name</span>
 					</div>
 					{{ single_thema_form.thema_name(value="", size=20, class="form-control", placeholder="required") }}
 				</div>
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="validationTooltipUsernamePrepend">Uhrzeit</span>
+					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Uhrzeit</span>
 					</div>
 					{{ single_thema_form.zeit(value="", size=20, class="form-control", placeholder="optional") }}
 				</div>
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="validationTooltipUsernamePrepend">Betreuer</span>
+					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Betreuer</span>
 					</div>
 					{{ single_thema_form.betreuer(value="", size=20, class="form-control", placeholder="optional") }}
 				</div>
