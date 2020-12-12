@@ -18,7 +18,7 @@ def get_all_themen():
 def get_all_thema_lists():
 	return thema_list_model.Thema_List.query.all()
 
-def get_all_verteilung():
+def get_all_verteilungen():
 	return verteilung_model.Verteilung.query.all()
 
 def get_all_passwords():

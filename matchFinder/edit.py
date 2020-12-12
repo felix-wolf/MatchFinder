@@ -1,6 +1,5 @@
 from flask import (
 	Blueprint, Flask, redirect, render_template, request, session, url_for)
-from . import db
 from . import database_helper
 import json
 

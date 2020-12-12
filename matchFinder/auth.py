@@ -1,7 +1,6 @@
 from flask import (
     Blueprint, Flask, flash, g, redirect, render_template, request, session, url_for, abort, current_app as app)
 import hashlib
-from . import db
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from . import limiter
