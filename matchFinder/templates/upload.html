@@ -8,86 +8,86 @@
 {% block header %}Verteilung erstellen{% endblock %}
 
 {% block body %}
-	<p>
-		Verteilung können auf mehreren Wegen erstellt werden.
-	</p>
-	<div class="mb-4">
-		<h5 class="mb-3">Bereits angegebene Präferenzen in .csv Format hochladen</h5>
-		<div class="form-row align-items-center">
-			<form method=post action="{{ url_for('results.present') }}" enctype=multipart/form-data>
-				<div class="mb-2">
-					<input class='button mb' type=file name=file accept=".txt,.csv" required>
+<p>
+	Verteilung können auf mehreren Wegen erstellt werden.
+</p>
+<div class="mb-4">
+	<h5 class="mb-3">Bereits angegebene Präferenzen in .csv Format hochladen</h5>
+	<div class="form-row align-items-center">
+		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
+			<div class="mb-2">
+				<input class='button mb' type=file name=file accept=".txt,.csv" required>
+			</div>
+			<input class="btn btn-primary" type=submit value=Erstellen>
+		</form>
+	</div>
+</div>
+
+
+
+{% if (themen|length > 0) and (teilnehmer|length > 0) and session['is_authenticated'] == True%}
+
+
+
+<div class="mb-3">
+	<h5 class="mb-3">Von bestehenden Daten</h5>
+	<div class="form-row align-items-center mb-3">
+		<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<span class="input-group-text w-100">Teilnehmerliste</span>
 				</div>
-				<input class="btn btn-primary" type=submit value=Erstellen>
-			</form>
-		</div>
+				<select class="custom-select" name="teilnehmer" id="teilnehmer">
+					{% for teilnehmer_list in teilnehmer %}
+					<option value="{{teilnehmer_list.name}}">{{teilnehmer_list.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<span class="input-group-text w-100">Gruppenliste</span>
+				</div>
+				<select class="custom-select" name="thema" id="thema">
+					{% for thema in themen %}
+					<option value="{{thema.name}}">{{thema.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<span class="input-group-text w-100"># / Gruppe</span>
+				</div>
+				<input type="number" id="number_themen" name="number_themen" class="form-control" value="1">
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<div class="input-group-text w-100">
+						<input type="checkbox" name="protected" id="protected" aria-label="Checkbox for following text input" checked>
+					</div>
+				</div>
+				<span class="form-control">geschützt</span>
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<div class="input-group-text w-100">
+						<input type="checkbox" name="editable" id="editable" aria-label="Checkbox for following text input">
+					</div>
+				</div>
+				<span class="form-control">editierbar</span>
+			</div>
+
+			<div class="input-group mb-2">
+				<input class="btn btn-primary" type="submit" value="Erstellen">
+			</div>
+
+		</form>
 	</div>
 
-
-
-	{% if (topics|length > 0) and (members|length > 0) and session['is_authenticated'] == True%}
-
-
-
-	<div class="mb-3">
-		<h5 class="mb-3">Von bestehenden Daten</h5>
-		<div class="form-row align-items-center mb-3">
-			<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
-						<span class="input-group-text w-100">Teilnehmerliste</span>
-					</div>
-					<select class="custom-select" name="teilnehmer" id="teilnehmer">
-						{% for member_list in members %}
-						<option value="{{member_list.name}}">{{member_list.name}}</option>
-						{% endfor %}
-					</select>
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
-						<span class="input-group-text w-100">Gruppenliste</span>
-					</div>
-					<select class="custom-select" name="thema" id="thema">
-						{% for topic in topics %}
-						<option value="{{topic.name}}">{{topic.name}}</option>
-						{% endfor %}
-					</select>
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
-						<span class="input-group-text w-100"># / Gruppe</span>
-					</div>
-					<input type="number" id="number_themen" name="number_themen" class="form-control" value="1">
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
-						<div class="input-group-text w-100">
-							<input type="checkbox" aria-label="Checkbox for following text input" checked>
-						</div>
-					</div>
-					<span class="form-control">geschützt</span>
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
-						<div class="input-group-text w-100">
-							<input type="checkbox" aria-label="Checkbox for following text input">
-						</div>
-					</div>
-					<span class="form-control">editierbar</span>
-				</div>
-
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Erstellen">
-				</div>
-
-			</form>
-		</div>
-
-	</div>
+</div>
 
 {% endif %}
 {% block scripts %}

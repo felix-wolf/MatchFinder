@@ -12,7 +12,10 @@ bp = Blueprint('preference', __name__, url_prefix='/preference')
 def set_preference(verteilung_id):
 	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
 	if verteilung != None:
-		return render_template('validate.html', id=verteilung_id)
+		if verteilung.protected:
+			return render_template('validate.html', id=verteilung_id)
+		else:
+			return redirect(url_for("preference.set_preference", verteilung_id=verteilung_id))
 	else:
 		return render_template('validate.html', id=verteilung_id, error="Keine gültige Verteilung!")
 

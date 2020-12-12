@@ -8,5 +8,5 @@ class Verteilung(db.Model):
 	teilnehmer_list_id = db.Column(db.Integer, db.ForeignKey("teilnehmer_lists.id"), nullable=False)
 	editable = db.Column(db.Boolean, default=False)
 	max_teilnehmer_per_thema = db.Column(db.Integer, default=1)
-	needs_authorization = db.Column(db.Boolean, default=True)
+	protected = db.Column(db.Boolean, default=True)
 	praeferenzen = db.relationship("Praeferenz", cascade="all,delete", backref="verteilung", lazy=True)

@@ -6,6 +6,6 @@ bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.route('/')
 def index():
-    members = database_helper.get_all_teilnehmer_lists()
-    topics = database_helper.get_all_thema_lists()
-    return render_template('upload.html', members=members, topics=topics)
+    teilnehmer = database_helper.get_all_teilnehmer_lists()
+    themen = database_helper.get_all_thema_lists()
+    return render_template('upload.html', teilnehmer=teilnehmer, themen=themen)

@@ -5,7 +5,7 @@
 {% block header %}Prioritäten setzen{% endblock %}
 
 {% block body %}
-<div id=app>
+<div id="app">
 	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
 	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
 		<div class="form-row align-items-center">

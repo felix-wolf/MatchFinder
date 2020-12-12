@@ -58,9 +58,6 @@ def create_app(test_config=None):
     from . import docs
     app.register_blueprint(docs.bp)
 
-    from . import results
-    app.register_blueprint(results.bp)
-
     from . import create
     app.register_blueprint(create.bp)
 

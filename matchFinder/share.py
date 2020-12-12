@@ -13,7 +13,15 @@ bp = Blueprint('share', __name__, url_prefix='/share')
 def index():
 	teilnehmer_list_name = request.form.get('teilnehmer', None)
 	thema_list_name = request.form.get('thema', None)
-	id = database_helper.save_verteilung(teilnehmer_list_name, thema_list_name)
+	protected = request.form.get('protected', False)
+	if protected == "on":
+		protected = True
+	editable = request.form.get('editable', False)
+	if editable == "on":
+		editable = True
+	id = database_helper.save_verteilung(
+		teilnehmer_list_name, thema_list_name,
+		protected, editable)
 	return redirect(url_for('share.show', verteilung_id=id))
 
 @bp.route('/show/<int:verteilung_id>')

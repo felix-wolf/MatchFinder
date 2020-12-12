@@ -80,7 +80,10 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 		db.session.add(local_member)
 		memberlist.append(local_member)
 
-	list = teilnehmer_list_model.Teilnehmer_List(name = list_name, teilnehmer = memberlist)
+	list = teilnehmer_list_model.Teilnehmer_List(
+		name = list_name,
+		teilnehmer = memberlist
+		)
 	db.session.add(list)
 	db.session.commit()
 
@@ -107,19 +110,16 @@ def save_themen(themen, list_name):
 
 	return len(themen)
 
-def save_verteilung(teilnehmer_list_name, thema_list_name):
-	teilnehmer_list_entries = get_all_teilnehmer_lists()
-	thema_list_entries = get_all_thema_lists()
-	for teil_list in teilnehmer_list_entries:
-		if teil_list.name == teilnehmer_list_name:
-			matching_teilnehmer_list = teil_list
-	for thema_list in thema_list_entries:
-		if thema_list.name == thema_list_name:
-			matching_thema_list = thema_list
+#TODO avoid bug that would occur when when two lists have the same name
+def save_verteilung(teiln_list_name, thema_list_name, protected, editable):
+	teiln_list = teilnehmer_list_model.Teilnehmer_List.query.filter_by(name=teiln_list_name).first()
+	thema_list = thema_list_model.Thema_List.query.filter_by(name=thema_list_name).first()
 
 	local_verteilung = verteilung_model.Verteilung(
-		thema_list_id = matching_thema_list.id,
-		teilnehmer_list_id = matching_teilnehmer_list.id
+		thema_list_id = thema_list.id,
+		teilnehmer_list_id = teiln_list.id,
+		protected = protected,
+		editable = editable
 	)
 	db.session.add(local_verteilung)
 	db.session.commit()

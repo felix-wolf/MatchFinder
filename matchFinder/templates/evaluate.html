@@ -12,24 +12,83 @@
 	{{error}}
 </div>
 {% endif %}
+<div id="app" class="mb-5">
+
+{% if verteilungen %}
 
 <h5>Wähle eine Verteilung, die du auswerten willst:</h5>
-<div class="mb-5">
+
 	<div class="form-row align-items-center mb-3">
 		<form method=post action="{{ url_for('preference.validate') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
-					<span class="input-group-text" id="validationTooltipUsernamePrepend">Matrikelnnummer</span>
+					<span class="input-group-text">Gruppen der Verteilung</span>
 				</div>
-				<input type="text" id="matr_nr" name="matr_nr" class="form-control" placeholder="Matrikelnnummer" required>
-				<input type="hidden" id="id" name="id" value="{{id}}">
+				<select @change="onChange()" class="custom-select" name="teilnehmer" id="teilnehmer">
+					{% for verteilung in verteilungen %}
+					<option value="{{verteilung.id}}">{{verteilung.thema_list.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			{% for verteilung in verteilungen %}
+
+			<input type="hidden" name="" id="total_verteilung{{loop.index}}" value="{{verteilung.teilnehmer.teilnehmer | length}}">
+			<input type="hidden" name="" id="current_verteilung{{loop.index}}" value="{{verteilung.praeferenzen | length}}">
+
+			{% endfor %}
+
+			<div v-if="current / total < 0.8"></div>
+			<div class="alert alert-danger" role="alert">
+				Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
 			</div>
 			<div class="input-group mb-2">
-				<input class="btn btn-primary" type="submit" value="Anmelden">
+				<input class="btn btn-primary" type="submit" value="Auswerten">
 			</div>
 		</form>
 	</div>
 </div>
-<p>Von X Teilnehmer haben Y ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?</p>
 
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+	Es existieren keine Verteilungen. Leg schnell eine an:
+	<a class="btn btn-primary mx-2" href="/upload">Anlegen</a>
+</div>
+<input type="hidden" name="" id="teilnehmer" value="None">
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
+<script type="text/javascript">
+
+
+	var app = new Vue({
+		el: "#app",
+		delimiters: ['${', '}'],
+		data: {
+			current: 0,
+			total: 0
+		},
+		methods: {
+			update() {
+				const selectedValue = document.getElementById("teilnehmer").value
+				if (selectedValue != "None") {
+					this.total = document.getElementById("total_verteilung" + selectedValue).value
+					this.current = document.getElementById("current_verteilung" + selectedValue).value
+				}
+			},
+			onChange() {
+				this.update()
+			}
+		},
+		beforeMount() {
+			this.update()
+		}
+	})
+
+</script>
 {% endblock %}
