@@ -3,7 +3,7 @@
 {% block head %}
 {{super()}}
 <style> tr.hide-table-padding td {
-  padding: 0;
+	padding: 0;
 }
 </style>
 
@@ -33,10 +33,7 @@
 				<td>{{teilnehmer_list.id}}</td>
 				<td>{{teilnehmer_list.name}}</td>
 				<td>
-					<form method=post action="{{ url_for('edit.delete') }}" enctype=multipart/form-data>
-						<input id="delete" name="delete" class="btn btn-sm btn-danger" type="submit" value="Löschen">
-						<input type="hidden" id="id" name="id" value='{"type":"teilnehmer","id":"{{teilnehmer_list.id}}"}'>
-					</form>
+					<a class="btn btn-sm btn-danger" href="{{ url_for('edit.delete', id=teilnehmer_list.id, type='teilnehmer') }}">Löschen</a>
 				</td>
 			</tr>
 			<tr class="hide-table-padding">
@@ -93,10 +90,7 @@
 				<td>{{thema_list.id}}</td>
 				<td>{{thema_list.name}}</td>
 				<td>
-					<form method=post action="{{ url_for('edit.delete') }}" enctype=multipart/form-data>
-						<input id="delete" name="delete" class="btn btn-sm btn-danger" type="submit" value="Löschen">
-						<input type="hidden" id="id" name="id" value='{"type":"thema","id":"{{thema_list.id}}"}'>
-					</form>
+					<a class="btn btn-sm btn-danger" href="{{ url_for('edit.delete', id=thema_list.id, type='thema') }}">Löschen</a>
 				</td>
 			</tr>
 			<tr class="hide-table-padding">
@@ -166,11 +160,19 @@
 				<td>{{verteilung.thema_list.name}}</td>
 				<td>{{verteilung.praeferenzen | length}} / {{verteilung.teilnehmer.teilnehmer | length}}</td>
 				<td>
-					<form method=post action="{{ url_for('edit.delete') }}" enctype=multipart/form-data>
-						<input id="share" name="share" class="btn btn-sm btn-primary" type="submit" value="Teilen">
-						<input id="delete" name="delete" class="btn btn-sm btn-danger" type="submit" value="Löschen">
-						<input type="hidden" id="id" name="id" value='{"type":"verteilung","id":"{{verteilung.id}}"}'>
-					</form>
+					<div class="dropdown">
+						<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Aktionen
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+							<a class="dropdown-item" href="{{ url_for('edit.action', verteilung_id=verteilung.id, action='teilen') }}">Teilen</a>
+
+							<a class="dropdown-item" href="{{ url_for('edit.action', verteilung_id=verteilung.id, action='auswerten') }}">Auswerten</a>
+
+							<a class="dropdown-item" href="{{ url_for('edit.action', verteilung_id=verteilung.id, action='löschen') }}">Löschen</a>
+						</div>
+					</div>
 				</td>
 			</tr>
 
@@ -179,6 +181,7 @@
 		</tbody>
 	</table>
 </div>
+
 
 {% endif %}
 

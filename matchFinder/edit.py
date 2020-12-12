@@ -31,22 +31,28 @@ def index():
 		verteilungen=verteilungen_all
 		)
 
-@bp.route('/delete', methods=["POST"])
-def delete():
+@bp.route('/delete/<int:id>/<type>', methods=["GET"])
+def delete(id, type):
 
-	id = request.form.get('id', None)
-	obj = json.loads(id)
+	if type == "teilnehmer":
+		database_helper.delete_teilnehmer_list_by_id(id)
 
-	if request.form.get('delete', None) == 'Löschen':
-		if obj["type"] == "teilnehmer":
-			database_helper.delete_teilnehmer_list_by_id(obj["id"])
+	if type == "thema":
+		database_helper.delete_thema_list_by_id(ids)
 
-		if obj["type"] == "thema":
-			database_helper.delete_thema_list_by_id(obj["id"])
-		if obj["type"] == "verteilung":
-			database_helper.delete_verteilung_by_id(obj["id"])
+	return redirect(url_for("edit.index"))
 
-	elif request.form.get('share', None) == "Teilen":
-		return redirect(url_for('share.show', verteilung_id=obj["id"]))
+@bp.route('/action/<int:verteilung_id>/<action>', methods=["GET"])
+def action(verteilung_id, action):
+
+
+	if action == 'löschen':
+		database_helper.delete_verteilung_by_id(verteilung_id)
+
+	if action == 'teilen':
+		return redirect(url_for('share.show', verteilung_id=verteilung_id))
+
+	if action == 'auswerten':
+		print("DO STUFF")
 
 	return redirect(url_for("edit.index"))
