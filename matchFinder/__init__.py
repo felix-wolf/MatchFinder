@@ -76,6 +76,9 @@ def create_app(test_config=None):
     from . import edit
     app.register_blueprint(edit.bp)
 
+    from . import evaluate
+    app.register_blueprint(evaluate.bp)
+
     db.init_app(app)
 
     from . import txt_parser
