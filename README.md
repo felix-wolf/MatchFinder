@@ -151,7 +151,7 @@ flask run
 - hash statt id für prios angeben (Hash aus id + Salt)
 - immer max 10 Stimmen
 - Priorität: 1-10 (lower is better)
-- Themen, die keine Prio haben, sind alle gleich gerichtet
+- Themen, die keine Prio haben, sind alle gleich gewichtet
 
 Gruppe Schema
 - Name (required)
