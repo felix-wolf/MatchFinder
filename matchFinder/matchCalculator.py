@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import random
 import copy
+from operator import itemgetter
 
 def calculateFromCSV(file):
     # csv datei einlesen
@@ -15,18 +16,18 @@ def calculateFromCSV(file):
     # reduced_matrix = full_matrix.iloc[:,1:]
     # matrix zu 2d liste konvertieren
     # create a list of all topcs
-    topics = full_matrix.columns.tolist()
-    topics.pop(0)
+    themen = full_matrix.columns.tolist()
+    themen.pop(0)
     # convert matrix to list
     full_matrix = np.array(full_matrix.values.tolist()).tolist()
-    print(topics)
-    return calculateMatchFromList(full_matrix, topics)
+    print(themen)
+    return calculateMatchFromList(full_matrix, themen)
 
 def calculate_from_db(teilnehmer_pref, themen):
     return calculateMatchFromList(teilnehmer_pref, themen)
 
 
-def calculateMatchFromList(full_matrix, topics):
+def calculateMatchFromList(full_matrix, themen):
     assignment = []
     # matrix mischen (um jede Kombination auszuprobieren)
     for x in range(len(full_matrix)):
@@ -46,16 +47,26 @@ def calculateMatchFromList(full_matrix, topics):
         #print(indexes)
         #print_matrix(reduced_matrix, msg='Lowest cost through this matrix:')
         total = 0
+        studis = []
         for row, column in indexes:
             value = reduced_matrix[row][column]
             total += value
+            studi = []
             #print(f'({row}, {column}) -> {value}')
             #print(full_matrix[row][column])
-            local_assignment[str(full_matrix[row][0])] = topics[column]
-            local_assignment['total'] = total
+            studi.append(str(full_matrix[row][0]))
+            studi.append(themen[column])
+            studi.append(value)
+            studis.append(studi)
+            #local_assignment["studi"] = str(full_matrix[row][0])
+            #local_assignment["thema"] = themen[column]
+            #local_assignment[str(full_matrix[row][0])] = themen[column]
+        studis = sorted(studis, key=itemgetter(0))
+        local_assignment["studis"] = studis
+        local_assignment['total'] = total
         #print(f'total cost: {total}, lowest possible cost: {len(reduced_matrix)}')
         #print(local_assignment)
-        assignment.append(dict(sorted(local_assignment.items())))
+        assignment.append(local_assignment)
 
     # remove all duplicates from the list
     for firstassignment in assignment:

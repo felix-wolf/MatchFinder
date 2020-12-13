@@ -39,6 +39,9 @@
 			value="{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}">
 			<input type="hidden" name="" id="auslastung{{loop.index}}"
 			value="{{verteilung.teilnehmer.teilnehmer|length}}">
+
+			{% endfor %}
+
 			<div v-if="(current / total < 0.8)">
 				<div class="alert alert-danger" role="alert">
 					Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
@@ -47,7 +50,7 @@
 
 			<div v-if="total <= 0">
 				<div class="alert alert-danger" role="alert">
-					Kein Teilnehmer hat seine Präferenzen für diese Verteilung angegeben. Sie kann nicht ausgewertet werden.
+					Kein Teilnehmer hat seine Präferenzen für diese Verteilung angegeben.<br>Da dies eine freue Verteilung ist, existiert keine Teilnehmerliste. Sie kann nicht ausgewertet werden.
 				</div>
 				<div class="input-group mb-2">
 					<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
@@ -69,7 +72,7 @@
 				</div>
 			</div>
 
-			{% endfor %}
+			
 		</form>
 	</div>
 </div>

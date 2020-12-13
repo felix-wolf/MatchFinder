@@ -6,9 +6,11 @@
 
 {% block body %}
 <div class="mb-3">
-	Es gibt insgesamt {{data|length}} mögliche Verteilungen:
+	Es gibt insgesamt {{data|length}} mögliche Verteilungen. Die Varianten sind nach ihrem Median sortiert.
 </div>
+
 {% for i in data %}
+
 <div class="mb-5">
 	<h5>Variante {{loop.index}}</h5>
 
@@ -18,17 +20,31 @@
 			<th style="width: 60%">Thema / Gruppe</th>
 			<th style="width: 15%"># Wahl</th>
 		</tr>
-		{% for key, value in i.items() %}
-		{% if key != "total" %}
+
+		{% for item in i.studis %}
+
 		<tr>
-			<td>{{ key }}</td>
-			<td>{{ value }}</td>
-			<td>Erstwahl</td>
+			<td>{{ item[0] }}</td>
+			<td>{{ item[1] }}</td>
+			<td>
+				{% if item[2] == 1000 %}
+				k.A.
+				{% else %}
+				{{ item[2] }}
+				{% endif %}
+			</td>
 		</tr>
 
-		{% endif %}
 		{% endfor %}
+
 	</table>
+	<div class="form-row align-items-center">
+		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
+			<input class="btn btn-primary" type=submit value=Export>
+		</form>
+	</div>
 </div>
+
 {% endfor %}
+
 {% endblock %}
