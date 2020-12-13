@@ -43,14 +43,16 @@ def create_app(test_config=None):
         else:
             session['ip_blocked'] = False
 
-    # a simple page that says hello
-    @app.route('/')
-    def home():
-        return render_template('home.html')
-
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html')
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('home.index'))
+
+    from . import home
+    app.register_blueprint(home.bp)
 
     from . import upload
     app.register_blueprint(upload.bp)
@@ -84,5 +86,6 @@ def create_app(test_config=None):
     return app
 
 with create_app().app_context():
+    from . import database_helper
     database_helper.init_db()
 

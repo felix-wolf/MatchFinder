@@ -24,10 +24,12 @@ def validate():
 	for pw in passwords:
 		if password_helper.check_password(entered_pw, pw.password):
 			session['is_authenticated'] = True
-			return render_template('home.html', is_valid=True)
+			return redirect(url_for('home.index_with_message',
+				message="Authentifizierung erfolgreich!"))
 	return render_template('auth.html', is_valid=False)
 
 @bp.route('/logout')
 def logout():
 	session.clear()
-	return render_template('home.html')
+	return redirect(url_for('home.index_with_message',
+		message="Du wurdest erfolgreich ausgeloggt!"))
