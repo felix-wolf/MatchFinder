@@ -84,8 +84,5 @@ def create_app(test_config=None):
     return app
 
 with create_app().app_context():
-    #db.drop_all()
-    db.create_all()
+    database_helper.init_db()
 
-    from . import password_helper
-    #password_helper.create_passwords()

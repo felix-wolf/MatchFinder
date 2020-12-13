@@ -7,6 +7,13 @@ from matchFinder.models import verteilung_model
 from matchFinder.models import password_model
 from matchFinder.models import praeferenz_model
 
+def init_db():
+	#db.drop_all()
+	#db.create_all()
+
+	from . import password_helper
+	#password_helper.create_passwords()
+
 def get_all_teilnehmer():
 	return teilnehmer_model.Teilnehmer.query.all()
 
@@ -66,6 +73,10 @@ def insert_password(password):
 
 def insert_praeferenz(praeferenz):
 	db.session.add(praeferenz)
+	db.session.commit()
+
+def insert_teilnehmer(teilnehmer):
+	db.session.add(teilnehmer)
 	db.session.commit()
 
 
