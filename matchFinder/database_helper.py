@@ -112,7 +112,14 @@ def save_themen(themen, list_name):
 
 #TODO avoid bug that would occur when when two lists have the same name
 def save_verteilung(teiln_list_name, thema_list_name, protected, editable):
-	teiln_list = teilnehmer_list_model.Teilnehmer_List.query.filter_by(name=teiln_list_name).first()
+	if protected:
+		teiln_list = teilnehmer_list_model.Teilnehmer_List.query.filter_by(name=teiln_list_name).first()
+	else:
+		teiln_list = teilnehmer_list_model.Teilnehmer_List(
+			name="Teilnehmer einer offenen Verteilung mit Themenname '"
+			+ thema_list_name + "'")
+		db.session.add(teiln_list)
+
 	thema_list = thema_list_model.Thema_List.query.filter_by(name=thema_list_name).first()
 
 	local_verteilung = verteilung_model.Verteilung(

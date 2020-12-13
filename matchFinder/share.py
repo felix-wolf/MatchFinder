@@ -14,11 +14,10 @@ def index():
 	teilnehmer_list_name = request.form.get('teilnehmer', None)
 	thema_list_name = request.form.get('thema', None)
 	protected = request.form.get('protected', False)
-	if protected == "on":
-		protected = True
 	editable = request.form.get('editable', False)
-	if editable == "on":
-		editable = True
+	protected = True if protected == "on" else False
+	editable = True if editable == "on" else False
+
 	id = database_helper.save_verteilung(
 		teilnehmer_list_name, thema_list_name,
 		protected, editable)
