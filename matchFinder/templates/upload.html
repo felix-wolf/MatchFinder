@@ -23,52 +23,9 @@
 	</div>
 </div>
 
-{% if (themen|length > 0) and (teilnehmer|length == 0) and session['is_authenticated'] == True %}
-
-<div class="mb-3">
-	<h5 class="mb-3">Von bestehenden Daten</h5>
-	<div class="form-row align-items-center mb-3">
-		<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
-
-			<div class="input-group mb-2">
-				<div class="input-group-prepend w-50">
-					<span class="input-group-text w-100">Gruppenliste</span>
-				</div>
-				<select class="custom-select" name="thema" id="thema">
-					{% for thema in themen %}
-					<option value="{{thema.name}}">{{thema.name}}</option>
-					{% endfor %}
-				</select>
-			</div>
-
-			<div class="input-group mb-2">
-				<div class="input-group-prepend w-50">
-					<span class="input-group-text w-100"># / Gruppe</span>
-				</div>
-				<input type="number" id="number_themen" name="number_themen" class="form-control" value="1">
-			</div>
-
-			<div class="input-group mb-2">
-				<div class="input-group-prepend w-50">
-					<div class="input-group-text w-100">
-						<input type="checkbox" name="protected" id="protected" v-model="protected"aria-label="Checkbox for following text input" disabled>
-					</div>
-				</div>
-				<span class="form-control">geschützt</span>
-			</div>
-
-			<div class="input-group mb-2">
-				<input class="btn btn-primary" type="submit" value="Erstellen">
-			</div>
-
-		</form>
-	</div>
-</div>
-
-{% endif %}
-
-{% if (themen|length > 0) and (teilnehmer|length > 0) and session['is_authenticated'] == True %}
 <div id="app">
+	{% if (themen|length > 0) and (teilnehmer|length == 0) and session['is_authenticated'] == True %}
+
 	<div class="mb-3">
 		<h5 class="mb-3">Von bestehenden Daten</h5>
 		<div class="form-row align-items-center mb-3">
@@ -89,14 +46,57 @@
 					<div class="input-group-prepend w-50">
 						<span class="input-group-text w-100"># / Gruppe</span>
 					</div>
-					<input type="number" id="number_themen" name="number_themen" class="form-control" value="1">
+					<input type="number" @change="onChange($event)" v-model="max_per" id="number_themen" name="number_themen" class="form-control" value="1">
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-50">
+						<div class="input-group-text w-100">
+							<input type="checkbox" name="protected" id="protected" aria-label="Checkbox for following text input" disabled>
+						</div>
+					</div>
+					<span class="form-control">geschützt</span>
+				</div>
+
+				<div class="input-group mb-2">
+					<input class="btn btn-primary" type="submit" value="Erstellen">
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+	{% endif %}
+	{% if (themen|length > 0) and (teilnehmer|length > 0) and session['is_authenticated'] == True %}
+
+	<div class="mb-3">
+		<h5 class="mb-3">Von bestehenden Daten</h5>
+		<div class="form-row align-items-center mb-3">
+			<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-50">
+						<span class="input-group-text w-100">Gruppenliste</span>
+					</div>
+					<select class="custom-select" name="thema" id="thema">
+						{% for thema in themen %}
+						<option value="{{thema.name}}">{{thema.name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-50">
+						<span class="input-group-text w-100"># / Gruppe</span>
+					</div>
+					<input type="number" v-model="max_per" id="number_themen" name="number_themen" class="form-control" value="1">
 				</div>
 
 
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-50">
 						<div class="input-group-text w-100">
-							<input type="checkbox" name="protected" id="protected" v-model="protected"aria-label="Checkbox for following text input" checked>
+							<input type="checkbox" name="protected" id="protected" v-model="protected" aria-label="Checkbox for following text input" checked>
 						</div>
 					</div>
 					<span class="form-control">geschützt</span>
@@ -131,22 +131,15 @@
 			</form>
 		</div>
 	</div>
+
+
+	{% endif %}
 </div>
-
-{% endif %}
-
 {% endblock %}
 
 {% block scripts %}
-<script>
-	$('#inputGroupFile01').on('change',function() {
-		//get the file name
-		var fileName = $(this).val();
-		//replace the "Choose a file" label
-		$(this).next('.custom-file-label').html(fileName);
-	})
-</script>
-{% if (themen|length > 0) and (teilnehmer|length > 0) and session['is_authenticated'] == True%}
+
+{% if (themen|length > 0) and (teilnehmer|length >= 0) and session['is_authenticated'] == True%}
 <script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
 <script type="text/javascript">
 
@@ -156,6 +149,14 @@
 		delimiters: ['${', '}'],
 		data: {
 			protected: true,
+			max_per: 1
+		},
+		methods: {
+			onChange(event) {
+				if (event.target.value <= 0) {
+					this.max_per = 1
+				}
+			}
 		}
 	});
 

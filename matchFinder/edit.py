@@ -38,7 +38,7 @@ def delete(id, type):
 		database_helper.delete_teilnehmer_list_by_id(id)
 
 	if type == "thema":
-		database_helper.delete_thema_list_by_id(ids)
+		database_helper.delete_thema_list_by_id(id)
 
 	return redirect(url_for("edit.index"))
 

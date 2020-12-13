@@ -79,6 +79,9 @@ def insert_teilnehmer(teilnehmer):
 	db.session.add(teilnehmer)
 	db.session.commit()
 
+def get_praeferenz_by_teilnehmer_id(teilnehmer_id):
+	return praeferenz_model.Praeferenz.query.filter_by(teilnehmer_id=teilnehmer_id).first()
+
 
 def save_teilnehmer(teilnehmer_liste, list_name):
 	memberlist = []
@@ -127,7 +130,7 @@ def save_verteilung(teiln_list_name, thema_list_name, protected, editable, numbe
 		teiln_list = teilnehmer_list_model.Teilnehmer_List.query.filter_by(name=teiln_list_name).first()
 	else:
 		teiln_list = teilnehmer_list_model.Teilnehmer_List(
-			name="Teilnehmer einer offenen Verteilung mit Themenname '"
+			name="Teilnehmer der offenen Verteilung mit Themenname '"
 			+ thema_list_name + "'",
 			is_for_unprotected=True)
 		db.session.add(teiln_list)

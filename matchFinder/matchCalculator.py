@@ -9,8 +9,9 @@ def calculateFromCSV(file):
     df = pd.read_csv(file)
     # strings mit zahlen ersetzen
     full_matrix = df.replace(
-        [np.NAN, "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
-        [1000, 6, 5, 4, 3, 2, 1])
+        [np.NAN, "Zehntwahl", "Neuntwahl", "Achtwahl", "Siebtwahl",
+        "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
+        [1000, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
     # reduced_matrix = full_matrix.iloc[:,1:]
     # matrix zu 2d liste konvertieren
     # create a list of all topcs
@@ -18,10 +19,11 @@ def calculateFromCSV(file):
     topics.pop(0)
     # convert matrix to list
     full_matrix = np.array(full_matrix.values.tolist()).tolist()
+    print(topics)
     return calculateMatchFromList(full_matrix, topics)
 
-def calculateFromDatabase():
-    print("test")
+def calculate_from_db(teilnehmer_pref, themen):
+    return calculateMatchFromList(teilnehmer_pref, themen)
 
 
 def calculateMatchFromList(full_matrix, topics):

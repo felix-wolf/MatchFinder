@@ -41,7 +41,7 @@ def validate():
 	else:
 		first_name = request.form.get('first_name', None)
 		last_name = request.form.get('last_name', None)
-		last_name = "k.A." if last_name == "" else last_name
+		last_name = "" if last_name == "" else last_name
 		verteilung = database_helper.get_verteilung_by_id(verteilung_id)
 		teilnehmer = teilnehmer_model.Teilnehmer(first_name=first_name, matr_nr=0,
 			last_name=last_name, list_id=verteilung.teilnehmer_list_id)
@@ -73,7 +73,8 @@ def save():
 		verteilung_id=verteilung_id,
 		praeferenzen=preference_string)
 	database_helper.insert_praeferenz(praeferenz)
-	return render_template('home.html', preference_saved=True)
+	return redirect(url_for('home.index_with_message',
+		message="Deine Präferenzen wurden gespeichert!"))
 
 def check_user_for_protected(matr_nr, verteilung_id):
 	if matr_nr != None and matr_nr.isdigit():

@@ -14,17 +14,17 @@
 {% endif %}
 <div id="app" class="mb-5">
 
-{% if verteilungen %}
+	{% if verteilungen %}
 
-<h5>Wähle eine Verteilung, die du auswerten willst:</h5>
+	<h5>Wähle eine Verteilung, die du auswerten willst:</h5>
 
 	<div class="form-row align-items-center mb-3">
-		<form method=post action="{{ url_for('preference.validate') }}" enctype="multipart/form-data">
+		<form method=post action="{{ url_for('evaluate.from_db') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
 					<span class="input-group-text">Gruppen der Verteilung</span>
 				</div>
-				<select @change="onChange()" class="custom-select" name="teilnehmer" id="teilnehmer">
+				<select @change="onChange()" class="custom-select" name="verteilung" id="verteilung">
 					{% for verteilung in verteilungen %}
 					<option value="{{verteilung.id}}">{{verteilung.thema_list.name}}</option>
 					{% endfor %}
@@ -35,16 +35,41 @@
 
 			<input type="hidden" name="" id="total_verteilung{{loop.index}}" value="{{verteilung.teilnehmer.teilnehmer | length}}">
 			<input type="hidden" name="" id="current_verteilung{{loop.index}}" value="{{verteilung.praeferenzen | length}}">
+			<input type="hidden" name="" id="obergrenze{{loop.index}}"
+			value="{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}">
+			<input type="hidden" name="" id="auslastung{{loop.index}}"
+			value="{{verteilung.teilnehmer.teilnehmer|length}}">
+			<div v-if="(current / total < 0.8)">
+				<div class="alert alert-danger" role="alert">
+					Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
+				</div>
+			</div>
+
+			<div v-if="total <= 0">
+				<div class="alert alert-danger" role="alert">
+					Kein Teilnehmer hat seine Präferenzen für diese Verteilung angegeben. Sie kann nicht ausgewertet werden.
+				</div>
+				<div class="input-group mb-2">
+					<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
+				</div>
+			</div>
+
+			<div v-if="! within_limit">
+				<div class="alert alert-danger" role="alert">
+					Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt.<br>Die Verteilung kann nicht ausgewertet werden.
+				</div>
+				<div class="input-group mb-2">
+					<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
+				</div>
+			</div>
+
+			<div v-if="total > 0 && within_limit">
+				<div class="input-group mb-2">
+					<input class="btn btn-primary" type="submit" value="Auswerten">
+				</div>
+			</div>
 
 			{% endfor %}
-			<div v-if="(current / total < 0.8)">
-			<div class="alert alert-danger" role="alert">
-				Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
-			</div>
-			</div>
-			<div class="input-group mb-2">
-				<input class="btn btn-primary" type="submit" value="Auswerten">
-			</div>
 		</form>
 	</div>
 </div>
@@ -71,14 +96,18 @@
 		delimiters: ['${', '}'],
 		data: {
 			current: 0,
-			total: 0
+			total: 0,
+			within_limit: true
 		},
 		methods: {
 			update() {
-				const selectedValue = document.getElementById("teilnehmer").value
+				const selectedValue = document.getElementById("verteilung").value
 				if (selectedValue != "None") {
 					this.total = document.getElementById("total_verteilung" + selectedValue).value
 					this.current = document.getElementById("current_verteilung" + selectedValue).value
+					const obergrenze = document.getElementById("obergrenze" + selectedValue).value
+					const auslastung = document.getElementById("auslastung" + selectedValue).value
+					this.within_limit = auslastung <= obergrenze
 				}
 			},
 			onChange() {

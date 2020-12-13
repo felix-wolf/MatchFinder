@@ -16,7 +16,8 @@ def index():
 	protected = request.form.get('protected', False)
 	editable = request.form.get('editable', False)
 	max_per_thema = request.form.get('number_themen', 1)
-	print(max_per_thema)
+	if int(max_per_thema) <= 0:
+		return redirect(url_for('upload.index'))
 	protected = True if protected == "on" else False
 	editable = True if editable == "on" else False
 

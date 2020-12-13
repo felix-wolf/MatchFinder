@@ -53,21 +53,48 @@
 	</form>
 </div>
 <h6>Manuell erstellen:</h6>
-<div class="form-row align-items-center mb-3">
-	<form method=post action="{{ url_for('create.themen_manually') }}" enctype=multipart/form-data>
-		<div class="input-group mb-2">
-			<div class="input-group-prepend">
-				<span class="input-group-text" id="validationTooltipUsernamePrepend">Anzahl der Themen / Gruppen</span>
+<div id="app">
+	<div class="form-row align-items-center mb-3">
+		<form method=post action="{{ url_for('create.themen_manually') }}" enctype=multipart/form-data>
+			<div class="input-group mb-2">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Anzahl der Themen / Gruppen</span>
+				</div>
+				<input type="number" v-model="max_per" @change="onChange($event)" id="number_themen" name="number_themen" class="form-control" value="1">
 			</div>
-			<input type="number" id="number_themen" name="number_themen" class="form-control" value="1">
-		</div>
-		<div class="input-group mb-2">
-			<input class="btn btn-primary" type=submit value="Zur Erstellung">
-		</div>
-	</form>
+			<div class="input-group mb-2">
+				<input class="btn btn-primary" type=submit value="Zur Erstellung">
+			</div>
+		</form>
+	</div>
 </div>
 
 
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
+<script type="text/javascript">
+
+
+	var app = new Vue({
+		el: "#app",
+		delimiters: ['${', '}'],
+		data: {
+			max_per: 1
+		},
+		methods: {
+			onChange(event) {
+				if (event.target.value <= 0) {
+					this.max_per = 1
+				}
+			}
+		}
+	});
+
+</script>
 
 
 {% endblock %}
+

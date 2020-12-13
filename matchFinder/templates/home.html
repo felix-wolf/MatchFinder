@@ -6,18 +6,13 @@
 
 {% block body %}
 
-{% if is_valid == True %}
+{% if message %}
 
 	<div class="alert alert-success" role="alert">
-		Authentifizierung erfolgreich!
+		{{message}}
 	</div>
 {% endif %}
 
-{% if preference_saved == True %}
-
-	<div class="alert alert-success" role="alert">
-		Deine Präferenzen wurden gespeichert!
-	</div>
-{% endif %}
+HIER SPANNENDE INFORMATIONEN EINFÜGEN
 
 {% endblock %}
