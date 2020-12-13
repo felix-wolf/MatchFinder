@@ -2,11 +2,10 @@
 Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Präferenzen ein faires Match findet.
 
 ## TODO
-- Verteilung brauchen keine Verifizierung durch Matr.nr
-- angeben, wie viele pro thema erlaubt sind
-- Fix bug bei dem die Aktionen der Verteilungen Clippen, wenn nur ein Eintrag existiert
+- Fix bug bei dem die Aktionen der Verteilungen clippen, wenn nur ein Eintrag existiert
 - Vuejs in Prod mode
 - check, ob verteilung auswertbar ist (Max_teilnehmer pro thema *  Themen > teilnehmer )
+- Verteilung_id hashen
 
 
 ### Inhaltsverzeichnis
