@@ -7,5 +7,5 @@ class Teilnehmer(db.Model):
 	list_id = db.Column(db.Integer, db.ForeignKey("teilnehmer_lists.id"), nullable=False)
 	praeferenzen = db.relationship("Praeferenz", cascade="all,delete", backref="teilnehmer", lazy=True)
 	first_name = db.Column(db.String(80), nullable=False)
-	last_name = db.Column(db.String(80), nullable=False)
-	matr_nr = db.Column(db.Integer, nullable=False)
+	last_name = db.Column(db.String(80))
+	matr_nr = db.Column(db.Integer)

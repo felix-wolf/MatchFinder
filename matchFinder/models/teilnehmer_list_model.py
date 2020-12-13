@@ -7,3 +7,4 @@ class Teilnehmer_List(db.Model):
 	name = db.Column(db.String(80), nullable=False)
 	teilnehmer = db.relationship("Teilnehmer", cascade="all,delete", backref="list", lazy=True)
 	verteilungen = db.relationship("Verteilung", cascade="all,delete", backref="teilnehmer", lazy=True)
+	is_for_unprotected = db.Column(db.Boolean, default=False)

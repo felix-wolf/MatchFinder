@@ -11,7 +11,10 @@
 <div class="alert alert-danger" role="alert">
 	{{error}}
 </div>
+
 {% endif %}
+
+{% if protected %}
 
 <h5>Hallo! Um deine Prioritäten setzen zu können, melde dich bitte mit deiner Matrikelnummer an:</h5>
 <div class="mb-5">
@@ -22,7 +25,7 @@
 					<span class="input-group-text" id="validationTooltipUsernamePrepend">Matrikelnnummer</span>
 				</div>
 				<input type="text" id="matr_nr" name="matr_nr" class="form-control" placeholder="Matrikelnnummer" required>
-				<input type="hidden" id="id" name="id" value="{{id}}">
+				<input type="hidden" id="data" name="data" value='{"id":"{{id}}", "protected": "{{protected}}"}'>
 			</div>
 			<div class="input-group mb-2">
 				<input class="btn btn-primary" type="submit" value="Anmelden">
@@ -30,5 +33,35 @@
 		</form>
 	</div>
 </div>
+
+{% else %}
+
+<h5>Hallo! Um deine Prioritäten setzen zu können, trage bitte deinen Namen ein:</h5>
+<div class="mb-5">
+	<div class="form-row align-items-center mb-3">
+		<form method=post action="{{ url_for('preference.validate') }}" enctype="multipart/form-data">
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Vorname</span>
+				</div>
+				<input type="text" id="first_name" name="first_name" class="form-control" placeholder="required" required>
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-50">
+					<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Nachname</span>
+				</div>
+				<input type="text" id="last_name" name="last_name" class="form-control" placeholder="optional">
+			</div>
+
+			<div class="input-group mb-2">
+				<input type="hidden" id="data" name="data" value='{"id":"{{id}}", "protected": "{{protected}}"}'>
+				<input class="btn btn-primary" type="submit" value="Anmelden">
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endif %}
 
 {% endblock %}

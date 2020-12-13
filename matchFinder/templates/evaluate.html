@@ -37,10 +37,10 @@
 			<input type="hidden" name="" id="current_verteilung{{loop.index}}" value="{{verteilung.praeferenzen | length}}">
 
 			{% endfor %}
-
-			<div v-if="current / total < 0.8"></div>
+			<div v-if="(current / total < 0.8)">
 			<div class="alert alert-danger" role="alert">
 				Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
+			</div>
 			</div>
 			<div class="input-group mb-2">
 				<input class="btn btn-primary" type="submit" value="Auswerten">

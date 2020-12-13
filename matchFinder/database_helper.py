@@ -122,13 +122,14 @@ def save_themen(themen, list_name):
 	return len(themen)
 
 #TODO avoid bug that would occur when when two lists have the same name
-def save_verteilung(teiln_list_name, thema_list_name, protected, editable):
+def save_verteilung(teiln_list_name, thema_list_name, protected, editable, number_per_thema):
 	if protected:
 		teiln_list = teilnehmer_list_model.Teilnehmer_List.query.filter_by(name=teiln_list_name).first()
 	else:
 		teiln_list = teilnehmer_list_model.Teilnehmer_List(
 			name="Teilnehmer einer offenen Verteilung mit Themenname '"
-			+ thema_list_name + "'")
+			+ thema_list_name + "'",
+			is_for_unprotected=True)
 		db.session.add(teiln_list)
 
 	thema_list = thema_list_model.Thema_List.query.filter_by(name=thema_list_name).first()
@@ -137,7 +138,8 @@ def save_verteilung(teiln_list_name, thema_list_name, protected, editable):
 		thema_list_id = thema_list.id,
 		teilnehmer_list_id = teiln_list.id,
 		protected = protected,
-		editable = editable
+		editable = editable,
+		max_teilnehmer_per_thema = number_per_thema
 	)
 	db.session.add(local_verteilung)
 	db.session.commit()

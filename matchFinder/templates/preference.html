@@ -11,8 +11,8 @@
 		<div class="form-row align-items-center">
 			{% for thema in themen %}
 			<div class="input-group mb-2">
-				<div class="input-group-prepend">
-					<span class="input-group-text">{{thema.thema_name}}</span>
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100">{{thema.thema_name}}</span>
 				</div>
 				<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{loop.index}}" id="{{loop.index}}">
 					<option v-for="(item, index) in validOptions({{loop.index}})">

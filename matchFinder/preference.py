@@ -4,6 +4,7 @@ from . import database_helper
 from . import limiter
 import json
 from matchFinder.models import praeferenz_model
+from matchFinder.models import teilnehmer_model
 
 
 bp = Blueprint('preference', __name__, url_prefix='/preference')
@@ -12,43 +13,44 @@ bp = Blueprint('preference', __name__, url_prefix='/preference')
 def set_preference(verteilung_id):
 	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
 	if verteilung != None:
-		if verteilung.protected:
-			return render_template('validate.html', id=verteilung_id)
-		else:
-			return redirect(url_for("preference.set_preference", verteilung_id=verteilung_id))
+		return render_template('validate.html', id=verteilung_id,
+			protected=True if verteilung.protected else False)
 	else:
-		return render_template('validate.html', id=verteilung_id, error="Keine gültige Verteilung!")
+		return render_template('validate.html', id=verteilung_id,
+			error="Keine gültige Verteilung!")
 
 
 @bp.route('/validate/', methods=['POST'])
 @limiter.limit("5 per minute", error_message="Too many requests! Try again later.")
 def validate():
-	verteilung_id = request.form.get('id', None)
-	matr_nr = request.form.get('matr_nr', None)
-	if matr_nr.isdigit():
-		if verteilung_id != "":
-			verteilung, teilnehmer = database_helper.check_membership(verteilung_id, matr_nr)
-			if verteilung != None and teilnehmer != None:
-				themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
-				return render_template(
-					"preference.html",
-					teilnehmer=teilnehmer,
-					themen=themen,
-					verteilung_id=verteilung_id)
-			else:
-				return redirect(url_for("preference.set_preference", verteilung_id=verteilung_id))
+	data = request.form.get('data', None)
+	obj = json.loads(data)
+	verteilung_id = obj['id']
+	protected = obj["protected"]
+	if protected == "True":
+		matr_nr = request.form.get('matr_nr', None)
+		error, verteilung, teilnehmer = check_user_for_protected(matr_nr,
+											verteilung_id)
+		if error:
+			return render_template('validate.html', id=verteilung_id,
+					protected=protected, error=error)
 		else:
-			return render_template(
-				'validate.html',
-				id=verteilung_id,
-				error="Verteilung nicht gefunden!"
-				)
+			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
+			return render_template("preference.html", teilnehmer=teilnehmer,
+					themen=themen, verteilung_id=verteilung_id)
+	else:
+		first_name = request.form.get('first_name', None)
+		last_name = request.form.get('last_name', None)
+		last_name = "k.A." if last_name == "" else last_name
+		verteilung = database_helper.get_verteilung_by_id(verteilung_id)
+		teilnehmer = teilnehmer_model.Teilnehmer(first_name=first_name, matr_nr=0,
+			last_name=last_name, list_id=verteilung.teilnehmer_list_id)
+		database_helper.insert_teilnehmer(teilnehmer)
+		themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
+		return render_template("preference.html", teilnehmer=teilnehmer,
+					themen=themen, verteilung_id=verteilung_id)
 
-	return render_template(
-		'validate.html',
-		id=verteilung_id,
-		error="Matrikelnummer muss eine Zahl sein!"
-		)
+
 
 @bp.route('save', methods=['POST'])
 def save():
@@ -69,18 +71,16 @@ def save():
 	praeferenz = praeferenz_model.Praeferenz(
 		teilnehmer_id=teilnehmer_id,
 		verteilung_id=verteilung_id,
-		praeferenzen=preference_string
-		)
+		praeferenzen=preference_string)
 	database_helper.insert_praeferenz(praeferenz)
-	return render_template('home.html')
+	return render_template('home.html', preference_saved=True)
 
-
-
-
-
-
-
-
-
-
-
+def check_user_for_protected(matr_nr, verteilung_id):
+	if matr_nr != None and matr_nr.isdigit():
+		verteilung, teilnehmer = database_helper.check_membership(verteilung_id, matr_nr)
+		if verteilung != None and teilnehmer != None:
+			return None, verteilung, teilnehmer
+		else:
+			return "Matrikelnummer ungültig!", None, None
+	else:
+		return "Matrikelnummer muss eine Zahl sein!", None, None
