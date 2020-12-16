@@ -8,49 +8,35 @@
 {% block header %}Verteilung erstellen{% endblock %}
 
 {% block body %}
-<p>
-	Verteilung können auf mehreren Wegen erstellt werden.
-</p>
-<div class="mb-4">
-	<h5 class="mb-3">Bereits angegebene Präferenzen in .csv Format hochladen</h5>
-	<div class="form-row align-items-center">
-		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
-			<div class="mb-2">
-				<input class='button mb' type=file name=file accept=".txt,.csv" required>
-			</div>
-			<input class="btn btn-primary" type=submit value=Erstellen>
-		</form>
-	</div>
-</div>
 
 <div id="app">
 	{% if (themen|length > 0) and (teilnehmer|length == 0) and session['is_authenticated'] == True %}
 
 	<div class="mb-3">
 		<h5 class="mb-3">Von bestehenden Daten</h5>
-		<div class="form-row align-items-center mb-3">
+		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 			<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
+					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100">Gruppenliste</span>
 					</div>
 					<select class="custom-select" name="thema" id="thema">
 						{% for thema in themen %}
-						<option value="{{thema.name}}">{{thema.name}}</option>
+						<option value="{{thema.id}}">{{thema.name}}</option>
 						{% endfor %}
 					</select>
 				</div>
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
+					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100"># / Gruppe</span>
 					</div>
-					<input type="number" @change="onChange($event)" v-model="max_per" id="number_themen" name="number_themen" class="form-control" value="1">
+					<input type="number" @change="onChange($event)" v-model="max_per" id="max_per" name="max_per" class="form-control" value="1">
 				</div>
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
+					<div class="input-group-prepend w-25">
 						<div class="input-group-text w-100">
 							<input type="checkbox" name="protected" id="protected" aria-label="Checkbox for following text input" disabled>
 						</div>
@@ -71,30 +57,34 @@
 
 	<div class="mb-3">
 		<h5 class="mb-3">Von bestehenden Daten</h5>
-		<div class="form-row align-items-center mb-3">
+		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 			<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
+					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100">Gruppenliste</span>
 					</div>
 					<select class="custom-select" name="thema" id="thema">
 						{% for thema in themen %}
-						<option value="{{thema.name}}">{{thema.name}}</option>
+						<option value="{{thema.id}}">{{thema.name}}</option>
+
 						{% endfor %}
 					</select>
 				</div>
+				{% for thema in themen %}
+				<input type="hidden" name="" id="number_themen{{thema.id}}" value="{{thema.themen | length}}">
+				{% endfor %}
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
+					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100"># / Gruppe</span>
 					</div>
-					<input type="number" v-model="max_per" id="number_themen" name="number_themen" class="form-control" value="1">
+					<input type="number" @change="onChange($event)" v-model="max_per" id="number_themen" name="number_themen" class="form-control" value="1">
 				</div>
 
 
 				<div class="input-group mb-2">
-					<div class="input-group-prepend w-50">
+					<div class="input-group-prepend w-25">
 						<div class="input-group-text w-100">
 							<input type="checkbox" name="protected" id="protected" v-model="protected" aria-label="Checkbox for following text input" checked>
 						</div>
@@ -104,18 +94,21 @@
 
 				<template v-if="protected">
 					<div class="input-group mb-2">
-						<div class="input-group-prepend w-50">
+						<div class="input-group-prepend w-25">
 							<span class="input-group-text w-100">Teilnehmerliste</span>
 						</div>
 						<select class="custom-select" name="teilnehmer" id="teilnehmer" required>
 							{% for teilnehmer_list in teilnehmer %}
-							<option value="{{teilnehmer_list.name}}">{{teilnehmer_list.name}}</option>
+							<option value="{{teilnehmer_list.id}}">{{teilnehmer_list.name}}</option>
 							{% endfor %}
 						</select>
 					</div>
+					{% for teilnehmer_list in teilnehmer %}
+					<input type="hidden" name="" id="number_teilnehmer{{teilnehmer_list.id}}" value="{{teilnehmer_list.teilnehmer | length}}">
+					{% endfor %}
 
 					<div class="input-group mb-2">
-						<div class="input-group-prepend w-50">
+						<div class="input-group-prepend w-25">
 							<div class="input-group-text w-100">
 								<input type="checkbox" name="editable" id="editable" aria-label="Checkbox for following text input">
 							</div>
@@ -123,10 +116,21 @@
 						<span class="form-control">editierbar</span>
 					</div>
 				</template>
+				<template v-if="! within_limit">
+					<div class="alert alert-danger" role="alert">
+						Mit der momentanen Auswahl gibt es nicht genug Themen für alle Teilnehmer.<br>
+						Die Verteilung kann nicht erstellt werden.
+					</div>
+					<div class="input-group mb-2">
+						<input class="btn btn-primary" type="submit" value="Erstellen" disabled>
+					</div>
+				</template>
 
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Erstellen">
-				</div>
+				<template v-if="within_limit">
+					<div class="input-group mb-2">
+						<input class="btn btn-primary" type="submit" value="Erstellen">
+					</div>
+				</template>
 
 			</form>
 		</div>
@@ -134,6 +138,7 @@
 
 
 	{% endif %}
+
 </div>
 {% endblock %}
 
@@ -149,14 +154,30 @@
 		delimiters: ['${', '}'],
 		data: {
 			protected: true,
-			max_per: 1
+			max_per: 1,
+			within_limit: true
 		},
 		methods: {
 			onChange(event) {
 				if (event.target.value <= 0) {
 					this.max_per = 1
 				}
+				this.update()
+			},
+			update() {
+				var selectedTeilnehmerValue = document.getElementById("teilnehmer")
+				var selectedThemenValue = document.getElementById("thema")
+				if (selectedTeilnehmerValue != null && selectedThemenValue) {
+					selectedTeilnehmerValue = selectedTeilnehmerValue.value
+					selectedThemenValue = selectedThemenValue.value
+					const themen = document.getElementById("number_themen" + selectedThemenValue).value
+					const teilnehmer = document.getElementById("number_teilnehmer" + selectedTeilnehmerValue).value
+					this.within_limit = teilnehmer <= themen * this.max_per
+				}
 			}
+		},
+		mounted() {
+			this.update()
 		}
 	});
 

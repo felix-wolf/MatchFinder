@@ -10,5 +10,4 @@ def index():
 
 @bp.route('/<message>')
 def index_with_message(message):
-	print('test')
 	return render_template('home.html', message=message)

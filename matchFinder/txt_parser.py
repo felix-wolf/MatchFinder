@@ -3,13 +3,11 @@ import os
 
 def array_from_teilnehmer(file):
 	df = pd.read_csv(file, sep='\t', names=['id', 'matr_nr', 'last_name', 'first_name', 'NaN1', 'uebung', 'NaN2'])
-	print(df)
 	df.columns = df.columns.str.strip()
 	df = df.drop('id', axis=1)
 	df = df.drop('NaN1', axis=1)
 	df = df.drop('NaN2', axis=1)
 	df = df.drop('uebung', axis=1)
-	print(df)
 	participants = []
 	for ind in df.index:
 		participant = {}

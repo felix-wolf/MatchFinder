@@ -7,47 +7,44 @@
 {% block body %}
 <p>Fülle die Listen mit Inhalt</p>
 
-
-<div class="container">
-	<div class="mb-5">
-		<div class="form-row align-items-center mb-3">
-			<form method="POST" action="{{ url_for('create.themen_manually') }}">
-				{{ form.csrf_token() }}
-				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Gruppen / Themen</span>
-					</div>
-					{{ form.themen_name(size=20, class="form-control", placeholder="required") }}
+<div class="mb-5">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 mb-3">
+		<form method="POST" action="{{ url_for('create.themen_manually') }}">
+			{{ form.csrf_token() }}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Gruppen / Themen</span>
 				</div>
-				{% for single_thema_form in form.themen.entries %}
-				{{ single_thema_form.hidden_tag() }}
-				Thema / Gruppe {{loop.index}}
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Name</span>
-					</div>
-					{{ single_thema_form.thema_name(value="", size=20, class="form-control", placeholder="required") }}
+				{{ form.themen_name(size=20, class="form-control", placeholder="required") }}
+			</div>
+			{% for single_thema_form in form.themen.entries %}
+			{{ single_thema_form.hidden_tag() }}
+			Thema / Gruppe {{loop.index}}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Name</span>
 				</div>
+				{{ single_thema_form.thema_name(value="", size=20, class="form-control", placeholder="required") }}
+			</div>
 
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Uhrzeit</span>
-					</div>
-					{{ single_thema_form.zeit(value="", size=20, class="form-control", placeholder="optional") }}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Uhrzeit</span>
 				</div>
+				{{ single_thema_form.zeit(value="", size=20, class="form-control", placeholder="optional") }}
+			</div>
 
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Betreuer</span>
-					</div>
-					{{ single_thema_form.betreuer(value="", size=20, class="form-control", placeholder="optional") }}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100" id="validationTooltipUsernamePrepend">Betreuer</span>
 				</div>
-				{% endfor %}
+				{{ single_thema_form.betreuer(value="", size=20, class="form-control", placeholder="optional") }}
+			</div>
+			{% endfor %}
 
-				<input class="btn btn-primary" type="submit" value="Erstellen">
+			<input class="btn btn-primary" type="submit" value="Erstellen">
 
-			</form>
-		</div>
+		</form>
 	</div>
 </div>
 

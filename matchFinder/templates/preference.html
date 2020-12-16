@@ -8,7 +8,7 @@
 <div id="app">
 	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
 	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
-		<div class="form-row align-items-center">
+		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 			{% for thema in themen %}
 			<div class="input-group mb-2">
 				<div class="input-group-prepend w-25">
@@ -42,6 +42,7 @@
 
 			options : [
 			"Keine Präferenz",
+			"Veto",
 			"Erstwahl",
 			"Zweitwahl",
 			"Drittwahl",
@@ -56,6 +57,7 @@
 
 			mapping: {
 				"Keine Präferenz" : "",
+				"Veto" : "",
 				"Erstwahl" : "",
 				"Zweitwahl" : "",
 				"Drittwahl" : "",

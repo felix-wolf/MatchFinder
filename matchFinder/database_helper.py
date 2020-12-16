@@ -82,7 +82,6 @@ def insert_teilnehmer(teilnehmer):
 def get_praeferenz_by_teilnehmer_id(teilnehmer_id):
 	return praeferenz_model.Praeferenz.query.filter_by(teilnehmer_id=teilnehmer_id).first()
 
-
 def save_teilnehmer(teilnehmer_liste, list_name):
 	memberlist = []
 	for mem in teilnehmer_liste:
@@ -124,10 +123,9 @@ def save_themen(themen, list_name):
 
 	return len(themen)
 
-#TODO avoid bug that would occur when when two lists have the same name
-def save_verteilung(teiln_list_name, thema_list_name, protected, editable, number_per_thema):
+def save_verteilung(teiln_list_id, thema_list_id, protected, editable, number_per_thema):
 	if protected:
-		teiln_list = teilnehmer_list_model.Teilnehmer_List.query.filter_by(name=teiln_list_name).first()
+		teiln_list = get_teilnehmer_list_by_id(teiln_list_id)
 	else:
 		teiln_list = teilnehmer_list_model.Teilnehmer_List(
 			name="Teilnehmer der offenen Verteilung mit Themenname '"
@@ -135,7 +133,7 @@ def save_verteilung(teiln_list_name, thema_list_name, protected, editable, numbe
 			is_for_unprotected=True)
 		db.session.add(teiln_list)
 
-	thema_list = thema_list_model.Thema_List.query.filter_by(name=thema_list_name).first()
+	thema_list = get_thema_list_by_id(thema_list_id)
 
 	local_verteilung = verteilung_model.Verteilung(
 		thema_list_id = thema_list.id,

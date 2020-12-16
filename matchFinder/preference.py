@@ -61,11 +61,13 @@ def save():
 	teilnehmer_id = obj["teilnehmer_id"]
 	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
 	number_of_themen_in_verteilung = len(verteilung.thema_list.themen)
-	preference_string=""
+	preference_string = ""
 	for index in range(number_of_themen_in_verteilung):
 		preference = request.form.get(str(index + 1), None)
 		if preference == "Keine Präferenz":
 			preference = ""
+		if preference == "Veto":
+			preference = "2000"
 		preference_string = preference_string + preference + ","
 	preference_string = preference_string[:-1]
 	praeferenz = praeferenz_model.Praeferenz(

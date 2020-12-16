@@ -15,7 +15,7 @@
 
 <div class="mb-5">
 	<h4 class="mb-4">Teilnehmerliste anlegen</h4>
-	<div class="form-row align-items-center mb-3">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 		<form method=post action="{{ url_for('create.upload') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
@@ -36,7 +36,7 @@
 
 <h4 class="mb-4">Themen / Gruppen anlegen</h4>
 <h6>Aus Datei laden:</h6>
-<div class="form-row align-items-center mb-3">
+<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 mb-4">
 	<form method=post action="{{ url_for('create.upload') }}" enctype="multipart/form-data">
 		<div class="input-group mb-2">
 			<div class="input-group-prepend">
@@ -54,7 +54,7 @@
 </div>
 <h6>Manuell erstellen:</h6>
 <div id="app">
-	<div class="form-row align-items-center mb-3">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 		<form method=post action="{{ url_for('create.themen_manually') }}" enctype=multipart/form-data>
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">

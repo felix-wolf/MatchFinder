@@ -11,18 +11,16 @@ bp = Blueprint('share', __name__, url_prefix='/share')
 #make database entry, give link to enter site
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-	teilnehmer_list_name = request.form.get('teilnehmer', None)
-	thema_list_name = request.form.get('thema', None)
+	teilnehmer_list_id = request.form.get('teilnehmer', None)
+	thema_list_id = request.form.get('thema', None)
 	protected = request.form.get('protected', False)
 	editable = request.form.get('editable', False)
-	max_per_thema = request.form.get('number_themen', 1)
-	if int(max_per_thema) <= 0:
-		return redirect(url_for('upload.index'))
+	max_per_thema = request.form.get('max_per', 1)
 	protected = True if protected == "on" else False
 	editable = True if editable == "on" else False
 
 	id = database_helper.save_verteilung(
-		teilnehmer_list_name, thema_list_name,
+		teilnehmer_list_id, thema_list_id,
 		protected, editable, max_per_thema)
 	return redirect(url_for('share.show', verteilung_id=id))
 

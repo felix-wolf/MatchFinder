@@ -12,13 +12,14 @@
 	{{error}}
 </div>
 {% endif %}
+
 <div id="app" class="mb-5">
 
 	{% if verteilungen %}
 
 	<h5>Wähle eine Verteilung, die du auswerten willst:</h5>
 
-	<div class="form-row align-items-center mb-3">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 		<form method=post action="{{ url_for('evaluate.from_db') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
@@ -33,11 +34,11 @@
 
 			{% for verteilung in verteilungen %}
 
-			<input type="hidden" name="" id="total_verteilung{{loop.index}}" value="{{verteilung.teilnehmer.teilnehmer | length}}">
-			<input type="hidden" name="" id="current_verteilung{{loop.index}}" value="{{verteilung.praeferenzen | length}}">
-			<input type="hidden" name="" id="obergrenze{{loop.index}}"
+			<input type="hidden" name="" id="total_verteilung{{verteilung.id}}" value="{{verteilung.teilnehmer.teilnehmer | length}}">
+			<input type="hidden" name="" id="current_verteilung{{verteilung.id}}" value="{{verteilung.praeferenzen | length}}">
+			<input type="hidden" name="" id="obergrenze{{verteilung.id}}"
 			value="{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}">
-			<input type="hidden" name="" id="auslastung{{loop.index}}"
+			<input type="hidden" name="" id="auslastung{{verteilung.id}}"
 			value="{{verteilung.teilnehmer.teilnehmer|length}}">
 
 			{% endfor %}
@@ -82,9 +83,21 @@
 	Es existieren keine Verteilungen. Leg schnell eine an:
 	<a class="btn btn-primary mx-2" href="/upload">Anlegen</a>
 </div>
-<input type="hidden" name="" id="teilnehmer" value="None">
 
 {% endif %}
+
+<div class="mb-4">
+	<h5 class="mb-3">Oder erstelle eine Auswertung aus bereits angegebene Präferenzen in .csv Format</h5>
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
+			<div class="mb-2">
+				<input class='button mb' type=file name=file accept=".txt,.csv" required>
+			</div>
+			<input class="btn btn-primary" type="submit" value="Auswerten">
+		</form>
+	</div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}

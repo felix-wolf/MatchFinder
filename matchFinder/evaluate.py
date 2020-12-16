@@ -26,9 +26,15 @@ def from_db():
     teilnehmer_pref = []
     for teil in teilnehmer:
         praeferenz = database_helper.get_praeferenz_by_teilnehmer_id(teil.id)
+        if (praeferenz == None):
+            praeferenz = ""
+            for index in range(len(thema_list.themen) - 1):
+                praeferenz += ","
+        else:
+            praeferenz = praeferenz.praeferenzen
         local_teilnehmer_pref = []
         local_teilnehmer_pref.append(teil.first_name + " " + teil.last_name)
-        praeferenz = praeferenz.praeferenzen.split(',')
+        praeferenz = praeferenz.split(',')
         for praef in praeferenz:
             converted_praef = helper.convert_praef_to_num(praef)
             local_teilnehmer_pref.append(converted_praef)

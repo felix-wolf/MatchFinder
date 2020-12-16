@@ -54,5 +54,6 @@ def action(verteilung_id, action):
 
 	if action == 'auswerten':
 		print("DO STUFF")
+		# TODO: verteilung auswerten
 
 	return redirect(url_for("edit.index"))

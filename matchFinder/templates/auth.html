@@ -8,40 +8,40 @@
 {% block header %}Authentifizierung{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-	{% if is_valid == False %}
 
-	<div class="alert alert-danger" role="alert">
-		Authentifizierung fehlgeschlagen!
-	</div>
-	{% endif %}
-	{% if no_pws_found == True %}
+{% if is_valid == False %}
 
-	<div class="alert alert-danger" role="alert">
-		Keine Passwörter gespeichert, kontaktiere einen Verantwortlichen!
-	</div>
-	{% endif %}
-	<p>
-		Authentifiziere dich, um bestimmte Funktionen dieser Seite nutzen zu können.
-	</p>
-	<form method=post action="{{ url_for('auth.validate') }}" enctype=multipart/form-data>
-		<div class="form-row mb-4">
-			<div class="col-8 mb-3">
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="validationTooltipUsernamePrepend">
-							<span data-feather="key"></span>
-						</span>
-					</div>
-					<input type="password" id="password" name="password" class="form-control" placeholder="geheimer Schlüssel">
+<div class="alert alert-danger" role="alert">
+	Authentifizierung fehlgeschlagen!
+</div>
+{% endif %}
+{% if no_pws_found == True %}
+
+<div class="alert alert-danger" role="alert">
+	Keine Passwörter gespeichert, kontaktiere einen Verantwortlichen!
+</div>
+{% endif %}
+<p>
+	Authentifiziere dich, um bestimmte Funktionen dieser Seite nutzen zu können.
+</p>
+<form method=post action="{{ url_for('auth.validate') }}" enctype=multipart/form-data>
+	<div class="form-row mb-4">
+		<div class="col-8 mb-3">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="validationTooltipUsernamePrepend">
+						<span data-feather="key"></span>
+					</span>
 				</div>
-			</div>
-			<div class="col-4">
-				<button class="btn btn-primary" type=submit value=Upload>Authentifiziere</button>
+				<input type="password" id="password" name="password" class="form-control" placeholder="geheimer Schlüssel">
 			</div>
 		</div>
-	</form>
-	{% block scripts %}
+		<div class="col-4">
+			<button class="btn btn-primary" type=submit value=Upload>Authentifiziere</button>
+		</div>
+	</div>
+</form>
+{% block scripts %}
 
-	{% endblock %}
-	{% endblock %}
+{% endblock %}
+{% endblock %}
