@@ -12,13 +12,13 @@
 	{{error}}
 </div>
 
-{% endif %}
+{% else %}
 
 {% if protected %}
 
 <h5>Hallo! Um deine Prioritäten setzen zu können, melde dich bitte mit deiner Matrikelnummer an:</h5>
 <div class="mb-5">
-	<div class="form-row align-items-center mb-3">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 mb-3">
 		<form method=post action="{{ url_for('preference.validate') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
@@ -38,7 +38,7 @@
 
 <h5>Hallo! Um deine Prioritäten setzen zu können, trage bitte deinen Namen ein:</h5>
 <div class="mb-5">
-	<div class="form-row align-items-center mb-3">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 mb-3">
 		<form method=post action="{{ url_for('preference.validate') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend w-50">
@@ -61,6 +61,8 @@
 		</form>
 	</div>
 </div>
+
+{% endif %}
 
 {% endif %}
 

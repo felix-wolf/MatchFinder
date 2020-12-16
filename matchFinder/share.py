@@ -5,6 +5,7 @@ import qrcode
 import base64
 from PIL import Image
 from io import BytesIO
+import hashlib
 
 bp = Blueprint('share', __name__, url_prefix='/share')
 
@@ -26,6 +27,7 @@ def index():
 
 @bp.route('/show/<int:verteilung_id>')
 def show(verteilung_id):
+	verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
 	root_url = request.url_root
 	url = root_url + 'preference?id=' + str(verteilung_id)
 	qr = qrcode.QRCode(

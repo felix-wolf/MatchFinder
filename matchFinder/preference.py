@@ -5,13 +5,18 @@ from . import limiter
 import json
 from matchFinder.models import praeferenz_model
 from matchFinder.models import teilnehmer_model
+import hashlib
 
 
 bp = Blueprint('preference', __name__, url_prefix='/preference')
 
-@bp.route('<int:verteilung_id>')
+@bp.route('<verteilung_id>')
 def set_preference(verteilung_id):
-	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
+	verteilungen = database_helper.get_all_verteilungen()
+	for vert in verteilungen:
+		hashed_id = hashlib.sha256(str(vert.id).encode()).hexdigest()
+		if hashed_id == verteilung_id:
+			verteilung = vert
 	if verteilung != None:
 		return render_template('validate.html', id=verteilung_id,
 			protected=True if verteilung.protected else False)
