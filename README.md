@@ -8,7 +8,6 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 - Editierfunkion einbauen
 - mehrere leute pro Gruppe implementieren
 - Veto-Funktion
-- sortierung nach Median und Streuungsmaß
 - Gruppen per Datei erstellen
 - Teilnehmer mit Formular erstellen
 

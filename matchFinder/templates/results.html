@@ -6,7 +6,8 @@
 
 {% block body %}
 <div class="mb-3">
-	Es gibt insgesamt {{data|length}} mögliche Verteilungen. Die Varianten sind nach ihrem Median sortiert.
+	<p>Es gibt insgesamt {{data|length}} mögliche Verteilungen.</p>
+	Die Varianten sind nach ihrem Median und der absoluten Abweichung vom Median sortiert.
 </div>
 
 {% for i in data %}
