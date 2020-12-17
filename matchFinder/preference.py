@@ -12,11 +12,7 @@ bp = Blueprint('preference', __name__, url_prefix='/preference')
 
 @bp.route('<verteilung_id>')
 def set_preference(verteilung_id):
-	verteilungen = database_helper.get_all_verteilungen()
-	for vert in verteilungen:
-		hashed_id = hashlib.sha256(str(vert.id).encode()).hexdigest()
-		if hashed_id == verteilung_id:
-			verteilung = vert
+	verteilung = database_helper.get_verteilung_by_hashed_id(verteilung_id)
 	if verteilung != None:
 		return render_template('validate.html', id=verteilung_id,
 			protected=True if verteilung.protected else False)
@@ -30,30 +26,32 @@ def set_preference(verteilung_id):
 def validate():
 	data = request.form.get('data', None)
 	obj = json.loads(data)
-	verteilung_id = obj['id']
+	hashed_verteilung_id = obj['id']
 	protected = obj["protected"]
 	if protected == "True":
 		matr_nr = request.form.get('matr_nr', None)
 		error, verteilung, teilnehmer = check_user_for_protected(matr_nr,
-											verteilung_id)
+											hashed_verteilung_id)
 		if error:
 			return render_template('validate.html', id=verteilung_id,
 					protected=protected, error=error)
 		else:
 			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
 			return render_template("preference.html", teilnehmer=teilnehmer,
-					themen=themen, verteilung_id=verteilung_id)
+					themen=themen, verteilung_id=verteilung.id)
 	else:
 		first_name = request.form.get('first_name', None)
 		last_name = request.form.get('last_name', None)
 		last_name = "" if last_name == "" else last_name
-		verteilung = database_helper.get_verteilung_by_id(verteilung_id)
-		teilnehmer = teilnehmer_model.Teilnehmer(first_name=first_name, matr_nr=0,
-			last_name=last_name, list_id=verteilung.teilnehmer_list_id)
-		database_helper.insert_teilnehmer(teilnehmer)
-		themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
-		return render_template("preference.html", teilnehmer=teilnehmer,
-					themen=themen, verteilung_id=verteilung_id)
+		verteilung = database_helper.get_verteilung_by_hashed_id(hashed_verteilung_id)
+		if verteilung != None:
+			teilnehmer = teilnehmer_model.Teilnehmer(first_name=first_name, matr_nr=0,
+				last_name=last_name, list_id=verteilung.teilnehmer_list_id)
+			database_helper.insert_teilnehmer(teilnehmer)
+			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
+			return render_template("preference.html", teilnehmer=teilnehmer,
+					themen=themen, verteilung_id=verteilung.id)
+		return render_template('validate.html', id = hashed_verteilung_id, protected=False, error="error")
 
 
 
@@ -83,9 +81,9 @@ def save():
 	return redirect(url_for('home.index_with_message',
 		message="Deine Präferenzen wurden gespeichert!"))
 
-def check_user_for_protected(matr_nr, verteilung_id):
+def check_user_for_protected(matr_nr, hashed_verteilung_id):
 	if matr_nr != None and matr_nr.isdigit():
-		verteilung, teilnehmer = database_helper.check_membership(verteilung_id, matr_nr)
+		verteilung, teilnehmer = database_helper.check_membership(hashed_verteilung_id, matr_nr)
 		if verteilung != None and teilnehmer != None:
 			return None, verteilung, teilnehmer
 		else:

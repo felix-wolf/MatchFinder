@@ -1,5 +1,6 @@
 from statistics import median
 from operator import itemgetter
+import copy
 
 
 def convert_praef_to_num(praef):
@@ -49,3 +50,19 @@ def sort_by_median(assignments):
     for index in index_of_items_sorted_by_medians:
         sorted_assignments.append(assignments[index])
     return sorted_assignments
+
+
+def duplicate_themen(themen, max_per):
+    new_themen = copy.deepcopy(themen)
+    for index in range(max_per - 1):
+        for thema in themen:
+            new_themen.append(thema)
+    return new_themen
+
+def duplicate_teilnehmer_praefs(teilnehmer_praefs, max_per):
+    new_teilnehmer_praefs = copy.deepcopy(teilnehmer_praefs)
+    teilnehmer_praefs.pop(0)
+    for index in range(max_per - 1):
+        for praef in teilnehmer_praefs:
+            new_teilnehmer_praefs.append(praef)
+    return new_teilnehmer_praefs

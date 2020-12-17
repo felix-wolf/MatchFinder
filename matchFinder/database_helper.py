@@ -1,4 +1,5 @@
 from . import db
+import hashlib
 from matchFinder.models import teilnehmer_model
 from matchFinder.models import thema_model
 from matchFinder.models import thema_list_model
@@ -46,6 +47,14 @@ def get_thema_list_by_id(id):
 
 def get_verteilung_by_id(id):
 	return verteilung_model.Verteilung.query.filter_by(id=id).first()
+
+def get_verteilung_by_hashed_id(hashed_id):
+	verteilungen = get_all_verteilungen()
+	for vert in verteilungen:
+		hashed_db_id = hashlib.sha256(str(vert.id).encode()).hexdigest()
+		if hashed_db_id == hashed_id:
+			return vert
+	return None
 
 def delete_teilnehmer_by_id(id):
 	db.session.delete(get_teilnehmer_by_id(id))
@@ -146,8 +155,8 @@ def save_verteilung(teiln_list_id, thema_list_id, protected, editable, number_pe
 	db.session.commit()
 	return local_verteilung.id
 
-def check_membership(verteilung_id, matr_nr):
-	verteilung_to_id = get_verteilung_by_id(verteilung_id)
+def check_membership(hashed_verteilung_id, matr_nr):
+	verteilung_to_id = get_verteilung_by_hashed_id(hashed_verteilung_id)
 	if verteilung_to_id != None:
 		teilnehmer_to_verteilung = get_teilnehmer_list_by_id(verteilung_to_id.teilnehmer_list_id)
 		if teilnehmer_to_verteilung != None:

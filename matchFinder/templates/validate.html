@@ -12,7 +12,9 @@
 	{{error}}
 </div>
 
-{% else %}
+{% endif %}
+
+{% if error != "Keine gültige Verteilung!" %}
 
 {% if protected %}
 
@@ -61,6 +63,7 @@
 		</form>
 	</div>
 </div>
+
 
 {% endif %}
 

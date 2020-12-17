@@ -18,11 +18,13 @@ def index():
 def from_db():
     verteilung_id = request.form.get('verteilung', None)
     verteilung = database_helper.get_verteilung_by_id(verteilung_id)
+    max_per = verteilung.max_teilnehmer_per_thema
     teilnehmer = verteilung.teilnehmer.teilnehmer
     thema_list = database_helper.get_thema_list_by_id(verteilung.thema_list_id)
     themen = []
     for thema in thema_list.themen:
         themen.append(thema.thema_name)
+    themen = helper.duplicate_themen(themen, max_per)
     teilnehmer_pref = []
     for teil in teilnehmer:
         praeferenz = database_helper.get_praeferenz_by_teilnehmer_id(teil.id)
@@ -38,8 +40,8 @@ def from_db():
         for praef in praeferenz:
             converted_praef = helper.convert_praef_to_num(praef)
             local_teilnehmer_pref.append(converted_praef)
+        local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(local_teilnehmer_pref, max_per)
         teilnehmer_pref.append(local_teilnehmer_pref)
-        print(local_teilnehmer_pref)
     assignments = matchCalculator.calculate_from_db(teilnehmer_pref, themen)
     assignments = helper.sort_by_median(assignments)
     return render_template('results.html', data=assignments)
