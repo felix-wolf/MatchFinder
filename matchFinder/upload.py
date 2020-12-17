@@ -1,15 +1,68 @@
 from flask import (
-    Blueprint, Flask, render_template)
+	Blueprint, Flask, redirect, render_template, request, session, url_for, abort, current_app as app)
+import os
+from werkzeug.utils import secure_filename
+from . import txt_parser
 from . import database_helper
+from matchFinder.forms import thema_form as themen_form
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
+@bp.before_request
+def load_logged_in_user():
+    if session.get('is_authenticated') != True:
+        return redirect(url_for('home.index'))
+
+
 @bp.route('/')
 def index():
-    teilnehmer = database_helper.get_all_teilnehmer_lists()
-    themen = database_helper.get_all_thema_lists()
-    valid_teilnehmer = []
-    for teil in teilnehmer:
-    	if teil.is_for_unprotected == False:
-    		valid_teilnehmer.append(teil)
-    return render_template('upload.html', teilnehmer=valid_teilnehmer, themen=themen)
+    return render_template('upload.html')
+
+
+@bp.route('/upload', methods=['POST'])
+def upload():
+    uploaded_file = request.files['file']
+    if (validate_file(uploaded_file)):
+        teilnehmer_name = request.form.get('teilnehmer_name', None)
+        themen_name = request.form.get('themen_name', None)
+        if themen_name == None:
+            teilnehmer = txt_parser.array_from_teilnehmer(uploaded_file)
+            rtn = database_helper.save_teilnehmer(teilnehmer, teilnehmer_name)
+        elif teilnehmer_name == None:
+            themen = txt_parser.array_from_themen(uploaded_file)
+            rtn = database_helper.save_themen(themen, themen_name)
+        return redirect(url_for('upload.index', items_saved=rtn))
+    else:
+        abort(400)
+    return redirect(url_for('upload.index', items_saved=False))
+
+
+@bp.route('/themen_manually', methods=['POST'])
+def themen_manually():
+    themenform = themen_form.ThemenForm()
+    if themenform.validate_on_submit():
+        # form is filled out and valid
+
+        rtn = database_helper.save_themen(
+            themenform.themen.data,
+            themenform.themen_name.data)
+        return redirect(url_for('upload.index', items_saved=rtn))
+
+
+    number_of_themen = request.form.get('number_themen', None)
+    if number_of_themen != None and int(number_of_themen) > 0:
+        for i in range(int(number_of_themen)):
+            thema_form = themen_form.ThemaEntryForm()
+            themenform.themen.append_entry(thema_form)
+        return render_template('upload_themen.html', form=themenform)
+    return redirect(url_for('upload.index'))
+
+
+def validate_file(file):
+    filename = secure_filename(file.filename)
+    if filename != '':
+        file_ext = os.path.splitext(filename)[1]
+        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+            return False
+        return True
+    return False

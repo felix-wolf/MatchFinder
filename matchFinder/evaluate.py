@@ -39,6 +39,7 @@ def from_db():
             converted_praef = helper.convert_praef_to_num(praef)
             local_teilnehmer_pref.append(converted_praef)
         teilnehmer_pref.append(local_teilnehmer_pref)
+        print(local_teilnehmer_pref)
     assignments = matchCalculator.calculate_from_db(teilnehmer_pref, themen)
     assignments = helper.sort_by_median(assignments)
     return render_template('results.html', data=assignments)

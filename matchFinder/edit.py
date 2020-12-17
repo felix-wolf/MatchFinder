@@ -10,7 +10,7 @@ bp = Blueprint('edit', __name__, url_prefix='/edit')
 @bp.before_request
 def load_logged_in_user():
     if session.get('is_authenticated') != True:
-        return redirect(url_for('home'))
+        return redirect(url_for('home.index'))
 
 
 @bp.route('/')

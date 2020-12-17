@@ -15,7 +15,7 @@
 
 <div id="app" class="mb-5">
 
-	{% if verteilungen %}
+	{% if verteilungen and session['is_authenticated'] == True %}
 
 	<h5>Wähle eine Verteilung, die du auswerten willst:</h5>
 
@@ -77,17 +77,19 @@
 	</div>
 </div>
 
-{% else %}
+{% elif session['is_authenticated'] == True %}
 
 <div class="alert alert-danger" role="alert">
 	Es existieren keine Verteilungen. Leg schnell eine an:
-	<a class="btn btn-primary mx-2" href="/upload">Anlegen</a>
+	<a class="btn btn-primary mx-2" href="/create">Anlegen</a>
 </div>
 
 {% endif %}
 
 <div class="mb-4">
-	<h5 class="mb-3">Oder erstelle eine Auswertung aus bereits angegebene Präferenzen in .csv Format</h5>
+	<h5 class="mb-3">
+	{% if session['is_authenticated'] == True %}
+	Oder e{% else %}E{% endif %}rstelle eine Auswertung aus bereits angegebene Präferenzen in .csv Format</h5>
 	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
 			<div class="mb-2">
