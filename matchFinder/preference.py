@@ -38,7 +38,8 @@ def validate():
 		else:
 			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
 			return render_template("preference.html", teilnehmer=teilnehmer,
-					themen=themen, verteilung_id=verteilung.id)
+					themen=themen, verteilung_id=verteilung.id,
+					veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
 	else:
 		first_name = request.form.get('first_name', None)
 		last_name = request.form.get('last_name', None)
@@ -50,8 +51,10 @@ def validate():
 			database_helper.insert_teilnehmer(teilnehmer)
 			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
 			return render_template("preference.html", teilnehmer=teilnehmer,
-					themen=themen, verteilung_id=verteilung.id)
-		return render_template('validate.html', id = hashed_verteilung_id, protected=False, error="error")
+					themen=themen, verteilung_id=verteilung.id,
+					veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
+		return render_template('validate.html', id = hashed_verteilung_id,
+			protected=False, error="error")
 
 
 
