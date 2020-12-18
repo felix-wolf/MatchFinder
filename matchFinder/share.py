@@ -17,12 +17,18 @@ def index():
 	protected = request.form.get('protected', False)
 	editable = request.form.get('editable', False)
 	max_per_thema = request.form.get('max_per', 1)
+	min_votes = request.form.get('min_votes', 1)
+	veto_allowed = request.form.get('veto_allowed', True)
 	protected = True if protected == "on" else False
 	editable = True if editable == "on" else False
+	veto_allowed = True if veto_allowed == "on" else False
+	print(veto_allowed)
+	print(min_votes)
 
 	id = database_helper.save_verteilung(
 		teilnehmer_list_id, thema_list_id,
-		protected, editable, max_per_thema)
+		protected, editable, max_per_thema,
+		min_votes, veto_allowed)
 	return redirect(url_for('share.show', verteilung_id=id))
 
 @bp.route('/show/<int:verteilung_id>')

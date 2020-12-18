@@ -27,12 +27,32 @@
 						{% endfor %}
 					</select>
 				</div>
+				{% for thema in themen %}
+				<input type="hidden" name="" id="number_themen{{thema.id}}" value="{{thema.themen | length}}">
+				{% endfor %}
+
 
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100"># / Gruppe</span>
 					</div>
-					<input type="number" @change="onChange($event)" v-model="max_per" id="max_per" name="max_per" class="form-control" value="1">
+					<input type="number" @change="onChangeMaxPer($event)" v-model="max_per" id="max_per" name="max_per" class="form-control" value="1">
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100">Mindeststimmen</span>
+					</div>
+					<input type="number" @change="onChangeMinVotes($event)" v-model="min_votes" id="min_votes" name="min_votes" class="form-control" value="1">
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-25">
+						<div class="input-group-text w-100">
+							<input type="checkbox" name="veto_allowed" id="veto_allowed" aria-label="Checkbox for following text input" checked>
+						</div>
+					</div>
+					<span class="form-control">Veto erlaubt</span>
 				</div>
 
 				<div class="input-group mb-2">
@@ -79,9 +99,24 @@
 					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100"># / Gruppe</span>
 					</div>
-					<input type="number" @change="onChange($event)" v-model="max_per" id="max_per" name="max_per" class="form-control" value="1">
+					<input type="number" @change="onChangeMaxPer($event)" v-model="max_per" id="max_per" name="max_per" class="form-control" value="1">
 				</div>
 
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100">Mindeststimmen</span>
+					</div>
+					<input type="number" @change="onChangeMinVotes($event)" v-model="min_votes" id="min_votes" name="min_votes" class="form-control" value="1">
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-25">
+						<div class="input-group-text w-100">
+							<input type="checkbox" name="veto_allowed" id="veto_allowed" aria-label="Checkbox for following text input" checked>
+						</div>
+					</div>
+					<span class="form-control">Veto erlaubt</span>
+				</div>
 
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
@@ -155,30 +190,45 @@
 		data: {
 			protected: true,
 			max_per: 1,
-			within_limit: true
+			min_votes: 1,
+			within_limit: true,
+			numberOfThemen: 1,
+			numberOfTeilnehmer: 1
 		},
 		methods: {
-			onChange(event) {
+			onChangeMaxPer(event) {
 				if (event.target.value <= 0) {
 					this.max_per = 1
 				}
 				this.update()
 			},
-			update() {
-				var selectedTeilnehmerValue = document.getElementById("teilnehmer")
-				var selectedThemenValue = document.getElementById("thema")
-				if (selectedTeilnehmerValue != null && selectedThemenValue) {
-					selectedTeilnehmerValue = selectedTeilnehmerValue.value
-					selectedThemenValue = selectedThemenValue.value
-					const themen = document.getElementById("number_themen" + selectedThemenValue).value
-					const teilnehmer = document.getElementById("number_teilnehmer" + selectedTeilnehmerValue).value
-					this.within_limit = teilnehmer <= themen * this.max_per
+			onChangeMinVotes(event) {
+				if (event.target.value <= 0) {
+					this.min_votes = 1
 				}
+				if (event.target.value > this.numberOfThemen) {
+					this.min_votes = event.target.value - 1
+				}
+				this.update()
+			},
+			update() {
+				this.within_limit = this.numberOfTeilnehmer <= this.numberOfThemen * this.max_per
 			}
 		},
 		mounted() {
+			var selectedTeilnehmerValue = document.getElementById("teilnehmer")
+			var selectedThemenValue = document.getElementById("thema")
+			if (selectedThemenValue != null) {
+				selectedThemenValue = selectedThemenValue.value
+				this.numberOfThemen = document.getElementById("number_themen" + selectedThemenValue).value
+				console.log(this.numberOfThemen)
+			}
+			if (selectedTeilnehmerValue != null) {
+				selectedTeilnehmerValue = selectedTeilnehmerValue.value
+				this.numberOfTeilnehmer = document.getElementById("number_teilnehmer" + selectedTeilnehmerValue).value
+			}
 			this.update()
-		}
+		},
 	});
 
 </script>
