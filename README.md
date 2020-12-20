@@ -17,6 +17,7 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 - Button umbenennen (Submit)
 - Keine Präferenzen hochzählen
 - DISALLOWED für Veto
+- WikiDoc export
 
 
 
