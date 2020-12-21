@@ -1,4 +1,4 @@
-from munkres import Munkres, print_matrix
+from munkres import Munkres, print_matrix, DISALLOWED
 import pandas as pd
 import numpy as np
 import random
@@ -12,7 +12,7 @@ def calculateFromCSV(file):
     full_matrix = df.replace(
         [np.NAN, "Veto", "Zehntwahl", "Neuntwahl", "Achtwahl", "Siebtwahl",
         "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
-        [1000, 2000, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+        [1000, DISALLOWED, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
     # reduced_matrix = full_matrix.iloc[:,1:]
     # matrix zu 2d liste konvertieren
     # create a list of all topcs
