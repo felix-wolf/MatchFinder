@@ -2,7 +2,31 @@ from statistics import median
 from operator import itemgetter
 import copy
 
-def convert__num_to_praef(num):
+
+def convert_praef_to_num(praef):
+    if praef == "Erstwahl":
+        return 1
+    if praef == "Zweitwahl":
+        return 2
+    if praef == "Drittwahl":
+        return 3
+    if praef == "Viertwahl":
+        return 4
+    if praef == "Fünftwahl":
+        return 5
+    if praef == "Sechstwahl":
+        return 6
+    if praef == "Siebtwahl":
+        return 7
+    if praef == "Achtwahl":
+        return 8
+    if praef == "Neuntwahl":
+        return 9
+    if praef == "Zehntwahl":
+        return 10
+    return praef
+
+def comvert_num_to_praef(num):
     if num == 1 or num == '1':
         return "Erstwahl"
     if num == 2 or num == '2':

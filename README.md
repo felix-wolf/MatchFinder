@@ -5,7 +5,6 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 - Fix bug bei dem die Aktionen der Verteilungen clippen, wenn nur ein Eintrag existiert
 - Vuejs in Prod mode
 - Editierfunkion einbauen
-- MindestAnzahl von Stimmen
 - Gruppen per Datei erstellen
 - Teilnehmer mit Formular erstellen
 - Inhalt für Home-Seite erstellen

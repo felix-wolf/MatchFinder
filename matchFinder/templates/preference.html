@@ -6,7 +6,7 @@
 
 {% block body %}
 <div id="app">
-	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an!</h5>
+	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an. Du musst mindestens ${neededAnswers} Angaben machen.</h5>
 	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
 		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 			{% for thema in themen %}
@@ -22,7 +22,7 @@
 			</div>
 			{% endfor %}
 			<input type="hidden" id="information" name="information" value='{"teilnehmer_id": "{{teilnehmer.id}}","verteilung_id":"{{verteilung_id}}"}'>
-			<input class="btn btn-primary" type="submit" value="Speichern">
+			<input v-if="allNeededAnswersGiven" class="btn btn-primary" type="submit" value="Speichern">
 		</div>
 	</form>
 </div>
@@ -42,6 +42,8 @@
 		delimiters: ['${', '}'],
 		data: {
 			infoJson: null,
+			allNeededAnswersGiven: false,
+			neededAnswers: 0,
 
 			options : [
 			"Keine Präferenz",
@@ -81,7 +83,6 @@
 				if (numberOfAnswers < 10) {
 					const startIndex = parseInt(numberOfAnswers) + 1
 					this.options.splice(startIndex, this.options.length - startIndex - 1)
-					console.log(this.options)
 				}
 				// configure veto option
 				if (this.infoJson["veto_allowed"] == false) {
@@ -128,10 +129,8 @@
 
 					const element = document.getElementById(i)
 					var index = 0
-					var selected = ""
 					for (var key in this.mapping) {
 						if (this.mapping[key] == element.id) {
-							selected = key
 							break
 						}
 						if (this.mapping[key] == "") {
@@ -142,12 +141,15 @@
 						element.options[index].selected = true
 					}
 				}
+				const filtered = this.options.filter(option => this.mapping[option] != "")
+				this.allNeededAnswersGiven = filtered.length >= this.neededAnswers
 			},
 		},
 		mounted() {
 			var json = JSON.parse(veto)
 			json["veto_allowed"] = json["veto_allowed"] == "True" ? true : false
 			this.infoJson = json
+			this.neededAnswers = json["min_votes"]
 			this.configureAnswers()
 		}
 	})
