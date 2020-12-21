@@ -11,7 +11,6 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 - Teilnehmer mit Formular erstellen
 - Inhalt für Home-Seite erstellen
 - Datenbankeinträge nach einer Zeit löschen?
-- offene Verteilungen können nicht erstellt werden
 - Wahlen beschränken
 - Keine Präferenzen hochzählen
 - WikiDoc export

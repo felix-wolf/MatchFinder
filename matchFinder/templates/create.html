@@ -58,7 +58,7 @@
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
 						<div class="input-group-text w-100">
-							<input type="checkbox" name="protected" id="protected" aria-label="Checkbox for following text input" disabled>
+							<input type="checkbox" @change="onChangeProtected()" name="protected" id="protected" aria-label="Checkbox for following text input" disabled>
 						</div>
 					</div>
 					<span class="form-control">geschützt</span>
@@ -121,7 +121,7 @@
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
 						<div class="input-group-text w-100">
-							<input type="checkbox" name="protected" id="protected" v-model="protected" aria-label="Checkbox for following text input" checked>
+							<input type="checkbox" @change="onChangeProtected()" name="protected" id="protected" v-model="protected" aria-label="Checkbox for following text input" checked>
 						</div>
 					</div>
 					<span class="form-control">geschützt</span>
@@ -202,6 +202,9 @@
 				}
 				this.update()
 			},
+			onChangeProtected() {
+				this.update()
+			},
 			onChangeMinVotes(event) {
 				if (event.target.value <= 0) {
 					this.min_votes = 1
@@ -212,7 +215,7 @@
 				this.update()
 			},
 			update() {
-				this.within_limit = this.numberOfTeilnehmer <= this.numberOfThemen * this.max_per
+				this.within_limit = this.protected ? this.numberOfTeilnehmer <= this.numberOfThemen * this.max_per : true
 			}
 		},
 		mounted() {
