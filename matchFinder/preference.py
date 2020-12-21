@@ -33,7 +33,7 @@ def validate():
 		error, verteilung, teilnehmer = check_user_for_protected(matr_nr,
 											hashed_verteilung_id)
 		if error:
-			return render_template('validate.html', id=verteilung_id,
+			return render_template('validate.html', id=hashed_verteilung_id,
 					protected=protected, error=error)
 		else:
 			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
