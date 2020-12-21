@@ -21,26 +21,22 @@ def from_db():
     max_per = verteilung.max_teilnehmer_per_thema
     teilnehmer = verteilung.teilnehmer.teilnehmer
     thema_list = database_helper.get_thema_list_by_id(verteilung.thema_list_id)
-    themen = []
-    for thema in thema_list.themen:
-        themen.append(thema.thema_name)
+    themen = list(map(lambda x: x.thema_name, thema_list.themen))
     themen = helper.duplicate_themen(themen, max_per)
     teilnehmer_pref = []
     for teil in teilnehmer:
         praeferenz = database_helper.get_praeferenz_by_teilnehmer_id(teil.id)
         if (praeferenz == None):
-            praeferenz = ""
+            # TODO: check if this works
+            praeferenzen = []
             for index in range(len(thema_list.themen) - 1):
-                praeferenz += ","
+                praeferenzen.append("Keine Präferenz")
+            praeferenz = helper.convert_preferences(praeferenzen)
         else:
             praeferenz = praeferenz.praeferenzen
-        local_teilnehmer_pref = []
-        local_teilnehmer_pref.append(teil.first_name + " " + teil.last_name)
         praeferenz = praeferenz.split(',')
-        for praef in praeferenz:
-            converted_praef = helper.convert_praef_to_num(praef)
-            local_teilnehmer_pref.append(converted_praef)
-        local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(local_teilnehmer_pref, max_per)
+        local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(
+            [teil.first_name + " " + teil.last_name] + praeferenz, max_per)
         teilnehmer_pref.append(local_teilnehmer_pref)
     assignments = matchCalculator.calculate_from_db(teilnehmer_pref, themen)
     assignments = helper.sort_by_median(assignments)

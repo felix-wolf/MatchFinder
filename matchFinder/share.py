@@ -22,8 +22,6 @@ def index():
 	protected = True if protected == "on" else False
 	editable = True if editable == "on" else False
 	veto_allowed = True if veto_allowed == "on" else False
-	print(veto_allowed)
-	print(min_votes)
 
 	id = database_helper.save_verteilung(
 		teilnehmer_list_id, thema_list_id,

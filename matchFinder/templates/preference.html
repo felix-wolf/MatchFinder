@@ -21,10 +21,8 @@
 				</select>
 			</div>
 			{% endfor %}
-			<input class="btn btn-primary" type="submit" value="Speichern">
 			<input type="hidden" id="information" name="information" value='{"teilnehmer_id": "{{teilnehmer.id}}","verteilung_id":"{{verteilung_id}}"}'>
-			<input type="hidden" id="veto_allowed" name="veto_allowed" value='{{veto_allowed}}'>
-			<input type="hidden" id="min_votes" name="min_votes" value='{{min_votes}}'>
+			<input class="btn btn-primary" type="submit" value="Speichern">
 		</div>
 	</form>
 </div>
@@ -32,6 +30,9 @@
 
 {% block scripts %}
 
+<script type="text/javascript">
+	var veto = '{"teilnehmerId": "{{teilnehmer.id}}","verteilungId":"{{verteilung_id}}", "veto_allowed":"{{veto_allowed}}", "min_votes": "{{min_votes}}", "numberOfAnswers":"{{themen|length}}"}'
+</script>
 <script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
 <script type="text/javascript">
 
@@ -40,7 +41,7 @@
 		el: "#app",
 		delimiters: ['${', '}'],
 		data: {
-			veto_allowed: true,
+			infoJson: null,
 
 			options : [
 			"Keine Präferenz",
@@ -73,6 +74,26 @@
 			}
 		},
 		methods: {
+			configureAnswers() {
+
+				// restrict number of choices
+				const numberOfAnswers = this.infoJson["numberOfAnswers"]
+				if (numberOfAnswers < 10) {
+					const startIndex = parseInt(numberOfAnswers) + 1
+					this.options.splice(startIndex, this.options.length - startIndex - 1)
+					console.log(this.options)
+				}
+				// configure veto option
+				if (this.infoJson["veto_allowed"] == false) {
+					delete this.mapping.Veto
+					const index = this.options.indexOf("Veto")
+					if (index > -1) {
+						this.options.splice(index, 1)
+					}
+
+				}
+
+			},
 			validOptions(object) {
 				return this.options.filter(
 					f => this.mapping[f] == "" || this.mapping[f] == object
@@ -124,8 +145,10 @@
 			},
 		},
 		mounted() {
-			this.veto_allowed = document.getElementById("veto_allowed").value
-			console.log(veto_allowed)
+			var json = JSON.parse(veto)
+			json["veto_allowed"] = json["veto_allowed"] == "True" ? true : false
+			this.infoJson = json
+			this.configureAnswers()
 		}
 	})
 

@@ -2,6 +2,7 @@ from flask import (
 	Blueprint, Flask, redirect, render_template, request, url_for)
 from . import database_helper
 from . import limiter
+from . import helper
 import json
 from matchFinder.models import praeferenz_model
 from matchFinder.models import teilnehmer_model
@@ -67,15 +68,11 @@ def save():
 	teilnehmer_id = obj["teilnehmer_id"]
 	verteilung = database_helper.get_verteilung_by_id(verteilung_id)
 	number_of_themen_in_verteilung = len(verteilung.thema_list.themen)
-	preference_string = ""
+	preferences = []
 	for index in range(number_of_themen_in_verteilung):
 		preference = request.form.get(str(index + 1), None)
-		if preference == "Keine Präferenz":
-			preference = ""
-		if preference == "Veto":
-			preference = "2000"
-		preference_string = preference_string + preference + ","
-	preference_string = preference_string[:-1]
+		preferences.append(preference)
+	preference_string = helper.convert_preferences(preferences)
 	praeferenz = praeferenz_model.Praeferenz(
 		teilnehmer_id=teilnehmer_id,
 		verteilung_id=verteilung_id,
