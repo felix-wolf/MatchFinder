@@ -10,8 +10,6 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 - Datenbankeinträge nach einer Zeit löschen?
 - WikiDoc export
 
-
-
 ### Inhaltsverzeichnis
 - [Dokumentation & Spezifikation](#dokumentation-spezifikation)
     - [Projektziel](#projektziel)

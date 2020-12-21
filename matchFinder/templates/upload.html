@@ -18,7 +18,7 @@
 	<div class="row">
 		<div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
 			<h6>Aus Datei laden:</h6>
-			<form method=post action="{{ url_for('upload.upload') }}" enctype="multipart/form-data">
+			<form method=post action="{{ url_for('upload.teilnehmer_upload') }}" enctype="multipart/form-data">
 				<div class="input-group mb-2">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Teilnehmerliste</span>
@@ -58,7 +58,7 @@
 <div class="row">
 	<div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
 		<h6>Aus Datei laden:</h6>
-		<form method=post action="{{ url_for('upload.upload') }}" enctype="multipart/form-data">
+		<form method=post action="{{ url_for('upload.themen_upload') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="validationTooltipUsernamePrepend">Name der Themen / Gruppen</span>
