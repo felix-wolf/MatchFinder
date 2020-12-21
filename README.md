@@ -14,7 +14,6 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 - offene Verteilungen können nicht erstellt werden
 - falsche matr_nr führt zu fehler, hashed id
 - Wahlen beschränken
-- Button umbenennen (Submit)
 - Keine Präferenzen hochzählen
 - WikiDoc export
 
