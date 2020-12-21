@@ -4,7 +4,8 @@ import os
 from werkzeug.utils import secure_filename
 from . import txt_parser
 from . import database_helper
-from matchFinder.forms import thema_form as themen_form
+from matchFinder.forms import thema_form
+from matchFinder.forms import teilnehmer_form
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
@@ -55,6 +56,25 @@ def themen_manually():
             thema_form = themen_form.ThemaEntryForm()
             themenform.themen.append_entry(thema_form)
         return render_template('upload_themen.html', form=themenform)
+    return redirect(url_for('upload.index'))
+
+@bp.route('/teilnehmer_manually', methods=['POST'])
+def teilnehmer_manually():
+    teilnehmerform = teilnehmer_form.TeilnehmerForm()
+    if teilnehmerform.validate_on_submit():
+        # form is filled out and valid
+
+        rtn = database_helper.save_teilnehmer(
+            teilnehmerform.teilnehmer.data,
+            teilnehmerform.teilnehmer_name.data)
+        return redirect(url_for('upload.index', items_saved=rtn))
+
+    number_of_teilnehmer = request.form.get('number_teilnehmer', None)
+    if number_of_teilnehmer != None and int(number_of_teilnehmer) > 0:
+        for i in range(int(number_of_teilnehmer)):
+            single_teilnehmer_form = teilnehmer_form.TeilnehmerEntryForm()
+            teilnehmerform.teilnehmer.append_entry(single_teilnehmer_form)
+        return render_template('upload_teilnehmer.html', form=teilnehmerform)
     return redirect(url_for('upload.index'))
 
 

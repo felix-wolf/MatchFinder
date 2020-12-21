@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}Daten anlegen{% endblock %}
+
+{% block header %}Daten anlegen{% endblock %}
+
+{% block body %}
+<p>Fülle die Listen mit Inhalt</p>
+
+<div class="mb-5">
+	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 mb-3">
+		<form method="POST" action="{{ url_for('upload.teilnehmer_manually') }}">
+			{{ form.csrf_token() }}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Name der Teilnehmergruppe</span>
+				</div>
+				{{ form.teilnehmer_name(size=20, class="form-control", placeholder="required") }}
+			</div>
+			{% for single_teilnehmer_form in form.teilnehmer.entries %}
+			{{ single_teilnehmer_form.hidden_tag() }}
+			Teilnehmer {{loop.index}}
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100">Vorname</span>
+				</div>
+				{{ single_teilnehmer_form.first_name(value="", size=20, class="form-control", placeholder="required") }}
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100">Nachname</span>
+				</div>
+				{{ single_teilnehmer_form.last_name(value="", size=20, class="form-control", placeholder="optional") }}
+			</div>
+
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100">Matrikelnummer</span>
+				</div>
+				{{ single_teilnehmer_form.matr_nr(value="", size=20, class="form-control", placeholder="optional") }}
+			</div>
+			{% endfor %}
+
+			<input class="btn btn-primary" type="submit" value="Erstellen">
+
+		</form>
+	</div>
+</div>
+
+{% endblock %}

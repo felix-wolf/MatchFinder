@@ -94,8 +94,9 @@ def get_praeferenz_by_teilnehmer_id(teilnehmer_id):
 def save_teilnehmer(teilnehmer_liste, list_name):
 	memberlist = []
 	for mem in teilnehmer_liste:
+		matr_nr = mem['matr_nr'] if isinstance(mem['matr_nr'], int) else mem['matr_nr'].item()
 		local_member = teilnehmer_model.Teilnehmer(
-        	matr_nr = mem['matr_nr'].item(),
+        	matr_nr = matr_nr,
         	last_name = mem['last_name'],
         	first_name = mem['first_name']
         )
