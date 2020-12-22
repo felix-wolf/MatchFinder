@@ -21,7 +21,6 @@ def calculateFromCSV(file):
     return calculateMatchFromList(full_matrix, themen)
 
 def calculate_from_db(teilnehmer_pref, themen):
-    print(teilnehmer_pref)
     return calculateMatchFromList(teilnehmer_pref, themen)
 
 

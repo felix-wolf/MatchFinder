@@ -83,7 +83,6 @@ def duplicate_themen(themen, max_per):
     return new_themen
 
 def duplicate_teilnehmer_praefs(teilnehmer_praefs, max_per):
-    print(teilnehmer_praefs)
     new_teilnehmer_praefs = copy.deepcopy(teilnehmer_praefs)
     teilnehmer_praefs.pop(0)
     for index in range(max_per - 1):
@@ -92,7 +91,6 @@ def duplicate_teilnehmer_praefs(teilnehmer_praefs, max_per):
     return new_teilnehmer_praefs
 
 def convert_preferences(praeferenzen):
-
     indices_of_no_praefs = []
     for index, praef in enumerate(praeferenzen):
         praeferenzen[index] = convert_praef_to_num(praef)
@@ -113,3 +111,16 @@ def convert_preferences(praeferenzen):
         preference_string = preference_string + str(praef) + ","
     return preference_string[:-1]
 
+def create_csv(data):
+    rtn = "Name,Thema,Wahl\n"
+    for studi in data:
+        rtn += studi[0] + "," + studi[1] + "," + str(studi[2]) + "\n"
+    return rtn
+
+def create_txt(data):
+    rtn = "===== Auswertung der Verteilung =====\n"
+    rtn += "Name | Thema | Wahl\n"
+    rtn += "-- | -- | --\n"
+    for studi in data:
+        rtn += studi[0] + "|" + studi[1] + "|" + str(studi[2]) + "\n"
+    return rtn

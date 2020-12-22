@@ -4,7 +4,7 @@ import os
 from werkzeug.utils import secure_filename
 from . import txt_parser
 from . import database_helper
-from matchFinder.forms import thema_form
+from matchFinder.forms import themen_form
 from matchFinder.forms import teilnehmer_form
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')

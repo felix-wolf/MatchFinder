@@ -1,10 +1,11 @@
 from flask import (
-    Blueprint, Flask, render_template, request, current_app as app)
+    Blueprint, Flask, render_template, request, redirect, url_for, send_file, after_this_request)
 from werkzeug.utils import secure_filename
 import os
 from . import database_helper
 from . import matchCalculator
 from . import helper
+import json
 
 
 bp = Blueprint('evaluate', __name__, url_prefix='/evaluate')
@@ -29,7 +30,7 @@ def from_db():
         if (praeferenz == None):
             # TODO: check if this works
             praeferenzen = []
-            for index in range(len(thema_list.themen) - 1):
+            for index in range(len(thema_list.themen)):
                 praeferenzen.append("Keine Präferenz")
             praeferenz = helper.convert_preferences(praeferenzen)
         else:
@@ -53,3 +54,29 @@ def csv_upload():
         assignments = matchCalculator.calculateFromCSV(uploaded_file)
         assignments = helper.sort_by_median(assignments)
     return render_template('results.html', data=assignments)
+
+
+@bp.route('export', methods=['GET', 'POST'])
+def export():
+    data_string = request.form.get('data', None)
+    if data_string != None:
+        data_string = data_string.replace('\'', '\"')
+        data_json = json.loads(data_string)
+        data = data_json["data"]
+        with open("verteilung.txt", 'w') as f:
+            if data_json["type"] == "csv":
+                f.write(helper.create_csv(data["studis"]))
+            else:
+                f.write(helper.create_txt(data["studis"]))
+        path = "../verteilung.txt"
+        @after_this_request
+        def remove_file(response):
+            try:
+                dirname = os.path.dirname(__file__)
+                filename = os.path.join(dirname, path)
+                os.remove(filename)
+            except Exception as error:
+                print("Error removing or closing downloaded file handle", error)
+            return response
+        return send_file(path, attachment_filename="verteilung.csv")
+    return redirect(url_for("home.index"))

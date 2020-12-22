@@ -2,10 +2,8 @@
 Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Präferenzen ein faires Match findet.
 
 ## TODO
-- Fix bug bei dem die Aktionen der Verteilungen clippen, wenn nur ein Eintrag existiert
 - Vuejs in Prod mode
 - Inhalt für Home-Seite erstellen
-- WikiDoc export
 
 ### Inhaltsverzeichnis
 - [Dokumentation & Spezifikation](#dokumentation-spezifikation)

@@ -13,6 +13,7 @@
 
 <p>Hier können Listen von Themen oder Teilnehmer gespeichert werden, um daraus später Verteilungen zu erstellen.</p>
 
+<div id="app">
 <div class="mb-5">
 	<h4>Teilnehmerliste anlegen</h4>
 	<div class="row">
@@ -36,19 +37,17 @@
 
 		<div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
 			<h6>Manuell erstellen:</h6>
-			<div id="app">
 				<form method=post action="{{ url_for('upload.teilnehmer_manually') }}" enctype=multipart/form-data>
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
 							<span class="input-group-text">Anzahl der Teilnehmer</span>
 						</div>
-						<input type="number" v-model="max_per" @change="onChange($event)" id="number_teilnehmer" name="number_teilnehmer" class="form-control" value="1">
+						<input type="number" v-model="number_teilnehmer" @change="onChangeTeilnehmer($event)" id="number_teilnehmer" name="number_teilnehmer" class="form-control" value="1">
 					</div>
 					<div class="input-group mb-2">
 						<input class="btn btn-primary" type=submit value="Zur Erstellung">
 					</div>
 				</form>
-			</div>
 		</div>
 	</div>
 </div>
@@ -76,22 +75,20 @@
 
 	<div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
 		<h6>Manuell erstellen:</h6>
-		<div id="app">
 			<form method=post action="{{ url_for('upload.themen_manually') }}" enctype=multipart/form-data>
 				<div class="input-group mb-2">
 					<div class="input-group-prepend">
 						<span class="input-group-text">Anzahl der Gruppen</span>
 					</div>
-					<input type="number" v-model="max_per" @change="onChange($event)" id="number_themen" name="number_themen" class="form-control" value="1">
+					<input type="number" v-model="number_themen" @change="onChangeThemen($event)" id="number_themen" name="number_themen" class="form-control" value="1">
 				</div>
 				<div class="input-group mb-2">
 					<input class="btn btn-primary" type=submit value="Zur Erstellung">
 				</div>
 			</form>
-		</div>
 	</div>
 </div>
-
+</div>
 
 {% endblock %}
 
@@ -105,12 +102,18 @@
 		el: "#app",
 		delimiters: ['${', '}'],
 		data: {
-			max_per: 1
+			number_teilnehmer: 1,
+			number_themen: 1
 		},
 		methods: {
-			onChange(event) {
+			onChangeTeilnehmer(event) {
 				if (event.target.value <= 0) {
-					this.max_per = 1
+					this.number_teilnehmer = 1
+				}
+			},
+			onChangeThemen(event) {
+				if (event.target.value <= 0) {
+					this.number_themen = 1
 				}
 			}
 		}

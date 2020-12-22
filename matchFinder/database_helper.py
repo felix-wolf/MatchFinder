@@ -177,7 +177,6 @@ def check_membership(hashed_verteilung_id, matr_nr):
 			for teil in teilnehmer_to_verteilung.teilnehmer:
 				if int(teil.matr_nr) == int(matr_nr):
 					if not verteilung_to_id.editable:
-						print("editable")
 						praef = get_praeferenz_by_teilnehmer_id_verteilung_id(teil.id, verteilung_to_id.id)
 						if praef != None:
 							return None, None, "Präferenzen wurden bereits angegeben!"
