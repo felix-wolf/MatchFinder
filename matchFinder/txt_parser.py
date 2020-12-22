@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import os
 
 def array_from_teilnehmer(file):
@@ -18,28 +19,18 @@ def array_from_teilnehmer(file):
 	return participants
 
 def array_from_themen(file):
-	'''
-	df = pd.read_csv(file, sep='\t', names=[
-		'stine_id', 'tutor_last_name', 'tutor_first_name', 'NaN1', 'topic_name', 'NaN2']
-		)
+	df = pd.read_csv(file, sep=',', names=['thema_name', 'zeit', 'betreuer'])
+	df = df.replace(np.nan, '', regex=True)
 	df.columns = df.columns.str.strip()
-	df = df.drop('NaN1', axis=1)
-	df = df.drop('NaN2', axis=1)
-	topics = []
+	themen = []
 	for ind in df.index:
-		topic = {}
-		topic['stine_id'] = df['stine_id'][ind]
-		topic['tutor_last_name'] = df['tutor_last_name'][ind]
-		topic['tutor_first_name'] = df['tutor_first_name'][ind]
-		topic['topic_name'] = df['topic_name'][ind]
-		topics.append(topic)
-		'''
-	return topics
+		thema = {}
+		thema['thema_name'] = df['thema_name'][ind]
+		thema['zeit'] = df['zeit'][ind]
+		thema['betreuer'] = df['betreuer'][ind]
+		themen.append(thema)
+	return themen
 
-def load_ips():
-	with open('list_of_blocked_ips.txt', 'r') as f:
-		return f.read().split('\n')
-
-def load_passwords():
-	with open('passwords.txt', 'r') as f:
+def load_values_from_file(file):
+	with open(file, 'r') as f:
 		return f.read().split('\n')

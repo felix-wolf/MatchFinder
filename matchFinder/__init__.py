@@ -81,7 +81,7 @@ def create_app(test_config=None):
     db.init_app(app)
 
     from . import txt_parser
-    blocked_ip = txt_parser.load_ips()
+    blocked_ip = txt_parser.load_values_from_file('list_of_blocked_ips.txt')
 
     return app
 

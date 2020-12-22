@@ -20,7 +20,7 @@ def check_password(plain_text_password, hashed_password):
 def create_passwords():
 	'''inserts hashed passwords from txt file into db.'''
 
-	keys = txt_parser.load_passwords()
+	keys = txt_parser.load_values_from_file('passwords.txt')
 	for key in keys:
 		hashed_password = get_hashed_password(key)
 		pw = password_model.Password(password=hashed_password)

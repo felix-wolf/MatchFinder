@@ -19,26 +19,8 @@ def load_logged_in_user():
 def index():
     return render_template('upload.html')
 
-
-@bp.route('/teilnehmer_upload', methods=['POST'])
-def teilnehmer_upload():
-    uploaded_file = request.files['file']
-    if (validate_file(uploaded_file)):
-        teilnehmer_name = request.form.get('teilnehmer_name', None)
-        themen_name = request.form.get('themen_name', None)
-        if themen_name == None:
-            teilnehmer = txt_parser.array_from_teilnehmer(uploaded_file)
-            rtn = database_helper.save_teilnehmer(teilnehmer, teilnehmer_name)
-        elif teilnehmer_name == None:
-            themen = txt_parser.array_from_themen(uploaded_file)
-            rtn = database_helper.save_themen(themen, themen_name)
-        return redirect(url_for('upload.index', items_saved=rtn))
-    else:
-        abort(400)
-    return redirect(url_for('upload.index', items_saved=False))
-
-@bp.route('/themen_upload', methods=['POST'])
-def themen_upload():
+@bp.route('/', methods=['POST'])
+def file():
     uploaded_file = request.files['file']
     if (validate_file(uploaded_file)):
         teilnehmer_name = request.form.get('teilnehmer_name', None)
