@@ -1,12 +1,12 @@
 from flask import (
 	Blueprint, Flask, redirect, render_template, request, url_for)
+from matchFinder.models import praeferenz_model
+from matchFinder.models import teilnehmer_model
 from . import database_helper
 from . import limiter
 from . import helper
-import json
-from matchFinder.models import praeferenz_model
-from matchFinder.models import teilnehmer_model
 import hashlib
+import json
 
 
 bp = Blueprint('preference', __name__, url_prefix='/preference')
@@ -73,20 +73,26 @@ def save():
 		preference = request.form.get(str(index + 1), None)
 		preferences.append(preference)
 	preference_string = helper.convert_preferences(preferences)
-	praeferenz = praeferenz_model.Praeferenz(
-		teilnehmer_id=teilnehmer_id,
-		verteilung_id=verteilung_id,
-		praeferenzen=preference_string)
-	database_helper.insert_praeferenz(praeferenz)
-	return redirect(url_for('home.index_with_message',
-		message="Deine Präferenzen wurden gespeichert!"))
+	existing_praef = database_helper.get_praeferenz_by_teilnehmer_id_verteilung_id(teilnehmer_id, verteilung_id)
+	if existing_praef != None:
+		database_helper.update_praef(existing_praef, preference_string)
+		return redirect(url_for('home.index_with_message',
+			message="Deine Präferenzen wurden aktualisiert!"))
+	else:
+		praeferenz = praeferenz_model.Praeferenz(
+			teilnehmer_id=teilnehmer_id,
+			verteilung_id=verteilung_id,
+			praeferenzen=preference_string)
+		database_helper.insert_praeferenz(praeferenz)
+		return redirect(url_for('home.index_with_message',
+			message="Deine Präferenzen wurden gespeichert!"))
 
 def check_user_for_protected(matr_nr, hashed_verteilung_id):
 	if matr_nr != None and matr_nr.isdigit():
-		verteilung, teilnehmer = database_helper.check_membership(hashed_verteilung_id, matr_nr)
-		if verteilung != None and teilnehmer != None:
+		verteilung, teilnehmer, error = database_helper.check_membership(hashed_verteilung_id, matr_nr)
+		if error == None:
 			return None, verteilung, teilnehmer
 		else:
-			return "Matrikelnummer ungültig!", None, None
+			return error, None, None
 	else:
 		return "Matrikelnummer muss eine Zahl sein!", None, None

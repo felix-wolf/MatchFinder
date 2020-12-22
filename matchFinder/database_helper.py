@@ -56,6 +56,11 @@ def get_verteilung_by_hashed_id(hashed_id):
 			return vert
 	return None
 
+def get_praeferenz_by_teilnehmer_id_verteilung_id(teilnehmer_id, verteilung_id):
+	return praeferenz_model.Praeferenz.query.filter_by(
+		teilnehmer_id=teilnehmer_id, verteilung_id=verteilung_id
+		).first()
+
 def delete_teilnehmer_by_id(id):
 	db.session.delete(get_teilnehmer_by_id(id))
 	db.session.commit()
@@ -90,6 +95,10 @@ def insert_teilnehmer(teilnehmer):
 
 def get_praeferenz_by_teilnehmer_id(teilnehmer_id):
 	return praeferenz_model.Praeferenz.query.filter_by(teilnehmer_id=teilnehmer_id).first()
+
+def update_praef(praef, preafs):
+	praef.praeferenzen = preafs
+	db.session.commit()
 
 def save_teilnehmer(teilnehmer_liste, list_name):
 	memberlist = []
@@ -167,8 +176,14 @@ def check_membership(hashed_verteilung_id, matr_nr):
 		if teilnehmer_to_verteilung != None:
 			for teil in teilnehmer_to_verteilung.teilnehmer:
 				if int(teil.matr_nr) == int(matr_nr):
-					return verteilung_to_id, teil
-	return None, None
+					if not verteilung_to_id.editable:
+						print("editable")
+						praef = get_praeferenz_by_teilnehmer_id_verteilung_id(teil.id, verteilung_to_id.id)
+						if praef != None:
+							return None, None, "Präferenzen wurden bereits angegeben!"
+
+					return verteilung_to_id, teil, None
+	return None, None, "Matrikelnummer ungültig!"
 
 
 
