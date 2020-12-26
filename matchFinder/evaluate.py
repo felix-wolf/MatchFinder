@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, Flask, render_template, request, redirect, url_for, send_file, after_this_request)
+    Blueprint, Flask, render_template, request, redirect, url_for, send_file, after_this_request, current_app as app)
 from werkzeug.utils import secure_filename
 import os
 from . import database_helper
