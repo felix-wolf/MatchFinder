@@ -279,6 +279,14 @@
 	</table>
 </div>
 
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+	Es wurden noch keine Daten angelegt.<br>
+	<a class="btn btn-primary" href="{{url_for('upload.index')}}">Hier kannst du Daten anlegen
+	</a>
+</div>
+
 {% endif %}
 
 {% endblock %}
