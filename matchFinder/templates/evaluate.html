@@ -13,6 +13,8 @@
 </div>
 {% endif %}
 
+{% if session['is_authenticated'] == True %}
+
 <div id="app" class="mb-5">
 
 	{% if verteilungen and session['is_authenticated'] == True %}
@@ -79,10 +81,11 @@
 {% elif session['is_authenticated'] == True %}
 
 <div class="alert alert-danger" role="alert">
-	Es existieren keine Verteilungen. Leg schnell eine an:
-	<a class="btn btn-primary mx-2" href="/create">Anlegen</a>
+	Es existieren keine Verteilungen.<br>
+	<a class="btn btn-primary" href="/create">Leg schnell eine an</a>
 </div>
 
+{% endif %}
 {% endif %}
 
 <div class="mb-4">
@@ -102,9 +105,11 @@
 {% endblock %}
 
 {% block vuejs %}
+
+{% if session['is_authenticated'] == True %}
+
 {{ super() }}
 <script type="text/javascript">
-
 
 	var app = new Vue({
 		el: "#app",
@@ -137,4 +142,5 @@
 	})
 
 </script>
+{% endif %}
 {% endblock %}

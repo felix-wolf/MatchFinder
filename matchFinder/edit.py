@@ -28,8 +28,7 @@ def index():
 		teilnehmer=teilnehmer_all,
 		thema_lists=thema_list_entries,
 		themen=thema_all,
-		verteilungen=verteilungen_all
-		)
+		verteilungen=verteilungen_all)
 
 @bp.route('/delete/<int:id>/<type>', methods=["GET"])
 def delete(id, type):
@@ -45,15 +44,10 @@ def delete(id, type):
 @bp.route('/action/<int:verteilung_id>/<action>', methods=["GET"])
 def action(verteilung_id, action):
 
-
 	if action == 'löschen':
 		database_helper.delete_verteilung_by_id(verteilung_id)
 
 	if action == 'teilen':
 		return redirect(url_for('share.show', verteilung_id=verteilung_id))
-
-	if action == 'auswerten':
-		print("DO STUFF")
-		# TODO: verteilung auswerten
 
 	return redirect(url_for("edit.index"))

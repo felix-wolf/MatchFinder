@@ -41,30 +41,26 @@
 		{% endfor %}
 
 	</table>
+
 	<div class="dropdown">
 		<button class="btn btn-primary btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Export als...
 		</button>
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			<div>
-				<form method=post target="_blank" action="{{ url_for('evaluate.export') }}" enctype=multipart/form-data>
+				<form method=post action="{{ url_for('evaluate.export') }}" enctype=multipart/form-data>
 					<input class="dropdown-item" type=submit value="CSV Datei">
-					<input type="hidden" id="data" name="data" value='{"type":"csv","data":{{i}}}'>
+					<input type="hidden" id="data" name="data" value='{"type":"csv", "name":"{{name}}","data":{{i}}}'>
 				</form>
 			</div>
 			<div>
 				<form method=post target="_blank" action="{{ url_for('evaluate.export') }}" enctype=multipart/form-data>
 					<input class="dropdown-item" type=submit value="WikiDocs-Format">
-					<input type="hidden" id="data" name="data" value='{"type":"wikiDocs","data": {{i}}}'>
+					<input type="hidden" id="data" name="data" value='{"type":"wikiDocs", "name":"{{name}}", "data": {{i}}}'>
 				</form>
 			</div>
 		</div>
 	</div>
-	<!--<div class="form-row align-items-center">
-		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
-			<input class="btn btn-primary" type=submit value=Export>
-		</form>
-	</div>-->
 </div>
 
 {% endif %}

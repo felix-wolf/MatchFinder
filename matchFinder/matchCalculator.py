@@ -48,16 +48,9 @@ def calculateMatchFromList(full_matrix, themen):
         for row, column in indexes:
             value = reduced_matrix[row][column]
             total += value
-            studi = []
             #print(f'({row}, {column}) -> {value}')
             #print(full_matrix[row][column])
-            studi.append(str(full_matrix[row][0]))
-            studi.append(themen[column])
-            studi.append(value)
-            studis.append(studi)
-            #local_assignment["studi"] = str(full_matrix[row][0])
-            #local_assignment["thema"] = themen[column]
-            #local_assignment[str(full_matrix[row][0])] = themen[column]
+            studis.append([str(full_matrix[row][0]), themen[column], value])
         studis = sorted(studis, key=itemgetter(0))
         local_assignment["studis"] = studis
         local_assignment['total'] = total

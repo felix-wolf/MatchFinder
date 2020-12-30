@@ -13,8 +13,5 @@ def load_logged_in_user():
 def index():
     teilnehmer = database_helper.get_all_teilnehmer_lists()
     themen = database_helper.get_all_thema_lists()
-    valid_teilnehmer = []
-    for teil in teilnehmer:
-    	if teil.is_for_unprotected == False:
-    		valid_teilnehmer.append(teil)
+    valid_teilnehmer = list(filter(lambda x: x.is_for_unprotected == False, teilnehmer))
     return render_template('create.html', teilnehmer=valid_teilnehmer, themen=themen)

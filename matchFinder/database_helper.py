@@ -93,9 +93,6 @@ def insert_teilnehmer(teilnehmer):
 	db.session.add(teilnehmer)
 	db.session.commit()
 
-def get_praeferenz_by_teilnehmer_id(teilnehmer_id):
-	return praeferenz_model.Praeferenz.query.filter_by(teilnehmer_id=teilnehmer_id).first()
-
 def update_praef(praef, preafs):
 	praef.praeferenzen = preafs
 	db.session.commit()
@@ -107,15 +104,13 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 		local_member = teilnehmer_model.Teilnehmer(
         	matr_nr = matr_nr,
         	last_name = mem['last_name'],
-        	first_name = mem['first_name']
-        )
+        	first_name = mem['first_name'])
 		db.session.add(local_member)
 		memberlist.append(local_member)
 
 	list = teilnehmer_list_model.Teilnehmer_List(
 		name = list_name,
-		teilnehmer = memberlist
-		)
+		teilnehmer = memberlist)
 	db.session.add(list)
 	db.session.commit()
 
@@ -128,15 +123,13 @@ def save_themen(themen, list_name):
 		local_thema = thema_model.Thema(
         	thema_name = top['thema_name'],
         	betreuer = top['betreuer'],
-        	zeit = top['zeit']
-        )
+        	zeit = top['zeit'])
 		db.session.add(local_thema)
 		list_of_themen.append(local_thema)
 
 	list = thema_list_model.Thema_List(
 		name = list_name,
-		themen = list_of_themen
-		)
+		themen = list_of_themen)
 	db.session.add(list)
 	db.session.commit()
 
@@ -164,8 +157,7 @@ def save_verteilung(name, teiln_list_id, thema_list_id, protected,
 		editable = editable,
 		max_teilnehmer_per_thema = number_per_thema,
 		min_votes = min_votes,
-		veto_allowed = veto_allowed
-	)
+		veto_allowed = veto_allowed)
 	db.session.add(local_verteilung)
 	db.session.commit()
 	return local_verteilung.id

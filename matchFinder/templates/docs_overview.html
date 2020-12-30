@@ -7,8 +7,11 @@
 {% block body %}
 
 {% if html %}
+
   {{ html | safe }}
+
 {% endif %}
+
 <h4>
 <a href="{{url_for('docs.specification')}}">-> Zur Spezifikation</a>
 </h4>

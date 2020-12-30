@@ -1,8 +1,9 @@
 from statistics import median
 from operator import itemgetter
 import copy
+import random
 from munkres import DISALLOWED
-
+from functools import reduce
 
 
 def convert_praef_to_num(praef):
@@ -54,36 +55,22 @@ def comvert_num_to_praef(num):
     return num
 
 def sort_by_median(assignments):
-    medians = []
-    for index, item in enumerate(assignments):
-        list = []
-        median_with_index = []
-        for studi in item["studis"]:
-            list.append(studi[2])
-        local_median = median(list)
-        streuung = 0
-        for entry in list:
-            streuung += abs(entry - local_median)
-        median_with_index.append(local_median)
-        median_with_index.append(index)
-        median_with_index.append(streuung / len(list))
-        medians.append(median_with_index)
-    medians = sorted(medians, key=itemgetter(0), reverse=True)
-    medians = sorted(medians, key=itemgetter(2))
-    index_of_items_sorted_by_medians = []
-    for med in medians:
-        index_of_items_sorted_by_medians.append(med[1])
-    sorted_assignments = []
-    for index in index_of_items_sorted_by_medians:
-        sorted_assignments.append(assignments[index])
-    return sorted_assignments
-
+    #if len(assignments) == 1:
+    if True:
+        medians = []
+        for index, item in enumerate(assignments):
+            weights = list(map(lambda x: x[2], item["studis"]))
+            local_median = median(weights)
+            streuung = reduce((lambda x, y: x + abs(y - local_median)), weights, 0)
+            medians.append([local_median, index, streuung / len(weights)])
+        medians = sorted(sorted(medians, key=itemgetter(0), reverse=True), key=itemgetter(2))
+        assignments = list(map(lambda x: assignments[x], map(lambda x: x[1], medians)))
+    return assignments
 
 def duplicate_themen(themen, max_per):
     new_themen = copy.deepcopy(themen)
     for index in range(max_per - 1):
-        for thema in themen:
-            new_themen.append(thema)
+        new_themen += list(map(lambda x: x, themen))
     return new_themen
 
 def duplicate_teilnehmer_praefs(teilnehmer_praefs, max_per):
@@ -109,22 +96,28 @@ def convert_preferences(praeferenzen):
                 break
             else: possible_number += 1
 
-    preference_string = ""
-    for praef in praeferenzen:
-        preaf = convert_praef_to_num(praef)
-        preference_string = preference_string + str(praef) + ","
+    if len(indices_of_no_praefs) == len (praeferenzen):
+        random.shuffle(praeferenzen)
+    preference_string = "".join(list(map(
+        lambda x: str(convert_praef_to_num(x)) + ",", praeferenzen)))
     return preference_string[:-1]
 
 def create_csv(data):
     rtn = "Name,Thema,Wahl\n"
-    for studi in data:
-        rtn += studi[0] + "," + studi[1] + "," + str(studi[2]) + "\n"
-    return rtn
+    return rtn + "".join(map(lambda x: x[0] + "," + x[1] + "," + str(x[2]) + "\n", data))
 
 def create_txt(data):
-    rtn = "===== Auswertung der Verteilung =====\n"
-    rtn += "Name | Thema | Wahl\n"
-    rtn += "-- | -- | --\n"
+    rtn = "ALS TABELLE:\n\n"
+    rtn += "===== Auswertung der Verteilung =====\n"
+    rtn += "| Name | Thema | Wahl |"
     for studi in data:
-        rtn += studi[0] + "|" + studi[1] + "|" + str(studi[2]) + "\n"
+        rtn += "\n|" + studi[0] + "|" + studi[1] + "|" + str(studi[2]) + "|"
+    rtn += "\n\n\n\nALS LISTE:\n\n"
+    rtn += "===== Auswertung der Verteilung =====\n"
+    themen = sorted(list(set(map(lambda x: x[1], data))))
+    for thema in themen:
+        rtn += "- " + thema + " -- "
+        rtn += "".join(map(str, map(lambda x: x + ", ", sorted(list(
+                    map(lambda c: c[0], filter(lambda x: x[1] == thema, data)))))))
+        rtn = rtn[:-2] + "\n"
     return rtn

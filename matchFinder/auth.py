@@ -21,11 +21,12 @@ def validate():
 	passwords = database_helper.get_all_passwords()
 	if len(passwords) == 0:
 		return render_template('auth.html', no_pws_found=True)
-	for pw in passwords:
-		if password_helper.check_password(entered_pw, pw.password):
-			session['is_authenticated'] = True
-			return redirect(url_for('home.index_with_message',
-				message="Authentifizierung erfolgreich!"))
+	validPasswords = list(filter(
+		lambda x: password_helper.check_password(entered_pw, x.password), passwords))
+	if len(validPasswords) == 1:
+		session['is_authenticated'] = True
+		return redirect(url_for('home.index_with_message',
+			message="Authentifizierung erfolgreich!"))
 	return render_template('auth.html', is_valid=False)
 
 @bp.route('/logout')

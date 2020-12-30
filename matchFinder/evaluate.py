@@ -26,12 +26,9 @@ def from_db():
     themen = helper.duplicate_themen(themen, max_per)
     teilnehmer_pref = []
     for teil in teilnehmer:
-        praeferenz = database_helper.get_praeferenz_by_teilnehmer_id(teil.id)
+        praeferenz = database_helper.get_praeferenz_by_teilnehmer_id_verteilung_id(teil.id, verteilung.id)
         if (praeferenz == None):
-            # TODO: check if this works
-            praeferenzen = []
-            for index in range(len(thema_list.themen)):
-                praeferenzen.append("Keine Präferenz")
+            praeferenzen = list(map(lambda x: "Keine Präferenz", thema_list.themen))
             praeferenz = helper.convert_preferences(praeferenzen)
         else:
             praeferenz = praeferenz.praeferenzen
@@ -41,19 +38,19 @@ def from_db():
         teilnehmer_pref.append(local_teilnehmer_pref)
     assignments = matchCalculator.calculate_from_db(teilnehmer_pref, themen)
     assignments = helper.sort_by_median(assignments)
-    return render_template('results.html', data=assignments)
+    return render_template('results.html', data=assignments, name=verteilung.name)
 
 @bp.route('csv_upload', methods=['POST'])
 def csv_upload():
     uploaded_file = request.files['file']
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
-        file_ext = os.path.splitext(filename)[1]
+        name, file_ext = os.path.splitext(filename)
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         assignments = matchCalculator.calculateFromCSV(uploaded_file)
         assignments = helper.sort_by_median(assignments)
-    return render_template('results.html', data=assignments)
+    return render_template('results.html', data=assignments, name=name)
 
 
 @bp.route('export', methods=['GET', 'POST'])
@@ -62,11 +59,15 @@ def export():
     if data_string != None:
         data_string = data_string.replace('\'', '\"')
         data_json = json.loads(data_string)
+        name = data_json["name"]
         data = data_json["data"]
+        filename = "auswertung_von_" + name
         with open("verteilung.txt", 'w') as f:
             if data_json["type"] == "csv":
+                filename += ".csv"
                 f.write(helper.create_csv(data["studis"]))
             else:
+                filename += ".txt"
                 f.write(helper.create_txt(data["studis"]))
         path = "../verteilung.txt"
         @after_this_request
@@ -78,5 +79,5 @@ def export():
             except Exception as error:
                 print("Error removing or closing downloaded file handle", error)
             return response
-        return send_file(path, attachment_filename="verteilung.csv")
+        return send_file(path, attachment_filename=filename, as_attachment=True)
     return redirect(url_for("home.index"))
