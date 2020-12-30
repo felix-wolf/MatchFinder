@@ -61,29 +61,36 @@
 			],
 		},
 		methods: {
+			// restrict numbers of choices
+			// deletes veto option if not allowed
 			configureAnswers() {
-
-				// restrict number of choices
 				const numberOfAnswers = this.infoJson["numberOfAnswers"]
 				if (numberOfAnswers < 10) {
 					const startIndex = parseInt(numberOfAnswers) + 1
 					this.options.splice(startIndex, this.options.length - startIndex - 1)
 				}
-				// configure veto option
 				if (this.infoJson["veto_allowed"] == false) {
-					const index = this.options.indexOf("Veto")
-					if (index > -1) {
-						this.options.splice(index, 1)
+					for (i = 0; i < this.options.length; i++) {
+						if (this.options[i][0] == "Veto") {
+							this.options.splice(i, 1)
+							break
+						}
 					}
-
 				}
-
 			},
+			// returns valid option specific to the thema
+			// passed as object
 			validOptions(object) {
 				return this.options.filter(
 					f => f[2] == true || f[1] == "" || f[1] == object
 					).map(e => e[0])
 			},
+			// called when an option is selected
+			// handles the logic of removing option from other answers
+			// when it is selected by one.
+			// It does so by storing values in the this.option data type.
+			// In nextTick(), every answer gets its selected value to avoid
+			// weird sideeffects of changing the underlying model to a select element
 			onChange(event) {
 				const target = event.target
 				const value = target.value
@@ -105,36 +112,37 @@
 
 				}
 
-				for (i = 1; i <= {{themen | length}}; i++) {
-					const element = document.getElementById(i)
-					var index = 0
-					for (j = 0; j < this.options.length; j++) {
-						if (this.options[j][1] == element.id) {
-							break
+				this.$nextTick(() => {
+
+					for (i = 1; i <= {{themen | length}}; i++) {
+
+						const element = document.getElementById(i)
+						var index = 0
+						for (j = 0; j < this.options.length; j++) {
+							if (this.options[j][1] == element.id) {
+								break
+							}
+							if (this.options[j][1] == "") {
+								index++
+							}
 						}
-						if (this.options[j][1] == "") {
-							index++
+
+						var numberOfOptions = 0
+						for (j = 0; j < this.options.length; j++) {
+							if (this.options[j][1] == "" || this.options[j][1] == element.id) {
+								numberOfOptions++
+							}
 						}
-					}
-					var numberOfOptions = 0
-					for (j = 0; j < this.options.length; j++) {
-						if (this.options[j][1] == "" || this.options[j][1] == element.id) {
-							numberOfOptions++
+
+						if (element.value != this.options[0][0] && index < numberOfOptions) {
+							element.options[index].selected = true
 						}
 					}
 
-					if (element.value != this.options[0][0] && index < numberOfOptions) {
-						//console.log(index)
-						element.options[index].selected = true
-					}
-					console.log(element.options.length)
-
-				}
-
-				const filtered = this.options.filter(option =>
-					option[1] != "")
-				this.allNeededAnswersGiven = filtered.length >= this.neededAnswers
-				//console.log(this.options)
+					const filtered = this.options.filter(option =>
+						option[1] != "")
+					this.allNeededAnswersGiven = filtered.length >= this.neededAnswers
+				})
 
 			}
 		},
