@@ -8,4 +8,3 @@ Die Dokumentation teilt sich in zwei Teile:
 
 # TODO
 - Würfeln (wird das überhaupt gebraucht? Einfach das oberste nehmen...)
-- Verteilungen einen Namen geben?

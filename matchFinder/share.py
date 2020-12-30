@@ -13,6 +13,7 @@ bp = Blueprint('share', __name__, url_prefix='/share')
 @bp.route('/', methods=['GET', 'POST'])
 def index():
 	teilnehmer_list_id = request.form.get('teilnehmer', None)
+	name = request.form.get('name', None)
 	thema_list_id = request.form.get('thema', None)
 	protected = request.form.get('protected', False)
 	editable = request.form.get('editable', False)
@@ -24,7 +25,7 @@ def index():
 	veto_allowed = True if veto_allowed == "on" else False
 
 	id = database_helper.save_verteilung(
-		teilnehmer_list_id, thema_list_id,
+		name, teilnehmer_list_id, thema_list_id,
 		protected, editable, max_per_thema,
 		min_votes, veto_allowed)
 	return redirect(url_for('share.show', verteilung_id=id))

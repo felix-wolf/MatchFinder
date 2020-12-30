@@ -19,6 +19,13 @@
 
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100">Name</span>
+					</div>
+					<input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
+				</div>
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100">Gruppenliste</span>
 					</div>
 					<select class="custom-select" name="thema" id="thema">
@@ -79,6 +86,13 @@
 		<h5 class="mb-3">Von bestehenden Daten</h5>
 		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 			<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
+
+				<div class="input-group mb-2">
+					<div class="input-group-prepend w-25">
+						<span class="input-group-text w-100">Name</span>
+					</div>
+					<input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
+				</div>
 
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
@@ -154,7 +168,8 @@
 				<template v-if="! within_limit">
 					<div class="alert alert-danger" role="alert">
 						Mit der momentanen Auswahl gibt es nicht genug Themen für alle Teilnehmer.<br>
-						Die Verteilung kann nicht erstellt werden.
+						Die Verteilung kann nicht erstellt werden.<br>
+						Versuche, die erlaubten Teilnehmer pro Gruppe zu erhöhen (<i># / Gruppe</i>).
 					</div>
 					<div class="input-group mb-2">
 						<input class="btn btn-primary" type="submit" value="Erstellen" disabled>
@@ -175,12 +190,24 @@
 	{% endif %}
 
 </div>
+
+{% if (themen|length == 0) and (teilnehmer|length == 0) and session['is_authenticated'] == True %}
+
+<div class="alert alert-danger" role="alert">
+	Es exisiteren keine Daten, aus denen eine Verteilung erstellt werden kann.<br>
+	<a class="btn btn-primary" href="{{url_for('upload.index')}}">Hier kannst du Daten anlegen
+	</a>
+</div>
+
+{% endif %}
+
 {% endblock %}
 
-{% block scripts %}
-
 {% if (themen|length > 0) and (teilnehmer|length >= 0) and session['is_authenticated'] == True%}
-<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
+
+{% block vuejs %}
+{{ super() }}
+
 <script type="text/javascript">
 
 
@@ -235,5 +262,5 @@
 	});
 
 </script>
-{% endif %}
 {% endblock %}
+{% endif %}

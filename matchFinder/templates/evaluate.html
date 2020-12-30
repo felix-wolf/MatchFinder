@@ -23,23 +23,22 @@
 		<form method=post action="{{ url_for('evaluate.from_db') }}" enctype="multipart/form-data">
 			<div class="input-group mb-2">
 				<div class="input-group-prepend">
-					<span class="input-group-text">Gruppen der Verteilung</span>
+					<span class="input-group-text">Name der Verteilung</span>
 				</div>
 				<select @change="onChange()" class="custom-select" name="verteilung" id="verteilung">
 					{% for verteilung in verteilungen %}
-					<option value="{{verteilung.id}}">{{verteilung.thema_list.name}}</option>
+					<option value="{{verteilung.id}}">{{verteilung.name}}</option>
 					{% endfor %}
 				</select>
 			</div>
 
 			{% for verteilung in verteilungen %}
 
-			<input type="hidden" name="" id="total_verteilung{{verteilung.id}}" value="{{verteilung.teilnehmer.teilnehmer | length}}">
-			<input type="hidden" name="" id="current_verteilung{{verteilung.id}}" value="{{verteilung.praeferenzen | length}}">
-			<input type="hidden" name="" id="obergrenze{{verteilung.id}}"
-			value="{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}">
-			<input type="hidden" name="" id="auslastung{{verteilung.id}}"
-			value="{{verteilung.teilnehmer.teilnehmer|length}}">
+			<input type="hidden" id="information" name="information{{verteilung.id}}" value='{
+			"numberOfTeilnehmer": "{{verteilung.teilnehmer.teilnehmer | length}}",
+			"numberOfPraefs": "{{verteilung.praeferenzen | length}}",
+			"obergrenze": "{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}",
+			"auslastung": "{{verteilung.teilnehmer.teilnehmer|length}}"}'>
 
 			{% endfor %}
 
@@ -88,7 +87,7 @@
 
 <div class="mb-4">
 	<h5 class="mb-3">
-	{% if session['is_authenticated'] == True %}
+		{% if session['is_authenticated'] == True %}
 	Oder e{% else %}E{% endif %}rstelle eine Auswertung aus bereits angegebene Präferenzen in .csv Format</h5>
 	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
@@ -102,9 +101,8 @@
 
 {% endblock %}
 
-{% block scripts %}
-
-<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
+{% block vuejs %}
+{{ super() }}
 <script type="text/javascript">
 
 
@@ -120,12 +118,12 @@
 			update() {
 				const selectedValue = document.getElementById("verteilung").value
 				if (selectedValue != "None") {
-					this.total = document.getElementById("total_verteilung" + selectedValue).value
-					this.current = document.getElementById("current_verteilung" + selectedValue).value
-					const obergrenze = document.getElementById("obergrenze" + selectedValue).value
-					const auslastung = document.getElementById("auslastung" + selectedValue).value
-					console.log(obergrenze)
-					console.log(auslastung)
+					const jsonData = document.getElementById("information").value
+					const json = JSON.parse(jsonData)
+					this.total = json["numberOfTeilnehmer"]
+					this.current = json["numberOfPraefs"]
+					const obergrenze = json["obergrenze"]
+					const auslastung = json["auslastung"]
 					this.within_limit = auslastung <= obergrenze
 				}
 			},

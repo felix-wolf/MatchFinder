@@ -142,8 +142,8 @@ def save_themen(themen, list_name):
 
 	return len(themen)
 
-def save_verteilung(teiln_list_id, thema_list_id, protected, editable,
-	number_per_thema, min_votes, veto_allowed):
+def save_verteilung(name, teiln_list_id, thema_list_id, protected,
+	editable, number_per_thema, min_votes, veto_allowed):
 
 	thema_list = get_thema_list_by_id(thema_list_id)
 	if protected:
@@ -157,6 +157,7 @@ def save_verteilung(teiln_list_id, thema_list_id, protected, editable,
 		db.session.commit()
 
 	local_verteilung = verteilung_model.Verteilung(
+		name=name,
 		thema_list_id = thema_list.id,
 		teilnehmer_list_id = teiln_list.id,
 		protected = protected,
