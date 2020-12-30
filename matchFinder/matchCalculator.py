@@ -12,7 +12,7 @@ def calculateFromCSV(file):
     full_matrix = df.replace(
         [np.NAN, "Veto", "Zehntwahl", "Neuntwahl", "Achtwahl", "Siebtwahl",
         "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
-        [1000, DISALLOWED, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+        [100, DISALLOWED, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
     # matrix zu 2d liste konvertieren
     themen = full_matrix.columns.tolist()
     themen.pop(0)

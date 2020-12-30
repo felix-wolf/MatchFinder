@@ -1,6 +1,8 @@
 from statistics import median
 from operator import itemgetter
 import copy
+from munkres import DISALLOWED
+
 
 
 def convert_praef_to_num(praef):
@@ -24,6 +26,8 @@ def convert_praef_to_num(praef):
         return 9
     if praef == "Zehntwahl":
         return 10
+    if praef == "Veto":
+        return DISALLOWED
     return praef
 
 def comvert_num_to_praef(num):

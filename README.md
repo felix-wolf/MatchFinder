@@ -7,4 +7,6 @@ Die Dokumentation teilt sich in zwei Teile:
     2. Die Dokumention beschreibt technische Details der Umsetzung.
 
 # TODO
-- Würfeln
+- Würfeln (wird das überhaupt gebraucht? Einfach das oberste nehmen...)
+- Verteilungen einen Namen geben?
+- Link kopierbar machen

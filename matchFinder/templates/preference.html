@@ -6,7 +6,8 @@
 
 {% block body %}
 <div id="app">
-	<h5>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an. Du musst mindestens ${neededAnswers} Angaben machen.</h5>
+	<h5 v-if="neededAnswers == 1">Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an. Du musst mindestens eine Angabe machen.</h5>
+	<h5 v-else>Hallo {{teilnehmer.first_name}}, bitte gebe deine Präferenzen an. Du musst mindestens ${neededAnswers} Angaben machen.</h5>
 	<form method=post action="{{ url_for('preference.save') }}" enctype=multipart/form-data>
 		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 			{% for thema in themen %}
@@ -44,106 +45,106 @@
 			infoJson: null,
 			allNeededAnswersGiven: false,
 			neededAnswers: 0,
-
-			options : [
-			"Keine Präferenz",
-			"Erstwahl",
-			"Zweitwahl",
-			"Drittwahl",
-			"Viertwahl",
-			"Fünftwahl",
-			"Sechstwahl",
-			"Siebtwahl",
-			"Achtwahl",
-			"Neuntwahl",
-			"Zehntwahl",
-			"Veto",
+			options: [
+			["Keine Präferenz", "", true],
+			["Erstwahl", "", false],
+			["Zweitwahl", "", false],
+			["Drittwahl", "", false],
+			["Viertwahl", "", false],
+			["Fünftwahl", "", false],
+			["Sechstwahl", "", false],
+			["Siebtwahl", "", false],
+			["Achtwahl", "", false],
+			["Neuntwahl", "", false],
+			["Zehntwahl", "", false],
+			["Veto", "", false]
 			],
-
-			mapping: {
-				"Keine Präferenz" : "",
-				"Erstwahl" : "",
-				"Zweitwahl" : "",
-				"Drittwahl" : "",
-				"Viertwahl" : "",
-				"Fünftwahl" : "",
-				"Sechstwahl" : "",
-				"Siebtwahl" : "",
-				"Achtwahl" : "",
-				"Neuntwahl" : "",
-				"Zehntwahl" : "",
-				"Veto" : "",
-			}
 		},
 		methods: {
+			// restrict numbers of choices
+			// deletes veto option if not allowed
 			configureAnswers() {
-
-				// restrict number of choices
 				const numberOfAnswers = this.infoJson["numberOfAnswers"]
 				if (numberOfAnswers < 10) {
 					const startIndex = parseInt(numberOfAnswers) + 1
 					this.options.splice(startIndex, this.options.length - startIndex - 1)
 				}
-				// configure veto option
 				if (this.infoJson["veto_allowed"] == false) {
-					delete this.mapping.Veto
-					const index = this.options.indexOf("Veto")
-					if (index > -1) {
-						this.options.splice(index, 1)
-					}
-
-				}
-
-			},
-			validOptions(object) {
-				return this.options.filter(
-					f => this.mapping[f] == "" || this.mapping[f] == object
-					)
-			},
-			onChange(event) {
-				const value = event.target.value
-				const target = event.target
-				if (value != this.options[0]) {
-					for (var key in this.mapping) {
-						if (this.mapping[key] == target.id) {
-							this.mapping[key] = ""
-						}
-					}
-
-					for (var key in this.mapping) {
-						if (key == value) {
-							this.mapping[key] = target.id
-						}
-					}
-
-				} else {
-					for (var key in this.mapping) {
-						if (this.mapping[key] == target.id) {
-							this.mapping[key] = ""
-						}
-					}
-				}
-
-
-				for (i = 1; i <= {{themen | length}}; i++) {
-
-					const element = document.getElementById(i)
-					var index = 0
-					for (var key in this.mapping) {
-						if (this.mapping[key] == element.id) {
+					for (i = 0; i < this.options.length; i++) {
+						if (this.options[i][0] == "Veto") {
+							this.options.splice(i, 1)
 							break
 						}
-						if (this.mapping[key] == "") {
-							index++
-						}
-					}
-					if (element.selected != this.options[0] && index < element.options.length) {
-						element.options[index].selected = true
 					}
 				}
-				const filtered = this.options.filter(option => this.mapping[option] != "")
-				this.allNeededAnswersGiven = filtered.length >= this.neededAnswers
 			},
+			// returns valid option specific to the thema
+			// passed as object
+			validOptions(object) {
+				return this.options.filter(
+					f => f[2] == true || f[1] == "" || f[1] == object
+					).map(e => e[0])
+			},
+			// called when an option is selected
+			// handles the logic of removing option from other answers
+			// when it is selected by one.
+			// It does so by storing values in the this.option data type.
+			// In nextTick(), every answer gets its selected value to avoid
+			// weird sideeffects of changing the underlying model to a select element
+			onChange(event) {
+				const target = event.target
+				const value = target.value
+
+				for (i = 0; i < this.options.length; i++) {
+
+					if (this.options[i][1] == target.id) {
+						this.$set(this.options[i], 1, "")
+					}
+				}
+
+				if (value != "Keine Präferenz") {
+
+					for (i = 0; i < this.options.length; i++) {
+						if (this.options[i][0] == value) {
+							this.$set(this.options[i], 1, target.id)
+						}
+					}
+
+				}
+
+				this.$nextTick(() => {
+
+					for (i = 1; i <= {{themen | length}}; i++) {
+
+						const element = document.getElementById(i)
+						var index = 0
+						for (j = 0; j < this.options.length; j++) {
+							if (this.options[j][1] == element.id) {
+								break
+							}
+							if (this.options[j][1] == "") {
+								index++
+							}
+						}
+
+						var numberOfOptions = 0
+						for (j = 0; j < this.options.length; j++) {
+							if (this.options[j][1] == "" || this.options[j][1] == element.id) {
+								numberOfOptions++
+							}
+						}
+
+						if (element.value != this.options[0][0] && index < numberOfOptions) {
+							element.options[index].selected = true
+						}
+					}
+
+					const filtered = this.options.filter(option =>
+						option[1] != "")
+					this.allNeededAnswersGiven = filtered.length >= this.neededAnswers
+				})
+
+			}
 		},
 		mounted() {
 			var json = JSON.parse(veto)
