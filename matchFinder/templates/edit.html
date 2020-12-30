@@ -144,15 +144,21 @@
 		<thead>
 			<tr>
 				<th style="width: 10">#</th>
-				<th style="width: 32%">Teilnehmer-Liste</th>
-				<th style="width: 32%">Themen-Liste</th>
-				<th style="width: 8%">
+				<th style="width: 14%">Name</th>
+				<th style="width: 10%"># Teilnehmer</th>
+				<th style="width: 10%"># Themen</th>
+				<th style="width: 10%"># / Gruppe</th>
+				<th style="width: 10%">Min-Votes</th>
+				<th style="width: 6%">
+					<span data-feather="x-octagon"></span>
+				</th>
+				<th style="width: 6%">
 					<span data-feather="edit"></span>
 				</th>
-				<th style="width: 8%">
+				<th style="width: 6%">
 					<span data-feather="lock"></span>
 				</th>
-				<th style="width: 8%">
+				<th style="width: 6%">
 					<span data-feather="user"></span>
 				</th>
 				<th style="width: 12%">Aktion</th>
@@ -164,8 +170,18 @@
 
 			<tr>
 				<td>{{verteilung.id}}</td>
-				<td>{{verteilung.teilnehmer.name}}</td>
-				<td>{{verteilung.thema_list.name}}</td>
+				<td>{{verteilung.name}}</td>
+				<td>{{verteilung.teilnehmer.id}}</td>
+				<td>{{verteilung.thema_list.id}}</td>
+				<td>{{verteilung.max_teilnehmer_per_thema}}</td>
+				<td>{{verteilung.min_votes}}</td>
+				<td>
+					{% if verteilung.veto_allowed %}
+					Ja
+					{% else %}
+					Nein
+					{% endif %}
+				</td>
 				<td>
 					{% if verteilung.editable %}
 					Ja
@@ -202,6 +218,66 @@
 	</table>
 </div>
 
+{% endif %}
+
+{% if (teilnehmer_lists or thema_lists or verteilungen) %}
+<div class="mb-5"></div>
+
+<h4>Legende</h4>
+<div class="table-responsive mb-3">
+	<table class="table table-striped table-sm">
+		<thead>
+			<tr>
+				<th style="width: 15%">Symbol</th>
+				<th style="width: 85%">Erklärung</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>#</td>
+				<td>Die interne Id eines Datenbank-Eintrags. Kann dafür benutzt werden, um herauszufinden, aus welchen Teilnehmern und Gruppen eine Verteilung besteht.</td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td>Der Name einer Teilnehmer-Liste / Gruppen-Liste / Verteilung.</td>
+			</tr>
+			{% if verteilungen %}
+			<tr>
+				<td># Teilnehmer</td>
+				<td>Die Id der TeilnehmerListe, die zu der Verteilung gehört.</td>
+			</tr>
+			<tr>
+				<td># Themen</td>
+				<td>Die Id der ThemenListe, die zu der Verteilung gehört.</td>
+			</tr>
+			<tr>
+				<td># / Gruppe</td>
+				<td>Die maximale Anzahl von Teilnehmer pro Gruppe / Thema.</td>
+			</tr>
+			<tr>
+				<td>Min-Votes</td>
+				<td>Die minimale Anzahl an Stimmen, die jeder Teilnehmer beim Abgeben der Präferenzen setzen muss.</td>
+			</tr>
+			<tr>
+				<td><span data-feather="x-octagon"></span></td>
+				<td>Gibt an, ob die Verteilung die Vergabe eines Vetos erlaubt.</td>
+			</tr>
+			<tr>
+				<td><span data-feather="edit"></span></td>
+				<td>Gibt an, ob die Präferenzen der Teilnehmer im Nachhinein nach bearbeitet werden dürfen.</td>
+			</tr>
+			<tr>
+				<td><span data-feather="lock"></span></td>
+				<td>Gibt an, ob die Verteilung geschützt ist, also ob sich Teilnehmer mit ihrer Matrikelnummer anmelden müssen.</td>
+			</tr>
+			<tr>
+				<td><span data-feather="user"></span></td>
+				<td>Gibt an, wieviele der Teilnehmer schon ihre Präferenzen abgegeben haben.</td>
+			</tr>
+			{% endif %}
+		</tbody>
+	</table>
+</div>
 
 {% endif %}
 
