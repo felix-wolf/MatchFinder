@@ -29,12 +29,12 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
+{% block vuejs %}
+{{ super() }}
 
 <script type="text/javascript">
 	var veto = '{"teilnehmerId": "{{teilnehmer.id}}","verteilungId":"{{verteilung_id}}", "veto_allowed":"{{veto_allowed}}", "min_votes": "{{min_votes}}", "numberOfAnswers":"{{themen|length}}"}'
 </script>
-<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
 <script type="text/javascript">
 
 

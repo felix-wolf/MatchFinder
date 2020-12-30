@@ -208,6 +208,10 @@
     </main>
   </div>
 </div>
+
+{% block vuejs %}
+<script type="text/javascript" src="{{ url_for('static', filename='vue.min.js') }}"></script>
+{% endblock %}
 {% block scripts %}
 {% endblock %}
 <!-- Icons -->

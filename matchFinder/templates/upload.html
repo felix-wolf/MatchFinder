@@ -92,9 +92,8 @@
 
 {% endblock %}
 
-{% block scripts %}
-
-<script type="text/javascript" src="{{ url_for('static', filename='vue.js') }}"></script>
+{% block vuejs %}
+{{ super() }}
 <script type="text/javascript">
 
 
