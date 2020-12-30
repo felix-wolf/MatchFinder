@@ -13,14 +13,26 @@
 
 	<div class="mb-3">
 		<p>Die eingetragenen Studis können unter diesem Link ihre Stimmen abgeben:</p>
-		<a class="btn btn-primary btn-lg" href="/preference/{{id}}">LINK</a>
+		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+			<div class="input-group mb-2">
+				<div class="input-group-prepend w-25">
+					<span class="input-group-text w-100">Link:</span>
+				</div>
+				<textarea type="text" class="form-control mr-sm-2" readonly>{{url_for('preference.set_preference', verteilung_id=id, _external=True)}}</textarea>
+			</div>
+			<a class="btn btn-primary" id="link" href="{{url_for('preference.set_preference', verteilung_id=id)}}">Link öffnen</a>
+		</div>
 	</div>
+
 	{% if img %}
+
 	<div>
 		<p>Alternativ kann der QR-Code gescannt werden:</p>
 		<img src="data:image/gif;base64,{{img}}">
 	</div>
+
 	{% endif %}
+
 </div>
 
 {% endif %}
