@@ -215,6 +215,7 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows
 
+config.py
 poll.csv
 seminar_liste-1.txt
 stine_uebungsgruppe-1.txt
