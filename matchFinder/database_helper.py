@@ -9,11 +9,11 @@ from matchFinder.models import password_model
 from matchFinder.models import praeferenz_model
 
 def init_db():
-	#db.drop_all()
-	#db.create_all()
+	db.drop_all()
+	db.create_all()
 
 	from . import password_helper
-	#password_helper.create_passwords()
+	password_helper.create_passwords()
 
 def get_all_teilnehmer():
 	return teilnehmer_model.Teilnehmer.query.all()

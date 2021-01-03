@@ -1,3 +1,5 @@
+# Spezifikation
+
 ## Überblick
 
 Die Software dieses Repositorys entsteht im Rahmen des Projekt *Parallelrechnerevaluation* an der Universität Hamburg im Wintersemester 2020. Dabei ist [Felix Wolf](mailto:8fwolf@informatik.uni-hamburg.de) der alleinige Teilnehmer und Mitarbeiter dieses Projekts. Ansprechpartner sind [Anna Fuchs](mailto:anna.fuchs@informatik.uni-hamburg.de) und [Jannek Squar](mailto:squar@informatik.uni-hamburg.de).

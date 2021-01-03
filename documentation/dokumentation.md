@@ -1,3 +1,5 @@
+# Dokumentation
+
 ## Layout
 
 Die Webapp bietet ein simples Layout mit einer Seitenleite für die Navigation, einem Button zur Authentifikation in der Topbar und eine Überschrift auf jeder Seite.
@@ -5,6 +7,62 @@ Die Webapp bietet ein simples Layout mit einer Seitenleite für die Navigation, 
 Bei Darstellung auf kleinen Displays (z.B. auf mobilen Geräten) wechselt die App in ein mobile-freundliches Layout, die Seitenleiste kann hier ausgeklappt werden.
 
 Für die visuelle Aufbereitung von HTML-Elementen über CSS etc. wird [Bootstrap](https://getbootstrap.com) verwendet.
+
+## Struktur
+
+Die allgemeine Struktur des Repositories und folglich auch der Flask-App lässt sich wie folgt darstellen:
+
+```
+.
+```
+```
+├── matchFinder
+```
+```
+│   ├── __init__.py
+```
+```
+│   ├── auth.py
+```
+```
+│   ├── create.py
+│   ├── database_helper.py
+│   ├── docs.py
+│   ├── edit.py
+│   ├── evaluate.py
+│   ├── helper.py
+│   ├── home.py
+│   ├── matchCalculator.py
+│   ├── password_helper.py
+│   ├── preference.py
+│   ├── share.py
+│   ├── txt_parser.py
+│   ├── upload.py
+│   ├── forms
+│   │   └── ...
+│   ├── models
+│   │   └── ...
+│   ├── static
+│   │   └── ...
+│   └── templates
+│       └── ...
+├── documentation
+│   └── ...
+├── README.md
+├── setup.sh
+├── install.sh
+└── list_of_blocked_ips.txt
+...
+```
+
+Der Unterordner ```matchFinder``` beinhaltet die die Flask App. Die Dateien auf root haben folgende Aufgaben:
+
+- ```install.sh``` installiert alle nötigen Dependencies, die von der App benötigt werden. Es empfiehlt sich, die Flask App und alle Dependencies in einem *Virtual Environment* zu installieren und zu starten, um Konflikte mit bereits existierenden Dependencies zu vermeiden. Folglich sollte die ```install.sh```-Datei auch in dem Environment zu starten. Ein Environment wird erstellt und activiert mit
+
+``` python
+	python3 -m venv venv	// <-- erstellt das Environment
+	. venv/bin/activate	// <-- Activiert das Environment
+```
 
 ## Technisches
 
@@ -49,7 +107,6 @@ Beispielsweise ist die Teilnehmer-Tabelle wie folgt definiert:
 
 ```python
 from flask_sqlalchemy import *
-
 class Teilnehmer(db.Model):
 	__tablename__ = "teilnehmer"
 	id = db.Column(db.Integer, primary_key=True)
