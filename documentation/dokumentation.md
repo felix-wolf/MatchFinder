@@ -1,3 +1,5 @@
+## [Zurück zur Übersicht](../README.md)
+
 # Dokumentation
 
 ## Layout
@@ -14,20 +16,11 @@ Die allgemeine Struktur des Repositories und folglich auch der Flask-App lässt 
 
 ```
 .
-```
-```
 ├── matchFinder
-```
-```
 │   ├── __init__.py
-```
-```
 │   ├── auth.py
-```
-```
 │   ├── create.py
 │   ├── database_helper.py
-│   ├── docs.py
 │   ├── edit.py
 │   ├── evaluate.py
 │   ├── helper.py
@@ -55,14 +48,27 @@ Die allgemeine Struktur des Repositories und folglich auch der Flask-App lässt 
 ...
 ```
 
-Der Unterordner ```matchFinder``` beinhaltet die die Flask App. Die Dateien auf root haben folgende Aufgaben:
+Die Dateien auf root haben folgende Aufgaben:
 
 - ```install.sh``` installiert alle nötigen Dependencies, die von der App benötigt werden. Es empfiehlt sich, die Flask App und alle Dependencies in einem *Virtual Environment* zu installieren und zu starten, um Konflikte mit bereits existierenden Dependencies zu vermeiden. Folglich sollte die ```install.sh```-Datei auch in dem Environment zu starten. Ein Environment wird erstellt und activiert mit
 
-``` python
-	python3 -m venv venv	// <-- erstellt das Environment
-	. venv/bin/activate	// <-- Activiert das Environment
+```bash
+python3 -m venv venv	# <-- erstellt das Environment
+. venv/bin/activate		# <-- Activiert das Environment
 ```
+
+- ```setup.sh``` started die Flask-App
+- ```list_of_blocked_ips.txt``` ist eine Liste von IP-Adressen, die in Vergangenheit verantwortlich für Spam und unerwünschte Aufrufe waren.
+- ```README.md``` beinhaltet die Übersicht der Dokumentation
+
+Der Unterordner ```matchFinder``` beinhaltet die die Flask App.
+
+- **Root Level:** Auf Root Level des ```matchFinder``` befinden sich alle Endpunkte der App.
+- **Forms**: In ```forms``` sind die Formularvorlagen von ```WTForms```
+- **Models**: In ```models``` sind die ORM-Klassen für ```SQLAlchemy```, also die Vorlagen aller Datenbanktabellen.
+- **Static**: Im ```static``` Ordner sind statische HTML-Resourcen, wie das Favicon, das CSS für das Layout und die Vuejs-Library.
+- **Templates**: Der ```templates``` Ordner beinhaltet alle HTML-Templates der App, die mit Jinja ausgebaut werden
+- **Documentation**: In ```documentation``` sind die Markdown-Dateien der Dokumentation
 
 ## Technisches
 
@@ -78,7 +84,7 @@ Mit Flask-Limiter kann die Anzahl auf der Zugriffe global oder auf spezifische E
 
 #### [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 
-Flask-SQLAlchemy ist die Schnittstelle zwischen Flask und SQLAlchemy, ein ORM für Python. Für mehr informationen siehe den Abschnitt [```SQLAlchemy```](#sqlalchemy) unter ```Technisches```.
+Flask-SQLAlchemy ist die Schnittstelle zwischen Flask und SQLAlchemy, ein ORM für Python. Für mehr informationen siehe Abschnitt [```SQLAlchemy```](#sqlalchemy) unter ```Technisches```.
 
 #### [Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/)
 
@@ -93,7 +99,6 @@ render_template('template.html', parameter="Dies ist ein Parameter")
 ```
 
 kann dieser mit Jinja über ```{{parameter}}``` gerendert und damit der Inhalt angezeigt werden.
-
 
 ### [Vue.js](https://vuejs.org)
 
