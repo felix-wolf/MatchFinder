@@ -3,8 +3,8 @@ Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Pr
 
 Die Dokumentation teilt sich in zwei Teile:
 
-    1. Die Spezifikation beschreibt, was dieses Tool leisten soll.
-    2. Die Dokumention beschreibt technische Details der Umsetzung.
+1. [Die Dokumention beschreibt technische Details der Umsetzung.](documentation/documentation.md)
+2. [Die Spezifikation beschreibt, was dieses Tool leisten soll.](documentation/spezifikation.md)
 
 # TODO
 - Würfeln (wird das überhaupt gebraucht? Einfach das oberste nehmen...)
