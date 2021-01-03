@@ -9,11 +9,16 @@ from matchFinder.models import password_model
 from matchFinder.models import praeferenz_model
 
 def init_db():
-	#db.drop_all()
-	#db.create_all()
+	#reset_db()
+	rows = password_model.Password.query.count()
+	if rows == 0:
+		password_model.Password.query.delete()
+		from . import password_helper
+		password_helper.create_passwords()
 
-	from . import password_helper
-	#password_helper.create_passwords()
+def reset_db():
+	db.drop_all()
+	db.create_all()
 
 def get_all_teilnehmer():
 	return teilnehmer_model.Teilnehmer.query.all()
@@ -56,7 +61,7 @@ def get_verteilung_by_hashed_id(hashed_id):
 			return vert
 	return None
 
-def get_praeferenz_by_teilnehmer_id_verteilung_id(teilnehmer_id, verteilung_id):
+def get_praeferenz(teilnehmer_id, verteilung_id):
 	return praeferenz_model.Praeferenz.query.filter_by(
 		teilnehmer_id=teilnehmer_id, verteilung_id=verteilung_id
 		).first()
@@ -161,24 +166,3 @@ def save_verteilung(name, teiln_list_id, thema_list_id, protected,
 	db.session.add(local_verteilung)
 	db.session.commit()
 	return local_verteilung.id
-
-def check_membership(hashed_verteilung_id, matr_nr):
-	verteilung_to_id = get_verteilung_by_hashed_id(hashed_verteilung_id)
-	if verteilung_to_id != None:
-		teilnehmer_to_verteilung = get_teilnehmer_list_by_id(verteilung_to_id.teilnehmer_list_id)
-		if teilnehmer_to_verteilung != None:
-			for teil in teilnehmer_to_verteilung.teilnehmer:
-				if int(teil.matr_nr) == int(matr_nr):
-					if not verteilung_to_id.editable:
-						praef = get_praeferenz_by_teilnehmer_id_verteilung_id(teil.id, verteilung_to_id.id)
-						if praef != None:
-							return None, None, "Präferenzen wurden bereits angegeben!"
-
-					return verteilung_to_id, teil, None
-	return None, None, "Matrikelnummer ungültig!"
-
-
-
-
-
-

@@ -5,7 +5,6 @@ import random
 from munkres import DISALLOWED
 from functools import reduce
 
-
 def convert_praef_to_num(praef):
     if praef == "Erstwahl":
         return 1
@@ -53,6 +52,32 @@ def comvert_num_to_praef(num):
     if num == 10 or num == '10':
         return "Zehntwahl"
     return num
+
+def check_user_credentials(matr_nr, hashed_verteilung_id):
+    if matr_nr != None and matr_nr.isdigit():
+        verteilung, teilnehmer, error = check_membership(hashed_verteilung_id, matr_nr)
+        if error == None:
+            return None, verteilung, teilnehmer
+        else:
+            return error, None, None
+    else:
+        return "Matrikelnummer muss eine Zahl sein!", None, None
+
+def check_membership(hashed_verteilung_id, matr_nr):
+    verteilung_to_id = database_helper.get_verteilung_by_hashed_id(hashed_verteilung_id)
+    if verteilung_to_id != None:
+        list_id = verteilung_to_id.teilnehmer_list_id
+        teilnehmer_to_verteilung = database_helper.get_teilnehmer_list_by_id(list_id)
+        if teilnehmer_to_verteilung != None:
+            for teil in teilnehmer_to_verteilung.teilnehmer:
+                if int(teil.matr_nr) == int(matr_nr):
+                    if not verteilung_to_id.editable:
+                        praef = database_helper.get_praeferenz(teil.id, verteilung_to_id.id)
+                        if praef != None:
+                            return None, None, "Präferenzen wurden bereits angegeben!"
+
+                    return verteilung_to_id, teil, None
+    return None, None, "Matrikelnummer ungültig!"
 
 def sort_by_median(assignments):
     #if len(assignments) == 1:

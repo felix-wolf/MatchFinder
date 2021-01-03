@@ -27,7 +27,7 @@ def from_db():
     themen = helper.duplicate_themen(themen, max_per)
     teilnehmer_pref = []
     for teil in teilnehmer:
-        praeferenz = database_helper.get_praeferenz_by_teilnehmer_id_verteilung_id(teil.id, verteilung.id)
+        praeferenz = database_helper.get_praeferenz(teil.id, verteilung.id)
         if (praeferenz == None):
             praeferenzen = list(map(lambda x: "Keine Präferenz", thema_list.themen))
             praeferenz = helper.convert_preferences(praeferenzen)
