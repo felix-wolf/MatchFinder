@@ -1,19 +1,21 @@
+## [Zurück zur Übersicht](../README.md)
+
 # Spezifikation
 
 ## Überblick
 
-Die Software dieses Repositorys entsteht im Rahmen des Projekt *Parallelrechnerevaluation* an der Universität Hamburg im Wintersemester 2020. Dabei ist [Felix Wolf](mailto:8fwolf@informatik.uni-hamburg.de) der alleinige Teilnehmer und Mitarbeiter dieses Projekts. Ansprechpartner sind [Anna Fuchs](mailto:anna.fuchs@informatik.uni-hamburg.de) und [Jannek Squar](mailto:squar@informatik.uni-hamburg.de).
+Die Software dieses Repositorys entsteht im Rahmen des Projekt *Parallelrechnerevaluation* an der Universität Hamburg im Wintersemester 2020. Dabei ist [Felix Wolf](mailto:8fwolf@informatik.uni-hamburg.de) der alleinige Teilnehmer und Mitarbeiter dieses Projekts. Ansprechpartner sind [Anna Fuchs](mailto:anna.fuchs@informatik.uni-hamburg.de) und [Jannek Squar](mailto:squar@informatik.uni-hamburg.de) vom Fachbereich [Wissenschaftliches Rechnen](https://wr.informatik.uni-hamburg.de).
 
 ### Projektziel
 
-Innerhalb des WS 2020 soll eine Software entstehen, die bei gegebenen Daten ein faires Verteilung (ein *Match*) findet. Die gegebenen Daten umfassen:
+Innerhalb des WS 2020 soll eine Software entstehen, die bei gegebenen Daten ein faires Verteilung (*Match*) findet. Die gegebenen Daten umfassen:
 
 - Liste an Teilnehmern
 - Gruppen bzw. Themen
 - Präferenzen der Teilnehmer für die Gruppen/Themen
 
 
-Eine faire Verteilung ist eine Zuordnung von Teilnehmer zu Themen, die die Kosten minimiert und im Vergleich zu allen anderen Zuordnungen besser oder gleich gut ist. Kosten sind die Präferenzen der Teilnehmer. Die Präferenzen ```Erstwahl, Zweitwahl``` übersetzen sich in die Kosten ```1, 2```. Verteilungen werden nach ihrem Median und der absoluten TODO Streuungsmaß sortiert.
+Eine faire Verteilung ist eine Zuordnung von Teilnehmer zu Themen, die die Kosten minimiert und im Vergleich zu allen anderen Zuordnungen besser oder gleich gut ist. Kosten sind die Präferenzen der Teilnehmer. Die Präferenzen ```Erstwahl, Zweitwahl``` übersetzen sich in die Kosten ```1, 2```. Verteilungen werden nach ihrem Median und der mittleren absoluten Abweichung vom Median sortiert. Somit ist ein Ergebnis in der Darstellung immer mindestens so gut wie das unter ihm.
 
 Faire Verteilungen werden mithilfe der [ungarischen Methode](https://en.wikipedia.org/wiki/Hungarian_algorithm) gefunden.
 

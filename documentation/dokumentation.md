@@ -2,6 +2,29 @@
 
 # Dokumentation
 
+## Inhaltsverzeichnis
+
+- [Layout](#layout)
+- [Struktur](#struktur)
+- [Python-Dateien](#python-dateien)
+	- [__init__.py](#initpy)
+- [Technisches](#technisches)
+	- [Flask](#flask)
+		- [Flask-Limiter](#flask-limiter)
+		- [Flask-SQLAlchemy](#flask-sqlalchemy)
+		- [Flask-WTF](#flask-wtf)
+	- [Jinja2](#jinja2)
+	- [Vue.js](#vuejs)
+	- [SQLAlchemy](#sqlalchemy)
+	- [WTForms](#wtforms)
+- [Fachliches](#fachliches)
+	- [Home](#home)
+	- [Verteilung auswerten](#verteilung-auswerten)
+	- [Verteilung erstellen](#verteilung-erstellen)
+	- [Daten anlegen](#daten-anlegen)
+	- [Angelegte Daten](#angelegte-daten)
+	- [Präferenzvergabe](#praferenzvergabe)
+
 ## Layout
 
 Die Webapp bietet ein simples Layout mit einer Seitenleite für die Navigation, einem Button zur Authentifikation in der Topbar und eine Überschrift auf jeder Seite.
@@ -63,12 +86,28 @@ python3 -m venv venv	# <-- erstellt das Environment
 
 Der Unterordner ```matchFinder``` beinhaltet die die Flask App.
 
-- **Root Level:** Auf Root Level des ```matchFinder``` befinden sich alle Endpunkte der App.
+- **Root Level:** Auf Root Level des ```matchFinder``` befinden sich alle Endpunkte der App. Mehr dazu in [hier](#python-dateien).
 - **Forms**: In ```forms``` sind die Formularvorlagen von ```WTForms```
 - **Models**: In ```models``` sind die ORM-Klassen für ```SQLAlchemy```, also die Vorlagen aller Datenbanktabellen.
 - **Static**: Im ```static``` Ordner sind statische HTML-Resourcen, wie das Favicon, das CSS für das Layout und die Vuejs-Library.
 - **Templates**: Der ```templates``` Ordner beinhaltet alle HTML-Templates der App, die mit Jinja ausgebaut werden
 - **Documentation**: In ```documentation``` sind die Markdown-Dateien der Dokumentation
+
+## Python-Dateien
+
+In den Python-Dateien im ```matchFinder``` Order stecken die gesamte Logik der App. Einzelne Dateien werden nun genauer beschrieben
+
+### __init__.py
+
+Hier wird die Flask-App initialisiert und die Blueprints (definierte Endpunkte in anderen Dateien) registriert. Auch die Datenbank wird hier initialisiert.
+
+Die App blockiert alle auf IP-Adressen, die auf der [Blacklist](../list_of_blocked_ips.txt) stehen. Beim ersten Aufrufen der App wird die IP-Adresse des Aufrufers einmalig mit diesen gesperrten IPs verglichen. Der Status (Zutritt erlaubt oder verweigert) wird in einem Cookie festgehalten. So muss der Status innerhalb einer Session nicht zweimal geprüft werden.
+
+Zusätzlich beinhaltet die Datei einen Endpunkt für den Index ('/') und einen Endpunkt für alle Anfragen, die auf keinen gültigen Endpunkt verweisen. Letzterer gibt lediglich einen 404 zurück.
+
+### [database_helper.py](../matchFinder/database_helper.py)
+
+Database_helper ist die Schnittstelle zwischen App und Datenbank. Datenbankzugriffe geschehen nur in dieser Datei. Aus diesen Gründen bietet die Datei alle benötigten Datenbankoperationen für andere Dateien an.
 
 ## Technisches
 
