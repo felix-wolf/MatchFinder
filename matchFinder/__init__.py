@@ -22,9 +22,6 @@ def create_app(test_config=None):
 
     limiter.init_app(app)
 
-    #from pprint import pprint
-    #pprint(app.config)
-
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
