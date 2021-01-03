@@ -1,5 +1,4 @@
-from flask import (
-	Blueprint, Flask, redirect, render_template, request, url_for)
+from flask import (Blueprint, redirect, render_template, request, url_for)
 from matchFinder.models import praeferenz_model
 from matchFinder.models import teilnehmer_model
 from . import database_helper
@@ -31,7 +30,7 @@ def validate():
 	protected = obj["protected"]
 	if protected == "True":
 		matr_nr = request.form.get('matr_nr', None)
-		error, verteilung, teilnehmer = check_user_for_protected(matr_nr,
+		error, verteilung, teilnehmer = helper.check_user_credentials(matr_nr,
 											hashed_verteilung_id)
 		if error:
 			return render_template('validate.html', id=hashed_verteilung_id,
@@ -57,8 +56,6 @@ def validate():
 		return render_template('validate.html', id = hashed_verteilung_id,
 			protected=False, error="error")
 
-
-
 @bp.route('save', methods=['POST'])
 def save():
 	information_object = request.form.get('information', None)
@@ -73,7 +70,7 @@ def save():
 		preference = request.form.get(str(index + 1), None)
 		preferences.append(preference)
 	preference_string = helper.convert_preferences(preferences)
-	existing_praef = database_helper.get_praeferenz_by_teilnehmer_id_verteilung_id(teilnehmer_id, verteilung_id)
+	existing_praef = database_helper.get_praeferenz(teilnehmer_id, verteilung_id)
 	if existing_praef != None:
 		database_helper.update_praef(existing_praef, preference_string)
 		return redirect(url_for('home.index_with_message',
@@ -86,13 +83,3 @@ def save():
 		database_helper.insert_praeferenz(praeferenz)
 		return redirect(url_for('home.index_with_message',
 			message="Deine Präferenzen wurden gespeichert!"))
-
-def check_user_for_protected(matr_nr, hashed_verteilung_id):
-	if matr_nr != None and matr_nr.isdigit():
-		verteilung, teilnehmer, error = database_helper.check_membership(hashed_verteilung_id, matr_nr)
-		if error == None:
-			return None, verteilung, teilnehmer
-		else:
-			return error, None, None
-	else:
-		return "Matrikelnummer muss eine Zahl sein!", None, None

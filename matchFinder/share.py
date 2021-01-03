@@ -1,5 +1,4 @@
-from flask import (
-	Blueprint, Flask, redirect, render_template, request, url_for)
+from flask import (Blueprint, redirect, render_template, request, url_for)
 from . import database_helper
 import qrcode
 import base64

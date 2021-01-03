@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, Flask, render_template, session, redirect, url_for)
+    Blueprint, render_template, session, redirect, url_for)
 from . import database_helper
 
 bp = Blueprint('create', __name__, url_prefix='/create')

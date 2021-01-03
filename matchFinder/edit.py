@@ -1,5 +1,5 @@
 from flask import (
-	Blueprint, Flask, redirect, render_template, request, session, url_for)
+	Blueprint, redirect, render_template, session, url_for)
 from . import database_helper
 import json
 

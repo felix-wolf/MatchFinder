@@ -1,11 +1,12 @@
 from flask import (
-	Blueprint, Flask, redirect, render_template, request, session, url_for, abort, current_app as app)
-import os
+	Blueprint, redirect, render_template, request,
+    session, url_for, abort, current_app as app)
 from werkzeug.utils import secure_filename
-from . import txt_parser
-from . import database_helper
 from matchFinder.forms import themen_form
 from matchFinder.forms import teilnehmer_form
+from . import database_helper
+from . import txt_parser
+import os
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
@@ -13,7 +14,6 @@ bp = Blueprint('upload', __name__, url_prefix='/upload')
 def load_logged_in_user():
     if session.get('is_authenticated') != True:
         return redirect(url_for('home.index'))
-
 
 @bp.route('/')
 def index():
