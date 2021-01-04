@@ -1,7 +1,6 @@
 from flask import (
 	Blueprint, redirect, render_template, request, url_for)
 
-
 bp = Blueprint('home', __name__, url_prefix='/home')
 
 @bp.route('/')

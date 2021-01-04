@@ -7,7 +7,6 @@ from . import helper
 import hashlib
 import json
 
-
 bp = Blueprint('preference', __name__, url_prefix='/preference')
 
 @bp.route('<verteilung_id>')

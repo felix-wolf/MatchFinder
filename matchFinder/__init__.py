@@ -1,8 +1,9 @@
-from flask import Flask, session, render_template, abort, request, redirect, url_for, current_app as app
-from flask_sqlalchemy import SQLAlchemy
-import os
-from flask_limiter import Limiter
+from flask import (Flask, session, render_template, abort,
+    request, redirect, url_for, current_app as app)
 from flask_limiter.util import get_remote_address
+from flask_sqlalchemy import SQLAlchemy
+from flask_limiter import Limiter
+import os
 
 
 db = SQLAlchemy()
@@ -82,4 +83,3 @@ def create_app(test_config=None):
 with create_app().app_context():
     from . import database_helper
     database_helper.init_db()
-
