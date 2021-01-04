@@ -8,6 +8,10 @@
 - [Struktur](#struktur)
 - [Python-Dateien](#python-dateien)
 	- [init.py](#initpy)
+	- [database_helper.py](#database_helperpy)
+	- [config.py](#configpy)
+	- [matchCalculator.py](#matchcalculatorpy)
+	- [password_helper.py](#password_helperpy)
 - [Technisches](#technisches)
 	- [Flask](#flask)
 		- [Flask-Limiter](#flask-limiter)
@@ -117,7 +121,42 @@ Dies ist eine Config-Datei, ohne die die App nicht startet. In ihr wird der Pfad
 
 Das Herz der Matchberechnung. Hier wird mithilfe des Munkres-Algorithmus ein faires Match berechnet. Die Daten zu einem Match kommen dabei entweder aus einer Datei oder aus bestehenden Datenbankdaten.
 
-Das Datenmodell ist dabei
+Das Datenmodell ist dabei eine rechteckige Matrix mit Aufbau
+
+
+| Name 			  | Thema1	| Thema2	| Thema3	|
+|-----------------|---------|-----------|-----------|
+| **Teilnehmer1** | w1,1	| w1,2		| w1,3		|
+| **Teilnehmer2** | w2,1	| w2,2		| w2,3		|
+| **Teilnehmer3** | w3,1	| w3,2		| w3,3		|
+
+Dabei ist ```w2,1``` das Gewicht (die *Präferenz*) von Teilnehmer 2 zu Thema 1. Wird eine Verteilung als Datei hochgeladen, dann als *comma seperated values* (*csv*) Datei, in dem die Präferenzen als Text angegeben sind =>
+```
+Gewicht 1 = Erstwahl
+Gewicht 2 = Zweitwahl
+...
+Gewicht 5 = Fünftwahl
+...
+```
+Das höchste unterstützte Gewicht ist 10 (*Zehntwahl*). Wenn eine Option ganz ausgeschlossen werden soll, kann diese mit *Veto* markiert werden. Optionen ohne Präferenz kriegen keinen Wert (Achtung: Hier kann ungewolltes Verhalten auftreten, siehe [Details der Verteilungsberechnung](#details-der-verteilungsberechnung)).
+
+Eine formatgerechte Datei sieht demnach so aus
+
+```
+Name,Thema1,Thema2,Thema3,Thema4
+Teilnehmer1,Erstwahl,Zweitwahl,Drittwahl,Viertwahl
+Teilnehmer2,Viertwahl,Drittwahl,Zweitwahl,Erstwahl
+Teilnehmer3,Erstwahl,Zweitwahl,Drittwahl,Viertwahl
+Teilnehmer4,Viertwahl,Zweitwahl,Drittwahl,Erstwahl
+```
+
+#### Details der Verteilungsberechnung
+
+Da Verteilungsprobleme im Kern Kosten-Minimierungsprobleme sind, ergeben sich daraus bestimmte Eigenschaften, die zu beachten sind.
+
+Angenommen, es gibt 2 Teilnehmer und 2 Gruppen. Teilnehmer 1 vergibt die Präferenzen ```Erstwahl, Zweitwahl```, Teilnehmer 2 vergibt ```Erstwahl,```. Teilnehmer 2 hat also für Gruppe 2 keine Präferenz angegeben.
+
+### [password_helper.py](../matchFinder/password_helper.py)
 
 ## Technisches
 
