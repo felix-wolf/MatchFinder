@@ -1,10 +1,10 @@
 from flask import (Blueprint, redirect, render_template, request, url_for)
 from . import database_helper
+from io import BytesIO
+from PIL import Image
+import hashlib
 import qrcode
 import base64
-from PIL import Image
-from io import BytesIO
-import hashlib
 
 bp = Blueprint('share', __name__, url_prefix='/share')
 
@@ -38,8 +38,7 @@ def show(verteilung_id):
 		version=1,
 		error_correction=qrcode.constants.ERROR_CORRECT_H,
 		box_size=4,
-		border=4,
-		)
+		border=4)
 
 	qr.add_data(url)
 	qr.make(fit=True)

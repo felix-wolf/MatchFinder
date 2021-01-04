@@ -2,12 +2,11 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for,
     send_file, after_this_request, current_app as app)
 from werkzeug.utils import secure_filename
-import os
 from . import database_helper
 from . import matchCalculator
 from . import helper
 import json
-
+import os
 
 bp = Blueprint('evaluate', __name__, url_prefix='/evaluate')
 

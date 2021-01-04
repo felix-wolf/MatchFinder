@@ -1,12 +1,11 @@
 from flask import (
     Blueprint, redirect, render_template, request, session, url_for)
-import hashlib
-from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from . import limiter
+from flask_limiter import Limiter
 from . import database_helper
 from . import password_helper
-
+from . import limiter
+import hashlib
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 

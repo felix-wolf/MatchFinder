@@ -1,7 +1,7 @@
-import bcrypt
-from . import txt_parser
-from . import database_helper
 from matchFinder.models import password_model
+from . import database_helper
+from . import txt_parser
+import bcrypt
 
 def get_hashed_password(plain_text_password):
     '''Hash a password for the first time.

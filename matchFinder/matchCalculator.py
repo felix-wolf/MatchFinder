@@ -1,9 +1,9 @@
 from munkres import Munkres, print_matrix, DISALLOWED
+from operator import itemgetter
 import pandas as pd
 import numpy as np
 import random
 import copy
-from operator import itemgetter
 
 def calculateFromCSV(file):
     # csv datei einlesen

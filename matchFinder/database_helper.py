@@ -1,5 +1,3 @@
-from . import db
-import hashlib
 from matchFinder.models import teilnehmer_model
 from matchFinder.models import thema_model
 from matchFinder.models import thema_list_model
@@ -7,6 +5,8 @@ from matchFinder.models import teilnehmer_list_model
 from matchFinder.models import verteilung_model
 from matchFinder.models import password_model
 from matchFinder.models import praeferenz_model
+from . import db
+import hashlib
 
 def init_db():
 	#reset_db()
