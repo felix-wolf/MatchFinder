@@ -2,23 +2,14 @@
 
 {% block title %}Home{% endblock %}
 
-{% block head %}
-  {{ super() }}
-  <style type="text/css">
-    .important { color: #336699; }
-  </style>
-{% endblock %}
-
 {% block header %}
 404 :(
 {% endblock %}
 
 {% block body %}
-  <h1>ERROR</h1>
-  <p class="important">
-    Diese Seite existiert nicht :(
-  </p>
-  <p>
-    <button class:="btn btn-success" onclick="location.href='/'">Schnell weg hier!</a>
-  </p>
+  <div class="alert alert-danger" role="alert">
+    <h2>ERROR!</h2>
+    <p>Diese Seite existiert nicht :(</p>
+    <a class="btn btn-primary" href="{{url_for('home.index')}}">Schnell weg hier!</a>
+</div>
 {% endblock %}
