@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired
 class TeilnehmerEntryForm(FlaskForm):
 	first_name = StringField('Vorname', validators=[DataRequired()])
 	last_name = StringField('Nachname')
-	matr_nr = IntegerField('Matrikelnummer')
+	matr_nr = IntegerField('Matrikelnummer', validators=[DataRequired()])
 
 
 class TeilnehmerForm(FlaskForm):
