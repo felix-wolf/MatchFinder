@@ -21,13 +21,13 @@
 <body>
   <div class="d-none d-md-block">
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-sm-3 col-md-2" href="/">MatchFinder</a>
+      <a class="navbar-brand col-sm-3 col-md-2" href="{{url_for('home.index')}}">MatchFinder</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           {% if session['is_authenticated'] == True %}
-          <a class="nav-link" href="/auth/logout">Ausloggen</a>
+          <a class="nav-link" href="{{url_for('auth.logout')}}">Ausloggen</a>
           {% else %}
-          <a class="nav-link" href="/auth">Authentifizierung</a>
+          <a class="nav-link" href="{{url_for('auth.index')}}">Authentifizierung</a>
           {% endif %}
         </li>
       </ul>
@@ -43,15 +43,15 @@
         </a>
       </div>
       <div class="col-xs-6">
-        <a class="nav-item text-light h5" href="/">MatchFinder</a>
+        <a class="nav-item text-light h5" href="{{url_for('home.index')}}">MatchFinder</a>
       </div>
       <div class="col-xs-3">
         <ul class="navbar-nav px-3">
           <li class="nav-item text-nowrap">
             {% if session['is_authenticated'] == True %}
-            <a class="nav-link" href="/auth/logout">Ausloggen</a>
+            <a class="nav-link" href="{{url_for('auth.logout')}}">Ausloggen</a>
             {% else %}
-            <a class="nav-link" href="/auth">Authentifizierung</a>
+            <a class="nav-link" href="{{url_for('auth.index')}}">Authentifizierung</a>
             {% endif %}
           </li>
         </ul>
@@ -67,14 +67,14 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="/">
+              <a class="nav-link active" href="{{url_for('home.index')}}">
                 <span data-feather="home"></span>
                 Home <span class="sr-only">(current)</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="/evaluate">
+              <a class="nav-link" href="{{url_for('evaluate.index')}}">
                 <span data-feather="check"></span>
                 Verteilung auswerten
               </a>
@@ -83,21 +83,21 @@
             {% if session['is_authenticated'] == True %}
 
             <li class="nav-item">
-              <a class="nav-link" href="/create">
+              <a class="nav-link" href="{{url_for('create.index')}}">
                 <span data-feather="plus"></span>
                 Verteilung erstellen
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="/upload">
+              <a class="nav-link" href="{{url_for('upload.index')}}">
                 <span data-feather="upload"></span>
                 Daten anlegen
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="/edit">
+              <a class="nav-link" href="{{url_for('edit.index')}}">
                 <span data-feather="database"></span>
                 Angelegte Daten
               </a>
@@ -130,14 +130,14 @@
             <ul class="nav flex-column">
 
               <li class="nav-item">
-                <a class="nav-link active" href="/">
+                <a class="nav-link active" href="{{url_for('home.index')}}">
                   <span data-feather="home"></span>
                   Home <span class="sr-only">(current)</span>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="/evaluate">
+                <a class="nav-link" href="{{url_for('evaluate.index')}}">
                   <span data-feather="check"></span>
                   Verteilung auswerten
                 </a>
@@ -146,21 +146,21 @@
               {% if session['is_authenticated'] == True %}
 
               <li class="nav-item">
-                <a class="nav-link" href="/create">
+                <a class="nav-link" href="{{url_for('create.index')}}">
                   <span data-feather="plus"></span>
                   Verteilung erstellen
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="/upload">
+                <a class="nav-link" href="{{url_for('upload.index')}}">
                   <span data-feather="upload"></span>
                   Daten anlegen
                 </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="/edit">
+                <a class="nav-link" href="{{url_for('edit.index')}}">
                   <span data-feather="database"></span>
                   Angelegte Daten
                 </a>
