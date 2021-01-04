@@ -7,7 +7,7 @@
 - [Layout](#layout)
 - [Struktur](#struktur)
 - [Python-Dateien](#python-dateien)
-	- [__init__.py](#initpy)
+	- [init.py](#initpy)
 - [Technisches](#technisches)
 	- [Flask](#flask)
 		- [Flask-Limiter](#flask-limiter)
@@ -97,7 +97,7 @@ Der Unterordner ```matchFinder``` beinhaltet die die Flask App.
 
 In den Python-Dateien im ```matchFinder``` Order stecken die gesamte Logik der App. Einzelne Dateien werden nun genauer beschrieben
 
-### __init__.py
+### [__init__.py](../matchFinder/__init__.py)
 
 Hier wird die Flask-App initialisiert und die Blueprints (definierte Endpunkte in anderen Dateien) registriert. Auch die Datenbank wird hier initialisiert.
 
@@ -108,6 +108,16 @@ Zusätzlich beinhaltet die Datei einen Endpunkt für den Index ('/') und einen E
 ### [database_helper.py](../matchFinder/database_helper.py)
 
 Database_helper ist die Schnittstelle zwischen App und Datenbank. Datenbankzugriffe geschehen nur in dieser Datei. Aus diesen Gründen bietet die Datei alle benötigten Datenbankoperationen für andere Dateien an.
+
+### [config.py](../matchFinder/config.py)
+
+Dies ist eine Config-Datei, ohne die die App nicht startet. In ihr wird der Pfad zur Datenbank, der Secret-Key (siehe [Secret-Key](https://flask.palletsprojects.com/en/1.1.x/api/?highlight=secret%20key#flask.Flask.secret_key)) und Eigenschaften der Dateien, die das System für den Upload erlaubt.
+
+### [matchCalculator.py](../matchFinder/matchCalculator.py)
+
+Das Herz der Matchberechnung. Hier wird mithilfe des Munkres-Algorithmus ein faires Match berechnet. Die Daten zu einem Match kommen dabei entweder aus einer Datei oder aus bestehenden Datenbankdaten.
+
+Das Datenmodell ist dabei
 
 ## Technisches
 
@@ -151,6 +161,7 @@ Beispielsweise ist die Teilnehmer-Tabelle wie folgt definiert:
 
 ```python
 from flask_sqlalchemy import *
+
 class Teilnehmer(db.Model):
 	__tablename__ = "teilnehmer"
 	id = db.Column(db.Integer, primary_key=True)
@@ -200,7 +211,6 @@ An anderen Stellen, an denen die Komplexität überschaubarer war, konnte auf WT
 ### Angelegte Daten
 
 ### Präferenzvergabe
-
 
 
 Wird bei der Präferenzvergabe eine der Antwortmöglichkeiten (z.B. Erstwahl) für eine der Themen angegeben, verschwindet diese Möglichkeit aus den Antwortmöglichkeiten der anderen Themen. Darüber hinaus
