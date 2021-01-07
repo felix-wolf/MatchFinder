@@ -121,16 +121,13 @@
 		},
 		methods: {
 			update() {
-				const selectedValue = document.getElementById("verteilung").value
-				if (selectedValue != "None") {
-					const jsonData = document.getElementById("information").value
-					const json = JSON.parse(jsonData)
-					this.total = json["numberOfTeilnehmer"]
-					this.current = json["numberOfPraefs"]
-					const obergrenze = json["obergrenze"]
-					const auslastung = json["auslastung"]
-					this.within_limit = auslastung <= obergrenze
-				}
+				const jsonData = document.getElementById("information").value
+				const json = JSON.parse(jsonData)
+				this.total = json["numberOfTeilnehmer"]
+				this.current = json["numberOfPraefs"]
+				const obergrenze = parseInt(json["obergrenze"])
+				const auslastung = parseInt(json["auslastung"])
+				this.within_limit = auslastung <= obergrenze
 			},
 			onChange() {
 				this.update()
