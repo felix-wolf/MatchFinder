@@ -33,7 +33,7 @@
 
 Die Webapp bietet ein simples Layout mit einer Seitenleite für die Navigation, einem Button zur Authentifikation in der Topbar und eine Überschrift auf jeder Seite.
 
-Bei Darstellung auf kleinen Displays (z.B. auf mobilen Geräten) wechselt die App in ein mobile-freundliches Layout, die Seitenleiste kann hier ausgeklappt werden.
+Bei Darstellung auf kleinen Displays (z.B. auf mobilen Geräten) wechselt die App in ein mobile-freundliches Layout. Hier ist die Seitenleiste nicht dauerhaft sichtbar sondern wird ausgeklappt.
 
 Für die visuelle Aufbereitung von HTML-Elementen über CSS etc. wird [Bootstrap](https://getbootstrap.com) verwendet.
 
@@ -84,22 +84,22 @@ python3 -m venv venv	# <-- erstellt das Environment
 . venv/bin/activate		# <-- Activiert das Environment
 ```
 
-- ```setup.sh``` started die Flask-App
-- ```list_of_blocked_ips.txt``` ist eine Liste von IP-Adressen, die in Vergangenheit verantwortlich für Spam und unerwünschte Aufrufe waren.
+- ```setup.sh``` started die Flask-App im Develop-Modus
+- ```list_of_blocked_ips.txt``` ist eine Liste von IP-Adressen, die in Vergangenheit verantwortlich für Spam und unerwünschte Aufrufe waren. Bei erstmaligem aufrufen der Webseite wird geprüft, ob sich die IP-Adresse des Benutzers auf dieser Liste befindet. Ist dies der Fall wird der Zugriff verwehrt
 - ```README.md``` beinhaltet die Übersicht der Dokumentation
 
-Der Unterordner ```matchFinder``` beinhaltet die die Flask App.
+Der Unterordner ```matchFinder``` beinhaltet die Flask App.
 
-- **Root Level:** Auf Root Level des ```matchFinder``` befinden sich alle Endpunkte der App. Mehr dazu in [hier](#python-dateien).
+- **Root Level:** Auf Root Level von ```matchFinder``` befinden sich alle Endpunkte der App. Mehr dazu [hier](#python-dateien).
 - **Forms**: In ```forms``` sind die Formularvorlagen von ```WTForms```
 - **Models**: In ```models``` sind die ORM-Klassen für ```SQLAlchemy```, also die Vorlagen aller Datenbanktabellen.
 - **Static**: Im ```static``` Ordner sind statische HTML-Resourcen, wie das Favicon, das CSS für das Layout und die Vuejs-Library.
-- **Templates**: Der ```templates``` Ordner beinhaltet alle HTML-Templates der App, die mit Jinja ausgebaut werden
+- **Templates**: Der ```templates```-Ordner beinhaltet alle HTML-Templates der App, die mit Jinja ausgebaut werden
 - **Documentation**: In ```documentation``` sind die Markdown-Dateien der Dokumentation
 
 ## Python-Dateien
 
-In den Python-Dateien im ```matchFinder``` Order stecken die gesamte Logik der App. Einzelne Dateien werden nun genauer beschrieben
+Die Python-Dateien im ```matchFinder```-Order beinhalten die gesamte Logik der App. Einzelne Dateien werden nun genauer beschrieben.
 
 ### [__init__.py](../matchFinder/__init__.py)
 
@@ -122,7 +122,6 @@ Dies ist eine Config-Datei, ohne die die App nicht startet. In ihr wird der Pfad
 Das Herz der Matchberechnung. Hier wird mithilfe des Munkres-Algorithmus ein faires Match berechnet. Die Daten zu einem Match kommen dabei entweder aus einer Datei oder aus bestehenden Datenbankdaten.
 
 Das Datenmodell ist dabei eine rechteckige Matrix mit Aufbau
-
 
 | Name 			  | Thema1	| Thema2	| Thema3	|
 |-----------------|---------|-----------|-----------|
@@ -154,7 +153,15 @@ Teilnehmer4,Viertwahl,Zweitwahl,Drittwahl,Erstwahl
 
 Da Verteilungsprobleme im Kern Kosten-Minimierungsprobleme sind, ergeben sich daraus bestimmte Eigenschaften, die zu beachten sind.
 
-Angenommen, es gibt 2 Teilnehmer und 2 Gruppen. Teilnehmer 1 vergibt die Präferenzen ```Erstwahl, Zweitwahl```, Teilnehmer 2 vergibt ```Erstwahl,```. Teilnehmer 2 hat also für Gruppe 2 keine Präferenz angegeben.
+Jeder Matrixeintrag sollte idealerweise ausgefüllt sein, sodass mindestens die Präferenzen 1-10, also Erstwahl bis Zehntwahl, vergeben sind. Kein Wert entspricht dem statischen Gewicht von 100. Bei einer geringen Anzahl von zur Verfügung stehenden Gruppen / Themen und der Nicht-Vergabe von Präferenzen kann folgendes Problem austreten:
+
+Angenommen, es gibt 2 Teilnehmer und 2 Gruppen. Teilnehmer 1 vergibt die Präferenzen ```Erstwahl, Zweitwahl```, Teilnehmer 2 vergibt ```Erstwahl,```. Teilnehmer 2 hat also für Gruppe 2 keine Präferenz angegeben. Das System würde die Präferenzen auf diese Weise modellieren:
+
+| **1** | **2**	  |
+|-------|---------|
+| **1** | **100** |
+
+In diesem Szenario würde Teilnehmer 2 die Erstwahl kriegen und Teilnehmer 1 die Zeitwahl, weil sie so ein geringeres Gesamtgewicht ergibt (2 + 1 = 3 vs 1 + 100 = 101). Die Verteilung ist also nicht fair. Aus diesem Grund sollte für alle oder für die ersten 10 Antwortmöglichkeiten eine Präferenz vergeben werden (je nach dem, was zuerst eintritt).
 
 ### [password_helper.py](../matchFinder/password_helper.py)
 
