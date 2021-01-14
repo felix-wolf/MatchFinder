@@ -1,10 +1,10 @@
 # MatchFinder
+
 Matchfinder ist ein Service der bei gegebenen Teilnehmern, Themen/Gruppen und Präferenzen ein faires Match findet.
 
-Die Dokumentation teilt sich in zwei Teile:
+Die Dokumentation besteht aus zwei Teilen:
 
 1. [Die Dokumention beschreibt technische Details der Umsetzung.](documentation/dokumentation.md)
 2. [Die Spezifikation beschreibt, was dieses Tool leisten soll.](documentation/spezifikation.md)
 
-# TODO
-- Würfeln (wird das überhaupt gebraucht? Einfach das oberste nehmen...)
+Zusätzlich wird in dieser [Installationsanleitung](documentation/dokumentation.md) beschrieben, wie die App und ihre Dependencies in einer lokalen Umgebung installiert und gestartet werden kann.

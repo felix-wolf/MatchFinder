@@ -55,4 +55,4 @@ Alternativ kann mit
 ```bash
 flask run --host=0.0.0.0
 ```
-die Flask App gestartet werden und allen geräten im gleichen Netz zur verfügung gestellt werden. Die App kann dann über ```<IP DES HOSTS>:5000``` erreicht werden.
+die Flask App gestartet werden und allen Geräten im gleichen Netz zur Verfügung gestellt werden. Die App kann dann über ```<IP DES HOSTS>:5000``` erreicht werden.
