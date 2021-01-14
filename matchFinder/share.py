@@ -8,7 +8,12 @@ import base64
 
 bp = Blueprint('share', __name__, url_prefix='/share')
 
-#make database entry, give link to enter site
+@bp.before_request
+def check_status():
+    if session.get('is_authenticated') != True:
+        return redirect(url_for('home.index'))
+
+#make database entry, return link to enter site
 @bp.route('/', methods=['GET', 'POST'])
 def index():
 	teilnehmer_list_id = request.form.get('teilnehmer', None)

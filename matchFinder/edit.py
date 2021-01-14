@@ -3,15 +3,12 @@ from flask import (
 from . import database_helper
 import json
 
-
 bp = Blueprint('edit', __name__, url_prefix='/edit')
 
-
 @bp.before_request
-def load_logged_in_user():
+def check_status():
     if session.get('is_authenticated') != True:
         return redirect(url_for('home.index'))
-
 
 @bp.route('/')
 def index():

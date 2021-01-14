@@ -18,7 +18,8 @@ def check_password(plain_text_password, hashed_password):
     	hashed_password)
 
 def create_passwords():
-	'''inserts hashed passwords from txt file into db.'''
+	'''loads plain passwords from txt file,
+	hashes them and writes the hashed values to the db.'''
 
 	keys = txt_parser.load_values_from_file('passwords.txt')
 	for key in keys:

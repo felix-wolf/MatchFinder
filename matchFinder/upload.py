@@ -11,7 +11,7 @@ import os
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.before_request
-def load_logged_in_user():
+def check_status():
     if session.get('is_authenticated') != True:
         return redirect(url_for('home.index'))
 

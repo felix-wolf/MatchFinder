@@ -5,7 +5,7 @@ from . import database_helper
 bp = Blueprint('create', __name__, url_prefix='/create')
 
 @bp.before_request
-def load_logged_in_user():
+def check_status():
     if session.get('is_authenticated') != True:
         return redirect(url_for('home.index'))
 
