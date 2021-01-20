@@ -1,4 +1,4 @@
-from flask import (Blueprint, redirect, render_template, request, url_for)
+from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from . import database_helper
 from io import BytesIO
 from PIL import Image
@@ -14,7 +14,7 @@ def check_status():
         return redirect(url_for('home.index'))
 
 #make database entry, return link to enter site
-@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/', methods=['POST'])
 def index():
 	teilnehmer_list_id = request.form.get('teilnehmer', None)
 	name = request.form.get('name', None)
