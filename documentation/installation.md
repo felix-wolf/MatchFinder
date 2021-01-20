@@ -2,7 +2,7 @@
 
 # Installation
 
-For more information, see [this setup guide](https://flask.palletsprojects.com/en/1.1.x/installation/#install-create-env) and [this tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/).
+Weitere Informationen sind [diesem Guide](https://flask.palletsprojects.com/en/1.1.x/installation/#install-create-env) und [diesem Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/) zu entnehmen.
 
 ##### Environment erstellen
 
@@ -42,7 +42,7 @@ pip3 install Pillow
 pip3 install bcrypt
 ```
 
-##### Run the Application
+##### Die App ausführen
 
 ```bash
 export FLASK_APP=matchFinder

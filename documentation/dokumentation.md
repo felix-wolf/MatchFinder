@@ -4,5 +4,5 @@
 
 Die Dokumentation teilt sich in zwei Teile:
 
-1. Dem [fachlichen Teil](fachliches.md)
-2. dem [technisches Teil](technisches.md)
+1. [fachlicher Teil](fachliches.md)
+2. [technischer Teil](technisches.md)
