@@ -88,10 +88,10 @@
 {% endif %}
 {% endif %}
 
-<div class="mb-4">
+<div class="mb-5">
 	<h5 class="mb-3">
 		{% if session['is_authenticated'] == True %}
-	Oder e{% else %}E{% endif %}rstelle eine Auswertung aus bereits angegebene Präferenzen in .csv Format</h5>
+	Oder e{% else %}E{% endif %}rstelle eine Auswertung aus bereits angegebene Präferenzen in .csv Format*</h5>
 	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
 		<form method=post action="{{ url_for('evaluate.csv_upload') }}" enctype=multipart/form-data>
 			<div class="mb-2">
@@ -101,6 +101,8 @@
 		</form>
 	</div>
 </div>
+
+* Informationen zu zulässigen Dateien und Formaten gibt es <a href="https://github.com/felix-wolf/MatchFinder/blob/master/README.md">hier. //TODO: FIX LINK</a>
 
 {% endblock %}
 
