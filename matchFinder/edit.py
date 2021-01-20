@@ -1,6 +1,7 @@
 from flask import (
 	Blueprint, redirect, render_template, session, url_for)
 from . import database_helper
+import hashlib
 import json
 
 bp = Blueprint('edit', __name__, url_prefix='/edit')
@@ -45,6 +46,7 @@ def action(verteilung_id, action):
 		database_helper.delete_verteilung_by_id(verteilung_id)
 
 	if action == 'teilen':
-		return redirect(url_for('share.show', verteilung_id=verteilung_id))
+		hashed_verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
+		return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
 
 	return redirect(url_for("edit.index"))

@@ -32,11 +32,13 @@ def index():
 		name, teilnehmer_list_id, thema_list_id,
 		protected, editable, max_per_thema,
 		min_votes, veto_allowed)
-	return redirect(url_for('share.show', verteilung_id=id))
 
-@bp.route('/show/<int:verteilung_id>')
+	hashed_verteilung_id = hashlib.sha256(str(id).encode()).hexdigest()
+
+	return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
+
+@bp.route('/show/<verteilung_id>')
 def show(verteilung_id):
-	verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
 	root_url = request.url_root
 	url = root_url + 'preference?id=' + str(verteilung_id)
 	qr = qrcode.QRCode(
