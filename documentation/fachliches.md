@@ -47,11 +47,13 @@ Für eine optimale Auswertung sollten so viele Angaben wie möglich gemacht werd
 
 Sind noch keine Daten in der Datenbank angelegt, steht dem authentifizierten Benutzer die gleiche Funktionalität wie [oben](#verteilung-aus-einer-datei-auswerten) beschrieben. Er erhält außerdem noch einen Verweis auf die *Verteilung anlegen*-Funktion, über welche er eine Verteilung anlegen kann.
 
+WEITERSCHREIBEN
+
 ## Verteilung erstellen
 
-Dieser Seitenabschnitt steht nur authentifizierten Benutzern zur Verfügung.
+*Dieser Seitenabschnitt steht nur authentifizierten Benutzern zur Verfügung.*
 
-Sind zuvor Teilnehmer und Gruppen angelegt worden, kann auf dieser Unterseite eine Verteilung erstellt werden. Wenn nicht, beinhaltet die Seite einen Verweis auf die *Daten-anlegen*-Funktion, über welche dann Teilnehmer und Gruppen / Themen angelegt werden können.
+Sind zuvor Teilnehmer und Gruppen angelegt worden, kann auf dieser Unterseite eine Verteilung erstellt werden. Wenn nicht, beinhaltet die Seite einen Verweis auf die [*Daten-anlegen*](#daten-anlegen)-Funktion, über welche dann Teilnehmer und Gruppen / Themen erstellt werden können.
 
 Verteilungen zu erstellen bedeutet, zu einer gegebenen Gruppe eine Liste an Teilnehmern (vorausgesetzt, die Verteilung ist geschützt) zuzuordnen und den Teilnehmern die Möglichkeit zu geben, ihre Präferenzen zu den Themen / Gruppen abzugeben.
 
@@ -70,9 +72,53 @@ Mit dem Auswählen des *Erstellen*-Knopfes wird die Verteilung erstellt und der 
 
 ## Verteilung teilen
 
+*Dieser Seitenabschnitt steht nur authentifizierten Benutzern zur Verfügung.*
+
 Auf dieser Seite kann eine erstellte Verteilung geteilt werden. Zu diesem Zweck wird der Link angezeigt, welcher benötigt wird, um zu der Verteilung zu navigieren. Darunter ist ein QR-Code, welcher von den Teilnehmern gescannt werden kann, er führt ebenfalls zur Präferenzvergabe.
 
 ## Daten anlegen
+
+*Dieser Seitenabschnitt steht nur authentifizierten Benutzern zur Verfügung.*
+
+Um eine Verteilung aus Datenbankdaten erstellen zu können, müssen diese im Voraus angelegt werden. Diese Funktionalität bildet der Unterpunkt *Daten anlegen* (```/upload```).
+
+Die App arbeitet mit zwei Arten von Daten: Teilnehmer und Gruppen bzw. Themen. Beide lassen sich über einen Datei-Upload oder per Formular erstellen.
+
+### Erstellung mittels Formular
+
+Liegen die Daten nicht als Dateien vor, ist die Erstellung mittels Formular eine effiziente und angenehme Art, dies zu ändern. Hierzu muss vor der eigentlichen Erstellen zunächst festgelegt werden, wie viele Teilnehmer oder Gruppen / Themen angelegt werden sollen:
+
+![image](images/manual_creation.png)
+
+Es müssen mindestens 1 ein Teilnehmer oder Gruppe angelegt werden. Nach oben gibt es keine Beschränkung.
+
+An Verteilungen können immer nur ganze Gruppen von Teilnehmern teilnehmen. Es gibt **nicht** die Möglichkeit, nach der Erstellung einer Gruppen- oder Teilnehmerliste die dazugehörigen Gruppen oder Teilnehmer zu bearbeiten, d.h. die Daten zu bearbeiten oder Einträge zu löschen / hinzuzufügen. Diese Listen sind erst zu erstellen, wenn alle Einträge feststehen.
+
+Bei der Erstellung von Teilnehmern oder Gruppen / Themen gibt es Informationen, die ausgefüllt werden müssen, während andere optional sind. Der Name der Teilnehmer- bzw. Gruppenliste ist immer erforderlich, die Notwendigkeit der weiteren Feldern ist den Tabellen zu entnehmen:
+
+#### Teilnehmer
+
+| Feld 			| benötigt	|
+|---------------|-----------|
+| Vorname		| Ja		|
+| Nachname		| Nein		|
+| Matrikelnummer| Ja 		|
+
+#### Gruppen / Themen
+
+| Feld 		| benötigt	|
+|-----------|-----------|
+| Name		| Ja		|
+| Uhrzeit	| Nein		|
+| Betreuer	| Nein 		|
+
+Sind die benötigten Felder nicht ausgefüllt lässt sich die Verteilung nicht erstellen.
+
+Wenn die Erstellung erfolgreich war, wird der Benutzer zur vorherigen Seite zurückgeleitet und es erscheint ein kleines Banner, welches Auskunft über die Anzahl der erstellen Einträge gibt.
+
+Erstellte Daten können unter [*Angelegte Daten*](#angelegte-daten) betrachtet und bearbeitet werden.
+
+### Erstellung mittels Datei
 
 ## Angelegte Daten
 
