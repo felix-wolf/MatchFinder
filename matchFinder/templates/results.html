@@ -6,7 +6,7 @@
 
 {% block body %}
 <div class="mb-3">
-	<p>Es gibt insgesamt {{data|length}} mögliche Verteilungen.</p>
+	<p>Es gibt insgesamt {{data|length}} mögliche Verteilung{% if data|length > 1%}en{% endif %}.</p>
 	Die Varianten sind nach ihrem Median und der absoluten Abweichung vom Median sortiert.
 </div>
 

@@ -6,8 +6,14 @@
 
 - [Home](#home)
 - [Verteilung auswerten](#verteilung-auswerten)
+	- [aus Datei](#verteilung-aus-einer-datei-auswerten)
+	- [aus Datenbankdaten](#verteilung-aus-datenbankdaten-auswerten)
 - [Verteilung erstellen](#verteilung-erstellen)
 - [Daten anlegen](#daten-anlegen)
+	- [per Formular]()
+		- [Teilnehmer](#teilnehmer)
+		- [Themen / Gruppen](#gruppen-themen)
+	- [aus Datei]()
 - [Angelegte Daten](#angelegte-daten)
 - [Präferenzvergabe](#praferenzvergabe)
 
@@ -31,7 +37,7 @@ Eine Verteilung kann auch ausgewertet werden, wenn die Präferenzen als CSV-Date
 
 Beispielformat:
 
-Eine formatgerechte Datei sieht demnach so aus
+Eine formatgerechte Datei sieht demnach so aus:
 
 ```
 PLATZHALTER,Thema1,Thema2,Thema3,Thema4
@@ -43,11 +49,44 @@ Teilnehmer4,,Zweitwahl,Drittwahl,Erstwahl
 
 Für eine optimale Auswertung sollten so viele Angaben wie möglich gemacht werden.
 
+Kann eine Verteilung ausgewerten, kann dies mit dem Auswählen des *Auswerten*-Knopfes veranlasst werden. Der Benutzer wird auf eine neue Seite weitergeleitet. Diese ist [hier](#resultate-einer-auswertung) näher beschrieben.
+
 ### Verteilung aus Datenbankdaten auswerten
 
 Sind noch keine Daten in der Datenbank angelegt, steht dem authentifizierten Benutzer die gleiche Funktionalität wie [oben](#verteilung-aus-einer-datei-auswerten) beschrieben. Er erhält außerdem noch einen Verweis auf die *Verteilung anlegen*-Funktion, über welche er eine Verteilung anlegen kann.
 
-WEITERSCHREIBEN
+Existiert jedoch eine Verteilung in der Datenbank, kann diese ausgewählt werden, um sie auszuwerten. Unter dem Auswahlelement wird u.U. darauf hingewiesen, dass eine Auswertung noch nicht ausgewertet werden sollte. Beispiel:
+
+![image](images/warning.png)
+
+Dies kann mehrere Gründe haben:
+
+1. kein Teilnehmer hat an der Verteilung teilgenommen
+2. lediglich eine geringe Anzahl von Teilnehmern hat an der Verteilung teilgenommen (wie im Beispiel, die Schwelle liegt bei 80%)
+3. Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt (Anzahl Themen * Slots pro Thema). Dies kann nur bei offenen Verteilungen vorkommen, bei denen die Anzahl der Teilnehmer im Voraus nicht bekannt ist.
+
+Während 1-2 lediglich Warnungen sind, führt 3. dazu, dass die Verteilung dauerhaft nicht ausgeführt werden kann. Die Verteilung muss erneut erstellt und Präferenzen erneut vergeben werden.
+
+Kann eine Verteilung ausgewerten, kann dies mit dem Auswählen des *Auswerten*-Knopfes veranlasst werden. Der Benutzer wird auf eine neue Seite weitergeleitet. Diese ist [hier](#resultate-einer-auswertung) näher beschrieben.
+
+### Resultate einer Auswertung
+
+In der Abbildung
+
+![image](images/results.png)
+
+ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen Gesamtkosten haben. Gibt es mehr als eine solcher Resultate werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Hier ein Beispiel zur Erklärung:
+
+Verteilung1 hat die Kosten [2,2,2]. Verteilung2 hat die Kosten [1,2,3]. Damit haben beide Verteilungen einen Median von 2. Jedoch ist die absolute Abweichung vom Median bei Verteilung1 0, während sie bei Verteilung2 2 ist.
+
+In diesem Anwendungsfall ist eine geringere Abweichung besser, also wird Verteilung1 gegenüber Verteilung2 bevorzugt und über ihr angezeigt.
+
+Pro Verteilungsvariante wird nun angezeigt, welcher Studi welches Thema bekommen und hat die wievielte Wahl es jeweils war.
+
+Die Seite bietet dem Benutzer Exportfunktionen in zwei Formate
+
+1. **CSV-Datei**: Hier wird die Tabelle in CSV-Format umgewandelt und ausgegeben, nützlich für Programme wie Microsoft Excel o.ä.
+2. **WikiDocs-Format**: Speziell implementiert für den Arbeitsbereich Wissenschaftliches Rechnen an der UHH, die auf ihrer Webseite WikiDocs verwenden. Bei diesem Format handelt es sich um eine verändertes Markdown.
 
 ## Verteilung erstellen
 
@@ -119,6 +158,29 @@ Wenn die Erstellung erfolgreich war, wird der Benutzer zur vorherigen Seite zur�
 Erstellte Daten können unter [*Angelegte Daten*](#angelegte-daten) betrachtet und bearbeitet werden.
 
 ### Erstellung mittels Datei
+
+Alternativ zum Formular können Daten auch per Datei erstellt werden. Hier sind besonders die Formatvorgaben zu beachten.
+
+#### Teilnehmer
+
+Während die Themen / Gruppen im standardmäßigen CSV-Format angegeben werden, ist dies bei den Teilnehmern anders. Hier werden die Spalten mit Tabs getrennt. Dies liegt daran, dass es besonders einfach sein soll, teilnehmer aus STiNE zu exportieren und in MatchFinder zu importieren. Also muss Matchfinder dem Format von STiNE folgen. Da STiNE die Listen je nach Kontext in zwei Darstellungen exportiert, unterstützt MatchFinder auch beide.
+
+Hier beide Varianten:
+
+Variante 1:
+
+```
+Id <TAB> Matrikelnummer <TAB> Nachname <TAB> Vorname <TAB>
+```
+
+Variante 2:
+
+```
+Id <TAB> Matrikelnummer <TAB> Nachname <TAB> Vorname <TAB> Zeitpunkt <TAB>
+```
+
+
+#### Themen / Gruppen
 
 ## Angelegte Daten
 
