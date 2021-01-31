@@ -8,12 +8,15 @@
 - [Verteilung auswerten](#verteilung-auswerten)
 	- [aus Datei](#verteilung-aus-einer-datei-auswerten)
 	- [aus Datenbankdaten](#verteilung-aus-datenbankdaten-auswerten)
+- [Resultate einer Auswertung](#resultate-einer-auswertung)
 - [Verteilung erstellen](#verteilung-erstellen)
 - [Daten anlegen](#daten-anlegen)
 	- [per Formular]()
 		- [Teilnehmer](#teilnehmer)
 		- [Themen / Gruppen](#gruppen-themen)
-	- [aus Datei]()
+	- [aus Datei](#erstellung-mittels-datei)
+		- [Teilnehmer](#teilnehmer)
+		- [Themen / Gruppen](#gruppen-themen)
 - [Angelegte Daten](#angelegte-daten)
 - [Präferenzvergabe](#praferenzvergabe)
 
@@ -35,9 +38,7 @@ Eine Verteilung kann auch ausgewertet werden, wenn die Präferenzen als CSV-Date
 4. die Präferenzen sind als Bezeichnung angegeben, nicht als Zahl (Erstwahl statt 1, Zweitwahl statt 2 etc.)
 5. die maximal angebenen Präferenz ist die Zehntwahl, darüber hinaus werden keine weiteren Präferenzen angegeben
 
-Beispielformat:
-
-Eine formatgerechte Datei sieht demnach so aus:
+**Beispielformat**: Eine formatgerechte Datei sieht demnach so aus:
 
 ```
 PLATZHALTER,Thema1,Thema2,Thema3,Thema4
@@ -49,7 +50,7 @@ Teilnehmer4,,Zweitwahl,Drittwahl,Erstwahl
 
 Für eine optimale Auswertung sollten so viele Angaben wie möglich gemacht werden.
 
-Kann eine Verteilung ausgewerten, kann dies mit dem Auswählen des *Auswerten*-Knopfes veranlasst werden. Der Benutzer wird auf eine neue Seite weitergeleitet. Diese ist [hier](#resultate-einer-auswertung) näher beschrieben.
+Soll eine Verteilung ausgewertet werden, kann dies mit dem Auswählen des *Auswerten*-Knopfes veranlasst werden. Der Benutzer wird auf eine neue Seite weitergeleitet. Diese ist [hier](#resultate-einer-auswertung) näher beschrieben.
 
 ### Verteilung aus Datenbankdaten auswerten
 
@@ -75,15 +76,15 @@ In der Abbildung
 
 ![image](images/results.png)
 
-ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen Gesamtkosten haben. Gibt es mehr als eine solcher Resultate werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Hier ein Beispiel zur Erklärung:
+ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen Gesamtkosten haben. Gibt es mehr als eine solcher Resultate, werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Hier ein Beispiel zur Erklärung:
 
-Verteilung1 hat die Kosten [2,2,2]. Verteilung2 hat die Kosten [1,2,3]. Damit haben beide Verteilungen einen Median von 2. Jedoch ist die absolute Abweichung vom Median bei Verteilung1 0, während sie bei Verteilung2 2 ist.
+Verteilung1 habe die Kosten [2,2,2]. Verteilung2 habe die Kosten [1,2,3]. Damit haben beide Verteilungen einen Median von 2. Jedoch ist die absolute Abweichung vom Median bei Verteilung1 0, während sie bei Verteilung2 2 ist.
 
 In diesem Anwendungsfall ist eine geringere Abweichung besser, also wird Verteilung1 gegenüber Verteilung2 bevorzugt und über ihr angezeigt.
 
-Pro Verteilungsvariante wird nun angezeigt, welcher Studi welches Thema bekommen und hat die wievielte Wahl es jeweils war.
+Pro Verteilungsvariante wird nun angezeigt, welcher Studi welches Thema bekommen hat und die wievielte Wahl es jeweils war.
 
-Die Seite bietet dem Benutzer Exportfunktionen in zwei Formate
+Die Seite bietet dem Benutzer Exportfunktionen in zwei Formate:
 
 1. **CSV-Datei**: Hier wird die Tabelle in CSV-Format umgewandelt und ausgegeben, nützlich für Programme wie Microsoft Excel o.ä.
 2. **WikiDocs-Format**: Speziell implementiert für den Arbeitsbereich Wissenschaftliches Rechnen an der UHH, die auf ihrer Webseite WikiDocs verwenden. Bei diesem Format handelt es sich um eine verändertes Markdown.
@@ -161,6 +162,8 @@ Erstellte Daten können unter [*Angelegte Daten*](#angelegte-daten) betrachtet u
 
 Alternativ zum Formular können Daten auch per Datei erstellt werden. Hier sind besonders die Formatvorgaben zu beachten.
 
+Für beide Datentypen gilt: die Dateien müssen auf .csv oder .txt enden.
+
 #### Teilnehmer
 
 Während die Themen / Gruppen im standardmäßigen CSV-Format angegeben werden, ist dies bei den Teilnehmern anders. Hier werden die Spalten mit Tabs getrennt. Dies liegt daran, dass es besonders einfach sein soll, teilnehmer aus STiNE zu exportieren und in MatchFinder zu importieren. Also muss Matchfinder dem Format von STiNE folgen. Da STiNE die Listen je nach Kontext in zwei Darstellungen exportiert, unterstützt MatchFinder auch beide.
@@ -179,12 +182,52 @@ Variante 2:
 Id <TAB> Matrikelnummer <TAB> Nachname <TAB> Vorname <TAB> Zeitpunkt <TAB>
 ```
 
+Beispieldateiinhalt Variante 1:
+
+```
+1 	1234567 	Mustermann 	Max 		Übungen Gr. 03 (Do. 10-12 Uhr)
+2 	7654321 	Musterfrau 	Marie 		Übungen Gr. 05 (Do. 14-16 Uhr)
+```
 
 #### Themen / Gruppen
 
+Themen / Gruppen werden als CSV-Dateien hochgeladen, dabei ist das Format:
+
+```
+Name, Zeit, Betreuer
+```
+
+Beispiel:
+
+```
+Thema1,Heute,Frau Schmidt
+Thema2,Morgen,Herr Schultz
+Thema3,,Ich
+Thema4,Nächste Woche,
+Thema5,,
+```
+
 ## Angelegte Daten
+
+![image](images/saved_data.png)
+
+Die Seite *Angelegte Daten* (```/edit```) bietet die Funktion, die angelegten Daten zu betrachten und zu bearbeiten.
+
+Die Seite ist in vier Abschnitte aufgeteilt: Jeweils eine Tabelle für Teilnehmer, Gruppen / Themen und Verteilungen und eine Legende. Die Legende zeigt nur diejenigen Symbole an, die für die existierenden Daten relevant sind. Gibt es keine Daten, wird die Legende ausgeblendet
+
+Die Tabellen für Teilnehmer und Gruppen / Themen zeigen auf oberster Ebene die Listen von Teilnehmer bzw. Gruppen Themen und es wird eine Löschfunktion angeboten. Listen lassen sich nur als Ganzes löschen und die einzelnen Einheiten können nicht bearbeitet werden.
+
+Durch einen Klick auf eine Liste wird die Tabelle ausgeklappt und der Listeninhalt wird angezeigt.
+
+Die Tabelle der Verteilungen kann nicht ausgeklappt werden, sie bietet jedoch als Aktionen die Löschfunktion und eine Funktion zum Teilen. Die Teilen-Funktion leitet den Benutzer zur [Teilen-Seite](#verteilung-teilen) weiter.
 
 ## Präferenzvergabe
 
+Bei der Präferenzvergabe prioritisiert ein Teilnehmer die ihm/ihr angebotenen Gruppen oder Themen.
+Die Priorität wird von Erstwahl bis Zehntwahl angegeben, u.U. gibt es ein Veto.
 
-Wird bei der Präferenzvergabe eine der Antwortmöglichkeiten (z.B. Erstwahl) für eine der Themen angegeben, verschwindet diese Möglichkeit aus den Antwortmöglichkeiten der anderen Themen. Darüber hinaus
+Bevor die Präferenzen vergeben werden können, wird der Benutzer u.U. aufgefordert, sich mittels seiner Matrikelnummer zu authentifizieren. Ist die Verteilung offen, hat er stattdessen die Möglichkeit, seinen Vor- und Nachnamen einzutragen, wobei nur der Vorname Pflicht ist.
+
+Wird bei der Präferenzvergabe eine der Antwortmöglichkeiten (z.B. Erstwahl) für eine der Themen angegeben, verschwindet diese Priorität aus den Antwortmöglichkeiten der anderen Themen.
+
+## [zurück nach oben](#zuruck-zur-ubersicht)
