@@ -164,7 +164,7 @@ In diesem Szenario würde Teilnehmer 2 die Erstwahl kriegen und Teilnehmer 1 die
 
 Das System unterstützt momentan bis zu 10 Präferenzen. Die bedeutet, dass die Felder  nach der Zehntwahl entweder dynamisch hochgezählt (Bei Präferenzvergabe über das System) oder mit dem statischen Gewicht von 100 (bei Berechnung aus Datei) belegt werden.
 
-Dieser Umstand ist eine Aktive Entscheidung. Unter anderem sprechen diese Gründe für eine Begrenzung:
+Dieser Umstand ist eine bewusste Entscheidung. Unter anderem sprechen diese Gründe für eine Begrenzung:
 
 1. In den seltensten Fällen möchte ein Teilnehmer mehr als 10 Präferenzen angeben. Die Wahrscheinlichkeit, nicht eine der ersten 10 Wahlen zu bekommen ist bei moderat großen Themen und Teilnehmern gering.
 2. Um den Teilnehmer die Vergabe einer ```Erstwahl``` anstatt einer ```1``` zu ermöglichen, müssen diese Antwortmöglichkeiten hardgecodet werden und können nicht (anders als Zahlen) dynamisch generiert werden. Hier stellt sich die Frage, ob sich eine Implementation von beispielsweise 100 Antwortmöglichkeiten überhaupt lohnt, wenn in den meisten Fällen nur die ersten 10 Vergeben werden.
@@ -173,7 +173,7 @@ Dieser Umstand ist eine Aktive Entscheidung. Unter anderem sprechen diese Gründ
 
 Die Datei ```password_helper``` ist zuständig für das Generieren und Überprüfen von Passwörtern. MatchFinder benutzt kein vollständiges User-Password-System, hierfür existiert schlichtweg keine Notwendigkeit. Vielmehr können sich User über zuvor definierte geheime Schlüssen gegenüber dem System authentifizieren. Einmal authentifiziert stehen dem User dann eine Vielzahl von Funktionen zur Verfügung, die vor dem Zugriff eines unauthorisiertem Benutzers verborgen und blockiert sind.
 
-Geschützte Seitenendpunkte sind visuell nicht sichtbar und die einzelnen Endpunkte überprüfen bei jedem Zugriff den Status des Nutzers. Ist dieser nicht berechtigt wird der User auf die Hauptseite zurückgeleitet:
+Geschützte Seitenendpunkte sind visuell in der Seitenleiste nicht sichtbar und die einzelnen Endpunkte überprüfen bei jedem Zugriff den Status des Nutzers. Ist dieser nicht berechtigt wird der User auf die Hauptseite zurückgeleitet:
 
 ```python
 @bp.before_request
@@ -190,7 +190,7 @@ Diese Informationen werden in einem Cookie gespeichert. Dieser Cookie ist der ei
 
 ### Endpunkte
 
-Pro Endpunkt der Flaskapp gibt es eine Datei, ein sog. Blueprint. Die Endpunkte der app sind:
+Pro Endpunkt der Flaskapp gibt es eine Datei, ein sog. Blueprint. Die Endpunkte der App sind:
 
 - [/auth](../matchFinder/auth.py)
 - [/create](../matchFinder/create.py)
@@ -219,13 +219,13 @@ Das Base-Template lädt auch Bootstrap für das Styling, das Favicon und bindet 
 
 ### [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 
-Flask ist die Hauptkomponente des Backends der App. Mit Flask wird das Routing konfiguriert und die allgemeine Struktur der App. Flask bietet im Vergleich zur Alternative wie z.b. [Django](https://www.djangoproject.com) nur die absolute Basisfunktionalität und wird dann suksessive durch Erweiterungen ausgebaut.
+Flask ist die Hauptkomponente des Backends der App. Mit Flask wird das Routing konfiguriert und die allgemeine Struktur der App. Flask bietet im Vergleich zu Alternativen wie z.b. [Django](https://www.djangoproject.com) nur die absolute Basisfunktionalität und wird dann suksessive durch Erweiterungen ausgebaut.
 
 Im Folgenden soll kurz etwas zu den verwendeten Erweiterungen gesagt werden:
 
 #### [Flask-Limiter](https://flask-limiter.readthedocs.io/en/stable/)
 
-Mit Flask-Limiter kann die Anzahl auf der Zugriffe global oder auf spezifische Endpunkte begrenzt werden. Dies wird hier genutzt, um einzelne Endpunkte vor Brute-Force angriffen zu schützen und die gesamte WebApp gegen Angriffe robuster zu machen. Der Endpunkt für die allgemeine Authentifikation und die der Matrikelnummereingabe haben ein Limit von 5 Requests pro Minute. Die gesamte App ein
+Mit Flask-Limiter kann die Anzahl der Zugriffe global oder auf spezifische Endpunkte begrenzt werden. Dies wird hier genutzt, um einzelne Endpunkte vor Brute-Force-Angriffen zu schützen und die gesamte WebApp gegen Angriffe robuster zu machen. Der Endpunkt für die allgemeine Authentifikation und die der Matrikelnummereingabe haben ein Limit von 5 Requests pro Minute.
 
 #### [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 
@@ -233,7 +233,7 @@ Flask-SQLAlchemy ist die Schnittstelle zwischen Flask und SQLAlchemy, ein ORM f�
 
 #### [Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/)
 
-Ähnlich wie Flask-SQLAlchemy ist Flask-WTF eine Schnittstelle zwischen Flask und einer bestehenden Python-Erweiterung, hier [WTForms](https://wtforms.readthedocs.io/en/2.3.x/). Für mehr informationen siehe den Abschnitt [```WTForms```](#wtforms) unter ```Technisches```.
+Ähnlich wie Flask-SQLAlchemy ist ähnlich wie Flask-WTF eine Schnittstelle zwischen Flask und einer bestehenden Python-Erweiterung, hier [WTForms](https://wtforms.readthedocs.io/en/2.3.x/). Für mehr informationen siehe den Abschnitt [```WTForms```](#wtforms) unter ```Technisches```.
 
 ### [Jinja2](https://jinja.palletsprojects.com/en/2.11.x/)
 
