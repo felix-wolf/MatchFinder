@@ -101,7 +101,7 @@ Eine Verteilung wird dabei beschrieben durch eine Reihe von Eigenschaften:
 
 - **Name**: Jede Verteilung braucht einen Namen, um sie später identifizieren zu können, wenn die Verteilung ausgewertet werden soll
 - **Gruppenliste**: Die Liste der Gruppen / Themen, zu denen Präferenzen angegeben werden sollen
-- **# / Gruppe**: Diese Eigenschaft gibt an, wie viele Teilnehmer auf eine Gruppe kommen dürfen. Beispeil: Ist *# / Gruppe = 1*, so darf nur ein Teilnehmer auf jede Gruppe verteilt werden, eine 1:1 Beziehung. Ist *# / Gruppe = n*, mit n > 1, handelt es sich um eine 1:n Beziehung, wobei nur dann jede Gruppe voll ist, wenn es genau ```längeDerGruppeliste * # / Gruppe``` Teilnehmer gibt.
+- **# / Gruppe**: Diese Eigenschaft gibt an, wie viele Teilnehmer auf eine Gruppe kommen dürfen. Beispiel: Ist *# / Gruppe = 1*, so darf nur ein Teilnehmer auf jede Gruppe verteilt werden, eine 1:1 Beziehung. Ist *# / Gruppe = n*, mit n > 1, handelt es sich um eine 1:n Beziehung, wobei nur dann jede Gruppe voll ist, wenn es genau ```längeDerGruppeliste * # / Gruppe``` Teilnehmer gibt.
 - **Mindeststimmen**: Gibt an, wie viele Präferenzen jeder Teilnehmer mindestens vergeben muss. Dabei ist der Wert nach unten bis 1 und nach oben bis 10 bzw. Anzahl der Themen beschränkt (je nach dem, was zuerst eintritt).
 - **Veto erlaubt**: Wenn der Haken gesetzt ist darf ein Teilnehmer eine der angebotenen Themen / Gruppen vollkommen ausgeschließen.
 - **geschützt**: Ist diese Option angewählt muss sich jeder Teilnehmer mit seiner Matrikelnummer gegenüber dem System authentifizieren, bevor er seine Präferenzen angeben darf. Ist die Option nicht ausgewählt fallen die beiden nächsten Optionen weg.
@@ -126,7 +126,7 @@ Die App arbeitet mit zwei Arten von Daten: Teilnehmer und Gruppen bzw. Themen. B
 
 ### Erstellung mittels Formular
 
-Liegen die Daten nicht als Dateien vor, ist die Erstellung mittels Formular eine effiziente und angenehme Art, dies zu ändern. Hierzu muss vor der eigentlichen Erstellen zunächst festgelegt werden, wie viele Teilnehmer oder Gruppen / Themen angelegt werden sollen:
+Liegen die Daten nicht als Dateien vor, ist die Erstellung mittels Formular eine effiziente und angenehme Art, dies zu ändern. Hierzu muss vor der eigentlichen Erstellung zunächst festgelegt werden, wie viele Teilnehmer oder Gruppen / Themen angelegt werden sollen:
 
 ![image](images/manual_creation.png)
 
@@ -152,7 +152,7 @@ Bei der Erstellung von Teilnehmern oder Gruppen / Themen gibt es Informationen, 
 | Uhrzeit	| Nein		|
 | Betreuer	| Nein 		|
 
-Sind die benötigten Felder nicht ausgefüllt lässt sich die Verteilung nicht erstellen.
+Sind die benötigten Felder nicht ausgefüllt, lässt sich die Verteilung nicht erstellen.
 
 Wenn die Erstellung erfolgreich war, wird der Benutzer zur vorherigen Seite zurückgeleitet und es erscheint ein kleines Banner, welches Auskunft über die Anzahl der erstellen Einträge gibt.
 
@@ -166,7 +166,7 @@ Für beide Datentypen gilt: die Dateien müssen auf .csv oder .txt enden.
 
 #### Teilnehmer
 
-Während die Themen / Gruppen im standardmäßigen CSV-Format angegeben werden, ist dies bei den Teilnehmern anders. Hier werden die Spalten mit Tabs getrennt. Dies liegt daran, dass es besonders einfach sein soll, teilnehmer aus STiNE zu exportieren und in MatchFinder zu importieren. Also muss Matchfinder dem Format von STiNE folgen. Da STiNE die Listen je nach Kontext in zwei Darstellungen exportiert, unterstützt MatchFinder auch beide.
+Während die Themen / Gruppen im standardmäßigen CSV-Format angegeben werden, ist dies bei den Teilnehmern anders. Hier werden die Spalten mit Tabs getrennt. Dies liegt daran, dass es besonders einfach sein soll, Teilnehmer aus STiNE zu exportieren und in MatchFinder zu importieren. Also muss Matchfinder dem Format von STiNE folgen. Da STiNE die Listen je nach Kontext in zwei Darstellungen exportiert, unterstützt MatchFinder auch beide.
 
 Hier beide Varianten:
 
