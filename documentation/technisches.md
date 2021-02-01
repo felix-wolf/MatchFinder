@@ -229,21 +229,21 @@ Mit Flask-Limiter kann die Anzahl der Zugriffe global oder auf spezifische Endpu
 
 #### [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 
-Flask-SQLAlchemy ist die Schnittstelle zwischen Flask und SQLAlchemy, ein ORM für Python. Für mehr informationen siehe Abschnitt [```SQLAlchemy```](#sqlalchemy) unter ```Technisches```.
+Flask-SQLAlchemy ist die Schnittstelle zwischen Flask und SQLAlchemy, ein ORM für Python. Für mehr Informationen siehe Abschnitt [```SQLAlchemy```](#sqlalchemy) unter ```Technisches```.
 
 #### [Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/)
 
-Ähnlich wie Flask-SQLAlchemy ist ähnlich wie Flask-WTF eine Schnittstelle zwischen Flask und einer bestehenden Python-Erweiterung, hier [WTForms](https://wtforms.readthedocs.io/en/2.3.x/). Für mehr informationen siehe den Abschnitt [```WTForms```](#wtforms) unter ```Technisches```.
+Ähnlich wie Flask-SQLAlchemy ist ähnlich wie Flask-WTF eine Schnittstelle zwischen Flask und einer bestehenden Python-Erweiterung, hier [WTForms](https://wtforms.readthedocs.io/en/2.3.x/). Für mehr Informationen siehe den Abschnitt [```WTForms```](#wtforms) unter ```Technisches```.
 
 ### [Jinja2](https://jinja.palletsprojects.com/en/2.11.x/)
 
-Jinja2 ist die Template-Sprache, die standardmäßig bei Flask dabei ist. Mit Jinja kann in HTML Basisoperationen wie if-Abfragen, Schleifen und weiteres verwirklicht werden. Viel wichtiger ist jedoch die Möglichkeit, Daten die dem Template mitgegeben werden zu rendern. Wird Flask zu einem Template mit
+Jinja2 ist die Template-Sprache, die standardmäßig bei Flask dabei ist. Mit Jinja können in HTML Basisoperationen wie if-Abfragen, Schleifen und weiteres verwirklicht werden. Viel wichtiger ist jedoch die Möglichkeit, Daten die dem Template mitgegeben werden zu rendern. Wird Flask zu einem Template mit
 
 ```python
 render_template('template.html', parameter="Dies ist ein Parameter")
 ```
 
-auch ein Paramter übegeben, kann dieser mit Jinja über ```{{parameter}}``` gerendert und damit sein Inhalt angezeigt werden.
+auch ein Paramter übergeben, kann dieser mit Jinja über ```{{parameter}}``` als HTML-Element gerendert und damit sein Inhalt angezeigt werden.
 
 ### [Vue.js](https://vuejs.org)
 
@@ -270,7 +270,7 @@ class Teilnehmer(db.Model):
 
 ### [WTForms](https://wtforms.readthedocs.io/en/2.3.x/)
 
-Mit WTForms können Fomulare einfach und effizient erstellt werden über Klassen erstellt werden. Wie bei SQLAlchemy wird durch eine Klasse und ihre Variablen definiert, welche Arten von Feldern ein Formular hat. Besonders interessant ist hier die Möglichkeit zu überprüfen, ob ein Formular alle nötigen Informationen beinhaltet um als 'gültig' zu gelten. Mit WTForms können also Formulare und Formularinformationen ohne großen Aufwand in Objekte umgewandelt werden.
+Mit WTForms können Fomulare einfach und effizient über Klassen erstellt werden. Wie bei SQLAlchemy wird durch eine Klasse und ihre Variablen definiert, welche Arten von Feldern ein Formular hat. Besonders interessant ist hier die Möglichkeit zu überprüfen, ob ein Formular alle nötigen Informationen beinhaltet um als 'gültig' zu gelten. Mit WTForms können also Formulare und Formularinformationen ohne großen Aufwand in Objekte umgewandelt werden.
 
 WTForms wird für die Erstellung der Teilnehmer und Themen per Formular benutzt. Hier ist im Voraus nicht bekannt, wie viele Teilnehmer und Themen erstellt werden sollen, also wie viele Formularfelder erzeugt werden müssen.
 
