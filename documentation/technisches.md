@@ -72,11 +72,11 @@ Die allgemeine Struktur des Repositories und folglich auch der Flask-App lässt 
 
 Die Dateien auf root haben folgende Aufgaben:
 
-- ```install.sh``` installiert alle nötigen Dependencies, die von der App benötigt werden. Es empfiehlt sich, die Flask App und alle Dependencies in einem *Virtual Environment* zu installieren und zu starten, um Konflikte mit bereits existierenden Dependencies zu vermeiden. Folglich sollte die ```install.sh```-Datei auch in dem Environment zu starten. Ein Environment wird erstellt und activiert mit
+- ```install.sh``` installiert alle nötigen Dependencies, die von der App benötigt werden. Es empfiehlt sich, die Flask App und alle Dependencies in einem *Virtual Environment* zu installieren und zu starten, um Konflikte mit bereits existierenden Dependencies zu vermeiden. Folglich sollte die ```install.sh```-Datei auch in dem Environment zu starten. Ein Environment wird erstellt und aktiviert mit
 
 ```bash
 python3 -m venv venv	# <-- erstellt das Environment
-. venv/bin/activate		# <-- Activiert das Environment
+. venv/bin/activate		# <-- aktiviert das Environment
 ```
 
 - ```setup.sh``` started die Flask-App im Develop-Modus

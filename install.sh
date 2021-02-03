@@ -8,8 +8,6 @@ pip3 install munkres
 
 pip3 install pandas
 
-pip3 install markdown
-
 pip3 install flask_limiter
 
 pip3 install Flask-WTF

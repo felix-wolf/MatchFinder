@@ -34,7 +34,7 @@ Eine Verteilung kann auch ausgewertet werden, wenn die Präferenzen als CSV-Date
 
 1. die durch die Datei beschriebene Matrix ist rechteckig (alle Zeilen gleicher Länge)
 2. in der ersten Zeile sind die Namen der Gruppen / Themen, wobei Zelle 0,0 frei bleibt bzw. nur einen Platzhalter beinhaltet
-3. in der ersten Spalte befinden sich die Namen der Teilnehmer nur durch Leerzeichen getrennt, keine Kommata
+3. in der ersten Spalte befinden sich die Namen der Teilnehmer und sind nur durch Leerzeichen getrennt, keine Kommata
 4. die Präferenzen sind als Bezeichnung angegeben, nicht als Zahl (Erstwahl statt 1, Zweitwahl statt 2 etc.)
 5. die maximal angebenen Präferenz ist die Zehntwahl, darüber hinaus werden keine weiteren Präferenzen angegeben
 
@@ -54,7 +54,7 @@ Soll eine Verteilung ausgewertet werden, kann dies mit dem Auswählen des *Auswe
 
 ### Verteilung aus Datenbankdaten auswerten
 
-Sind noch keine Daten in der Datenbank angelegt, steht dem authentifizierten Benutzer die gleiche Funktionalität wie [oben](#verteilung-aus-einer-datei-auswerten) beschrieben. Er erhält außerdem noch einen Verweis auf die *Verteilung anlegen*-Funktion, über welche er eine Verteilung anlegen kann.
+Sind noch keine Daten in der Datenbank angelegt, steht dem authentifizierten Benutzer die gleiche Funktionalität (wie [oben](#verteilung-aus-einer-datei-auswerten) beschrieben) zur Verfügung. Er erhält außerdem noch einen Verweis auf die *Verteilung anlegen*-Funktion, über welche er eine Verteilung anlegen kann.
 
 Existiert jedoch eine Verteilung in der Datenbank, kann diese ausgewählt werden, um sie auszuwerten. Unter dem Auswahlelement wird u.U. darauf hingewiesen, dass eine Auswertung noch nicht ausgewertet werden sollte. Beispiel:
 
@@ -63,10 +63,10 @@ Existiert jedoch eine Verteilung in der Datenbank, kann diese ausgewählt werden
 Dies kann mehrere Gründe haben:
 
 1. kein Teilnehmer hat an der Verteilung teilgenommen
-2. lediglich eine geringe Anzahl von Teilnehmern hat an der Verteilung teilgenommen (wie im Beispiel, die Schwelle liegt bei 80%)
+2. nicht alle Teilnehmern haben an der Verteilung teilgenommen (wie im Beispiel, die Schwelle liegt bei 80%)
 3. Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt (Anzahl Themen * Slots pro Thema). Dies kann nur bei offenen Verteilungen vorkommen, bei denen die Anzahl der Teilnehmer im Voraus nicht bekannt ist.
 
-Während 1-2 lediglich Warnungen sind, führt 3. dazu, dass die Verteilung dauerhaft nicht ausgeführt werden kann. Die Verteilung muss erneut erstellt und Präferenzen erneut vergeben werden.
+Während 1-2 lediglich Warnungen sind, führt 3. dazu, dass die Verteilung nicht ausgewertet werden kann. Die Verteilung muss erneut erstellt und Präferenzen erneut vergeben werden.
 
 Kann eine Verteilung ausgewerten, kann dies mit dem Auswählen des *Auswerten*-Knopfes veranlasst werden. Der Benutzer wird auf eine neue Seite weitergeleitet. Diese ist [hier](#resultate-einer-auswertung) näher beschrieben.
 
@@ -76,7 +76,7 @@ In der Abbildung
 
 ![image](images/results.png)
 
-ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen Gesamtkosten haben. Gibt es mehr als eine solcher Resultate, werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Hier ein Beispiel zur Erklärung:
+ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen Gesamtkosten haben. Gibt es mehr als eine solcher Resultate, werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Das beste Resultat ist immer das Oberste. Hier ein Beispiel zur Erklärung:
 
 Verteilung1 habe die Kosten [2,2,2]. Verteilung2 habe die Kosten [1,2,3]. Damit haben beide Verteilungen einen Median von 2. Jedoch ist die absolute Abweichung vom Median bei Verteilung1 0, während sie bei Verteilung2 2 ist.
 
@@ -104,9 +104,9 @@ Eine Verteilung wird dabei beschrieben durch eine Reihe von Eigenschaften:
 - **# / Gruppe**: Diese Eigenschaft gibt an, wie viele Teilnehmer auf eine Gruppe kommen dürfen. Beispiel: Ist *# / Gruppe = 1*, so darf nur ein Teilnehmer auf jede Gruppe verteilt werden, eine 1:1 Beziehung. Ist *# / Gruppe = n*, mit n > 1, handelt es sich um eine 1:n Beziehung, wobei nur dann jede Gruppe voll ist, wenn es genau ```längeDerGruppeliste * # / Gruppe``` Teilnehmer gibt.
 - **Mindeststimmen**: Gibt an, wie viele Präferenzen jeder Teilnehmer mindestens vergeben muss. Dabei ist der Wert nach unten bis 1 und nach oben bis 10 bzw. Anzahl der Themen beschränkt (je nach dem, was zuerst eintritt).
 - **Veto erlaubt**: Wenn der Haken gesetzt ist darf ein Teilnehmer eine der angebotenen Themen / Gruppen vollkommen ausgeschließen.
-- **geschützt**: Ist diese Option angewählt muss sich jeder Teilnehmer mit seiner Matrikelnummer gegenüber dem System authentifizieren, bevor er seine Präferenzen angeben darf. Ist die Option nicht ausgewählt fallen die beiden nächsten Optionen weg.
-- **Teilnehmerliste**: Soll die Verteilung geschützt sein muss im Vorhinein feststehen, welche Teilnehmer teilnehmen werden. Über diese Option wird diese Teilnehmerliste ausgewählt.
-- **editierbar**: Diese Option gibt an, ob Teilnehmer nach dem ersten Bestätigen ihrer Präferenzen ihre Angabe erneut anpassen dürfen. Diese Funktion gilt für alle Teilnehmer und unbegrenzt.
+- **geschützt**: Ist diese Option angewählt, muss sich jeder Teilnehmer mit seiner Matrikelnummer gegenüber dem System authentifizieren, bevor er seine Präferenzen angeben darf. Ist die Option nicht ausgewählt fallen die beiden nächsten Optionen weg
+- **Teilnehmerliste**: Soll die Verteilung geschützt sein, muss im Vorhinein feststehen, welche Teilnehmer teilnehmen werden. Über diese Option wird diese Teilnehmerliste ausgewählt.
+- **editierbar**: Diese Option gibt an, ob Teilnehmer nach dem ersten Bestätigen ihrer Präferenzen ihre Angabe erneut anpassen dürfen. Diese Funktion gilt für alle Teilnehmer und unbegrenzt oft.
 
 Mit dem Auswählen des *Erstellen*-Knopfes wird die Verteilung erstellt und der Benutzer wird auf eine Seite weitergeleitet, auf welcher die Verteilung geteilt werden kann.
 
@@ -120,7 +120,7 @@ Auf dieser Seite kann eine erstellte Verteilung geteilt werden. Zu diesem Zweck 
 
 *Dieser Seitenabschnitt steht nur authentifizierten Benutzern zur Verfügung.*
 
-Um eine Verteilung aus Datenbankdaten erstellen zu können, müssen diese im Voraus angelegt werden. Diese Funktionalität bildet der Unterpunkt *Daten anlegen* (```/upload```).
+Um eine Verteilung aus Datenbankdaten erstellen zu können, müssen diese im Voraus angelegt werden. Diese Funktionalität bietet der Unterpunkt *Daten anlegen* (```/upload```).
 
 Die App arbeitet mit zwei Arten von Daten: Teilnehmer und Gruppen bzw. Themen. Beide lassen sich über einen Datei-Upload oder per Formular erstellen.
 
