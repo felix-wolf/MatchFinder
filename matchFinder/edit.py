@@ -18,6 +18,10 @@ def check_status():
 
 @bp.route('/')
 def index():
+	"""
+	Fetches all teilnehmerLists, teilnehmer, themaLists,
+	themen and verteilungen to display them
+	"""
 
 	teilnehmer_list_entries = database_helper.get_all_teilnehmer_lists()
 	teilnehmer_all = database_helper.get_all_teilnehmer()
@@ -35,23 +39,38 @@ def index():
 
 @bp.route('/delete/<int:id>/<type>', methods=["GET"])
 def delete(id, type):
+	"""
+	Deletes an entity identified by its id.
+	The type identifies the type of entity
+
+	Parameters
+	----------
+	id : int
+    	the primary key of the entity to delete
+    type: str
+    	the type of entity to delete
+	"""
 
 	if type == "teilnehmer":
 		database_helper.delete_teilnehmer_list_by_id(id)
 
 	if type == "thema":
 		database_helper.delete_thema_list_by_id(id)
+	if type== "verteilung":
+		database_helper.delete_verteilung_by_id(id)
 
 	return redirect(url_for("edit.index"))
 
-@bp.route('/action/<int:verteilung_id>/<action>', methods=["GET"])
-def action(verteilung_id, action):
+@bp.route('/action/<int:verteilung_id>', methods=["GET"])
+def share(verteilung_id):
+	"""
+	redirects to the sharing screen of a verteilung
 
-	if action == 'löschen':
-		database_helper.delete_verteilung_by_id(verteilung_id)
+	Parameters
+	----------
+	verteilung_id : int
+    	the verteilung's id
+	"""
 
-	if action == 'teilen':
-		hashed_verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
-		return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
-
-	return redirect(url_for("edit.index"))
+	hashed_verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
+	return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))

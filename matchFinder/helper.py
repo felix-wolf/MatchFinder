@@ -1,3 +1,4 @@
+from werkzeug.utils import secure_filename
 from operator import itemgetter
 from munkres import DISALLOWED
 from statistics import median
@@ -5,8 +6,24 @@ from . import database_helper
 from functools import reduce
 import random
 import copy
+import os
 
 def convert_praef_to_num(praef):
+    """
+    converts a präferenz given as a string to a number.
+
+    Parameter
+    ----------
+    praef : str
+        the präferenz as a string
+
+    Returns
+    ----------
+    <multiple>
+        returns either a number, Munkres.DISALLOWED or the input if
+        nothing is applicable
+    """
+
     if praef == "Erstwahl":
         return 1
     if praef == "Zweitwahl":
@@ -32,6 +49,21 @@ def convert_praef_to_num(praef):
     return praef
 
 def comvert_num_to_praef(num):
+    """
+    converts a number (or a string) to a praeferenz.
+
+    Parameter
+    ----------
+    num : multiple
+        number to be converted
+
+    Returns
+    ----------
+    <multiple>
+        returns either a präferenz the input if
+        nothing is applicable
+    """
+
     if num == 1 or num == '1':
         return "Erstwahl"
     if num == 2 or num == '2':
@@ -55,6 +87,23 @@ def comvert_num_to_praef(num):
     return num
 
 def check_user_credentials(matr_nr, hashed_verteilung_id):
+    """
+    Checks if a matrikelnummer is is valid given a verteilung.
+
+    Parameter
+    ----------
+    matr_nr : number
+        matrikelnummer to check
+    hashed_verteilung_id : string
+        hashed id
+
+    Returns
+    ----------
+    (str, verteilung, teilnehmer))
+        first is None if success, second and third a not None if success.
+        Vice Versa for failure.
+    """
+
     if matr_nr != None and matr_nr.isdigit():
         verteilung, teilnehmer, error = check_membership(hashed_verteilung_id, matr_nr)
         if error == None:
@@ -65,6 +114,11 @@ def check_user_credentials(matr_nr, hashed_verteilung_id):
         return "Matrikelnummer muss eine Zahl sein!", None, None
 
 def check_membership(hashed_verteilung_id, matr_nr):
+    """
+    Check if a matrikelnummer is actually valid for the verteilung.
+    This should be refactored as it is horrible style.
+    """
+
     verteilung_to_id = database_helper.get_verteilung_by_hashed_id(hashed_verteilung_id)
     if verteilung_to_id != None:
         list_id = verteilung_to_id.teilnehmer_list_id
@@ -81,25 +135,74 @@ def check_membership(hashed_verteilung_id, matr_nr):
     return None, None, "Matrikelnummer ungültig!"
 
 def sort_by_median(assignments):
-    #if len(assignments) == 1:
-    if True:
-        medians = []
-        for index, item in enumerate(assignments):
-            weights = list(map(lambda x: x[2], item["studis"]))
-            local_median = median(weights)
-            streuung = reduce((lambda x, y: x + abs(y - local_median)), weights, 0)
-            medians.append([local_median, index, streuung / len(weights)])
-        medians = sorted(sorted(medians, key=itemgetter(0), reverse=True), key=itemgetter(2))
-        assignments = list(map(lambda x: assignments[x], map(lambda x: x[1], medians)))
+    """
+    sorts assignments (multiple results of an verteilungsauswertung)
+    by their median and the absolute distance of the median.
+
+    Parameter
+    ----------
+    assignments : array
+        assignments to sort
+
+    Returns
+    ----------
+    array
+        the sorted assignments
+    """
+
+    medians = []
+    for index, item in enumerate(assignments):
+        weights = list(map(lambda x: x[2], item["studis"]))
+        local_median = median(weights)
+        streuung = reduce((lambda x, y: x + abs(y - local_median)), weights, 0)
+        medians.append([local_median, index, streuung / len(weights)])
+    medians = sorted(sorted(medians, key=itemgetter(0), reverse=True), key=itemgetter(2))
+    assignments = list(map(lambda x: assignments[x], map(lambda x: x[1], medians)))
     return assignments
 
 def duplicate_themen(themen, max_per):
+    """
+    duplicates the themen exactly max_per times
+
+    Parameter
+    ----------
+    themen : [Themen]
+        themen to duplicate
+    max_per : number
+        number of duplicates.
+        if max_per is 1, the themen are not duplicated.
+
+    Returns
+    ----------
+    array
+        the duplicated themen
+    """
+
     new_themen = copy.deepcopy(themen)
     for index in range(max_per - 1):
         new_themen += list(map(lambda x: x, themen))
     return new_themen
 
 def duplicate_teilnehmer_praefs(teilnehmer_praefs, max_per):
+    """
+    duplicates teilnehmer präferenzen exactly max_per times.
+    Pops the first columns entries as this is just the
+    names of the teilnehmer.
+
+    Parameter
+    ----------
+    teilnehmer_praefs : [Präferenzen]
+        Präferenzen to duplicate
+    max_per : number
+        number of duplicates.
+        if max_per is 1, the Präferenzen are not duplicated.
+
+    Returns
+    ----------
+    array
+        the duplicated Präferenzen
+    """
+
     new_teilnehmer_praefs = copy.deepcopy(teilnehmer_praefs)
     teilnehmer_praefs.pop(0)
     for index in range(max_per - 1):
@@ -108,6 +211,21 @@ def duplicate_teilnehmer_praefs(teilnehmer_praefs, max_per):
     return new_teilnehmer_praefs
 
 def convert_preferences(praeferenzen):
+    """
+    Fills not given Präferenzen with suitable numbers,
+    converts them to csv.
+
+    Parameter
+    ----------
+    praeferenzen : [Präferenzen]
+        Präferenzen to convert
+
+    Returns
+    ----------
+    str
+        the converted Präferenzen as string
+    """
+
     indices_of_no_praefs = []
     for index, praef in enumerate(praeferenzen):
         praeferenzen[index] = convert_praef_to_num(praef)
@@ -128,11 +246,64 @@ def convert_preferences(praeferenzen):
         lambda x: str(convert_praef_to_num(x)) + ",", praeferenzen)))
     return preference_string[:-1]
 
+def validate_file(file, app):
+    """
+    validates the file by checking the filename and file extensions
+
+    Parameter
+    ----------
+    file : file
+        the file to validate
+    app : app
+        a reference to flasks current_app variable
+
+    Returns
+    ----------
+    bool
+        True if valid
+    """
+
+    filename = secure_filename(file.filename)
+    if filename != '':
+        file_ext = os.path.splitext(filename)[1]
+        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+            return False
+        return True
+    return False
+
 def create_csv(data):
+    """
+    creates a csv output from some verteilungs result
+
+    Parameter
+    ----------
+    data : array
+        the result of a verteilungsauswertung as an array
+
+    Returns
+    ----------
+    string
+        CSV data
+    """
+
     rtn = "Name,Thema,Wahl\n"
     return rtn + "".join(map(lambda x: x[0] + "," + x[1] + "," + str(x[2]) + "\n", data))
 
 def create_txt(data):
+    """
+    creates a WikiDocs output from some verteilungs result
+
+    Parameter
+    ----------
+    data : array
+        the result of a verteilungsauswertung as an array
+
+    Returns
+    ----------
+    string
+        WikiDocs data
+    """
+
     rtn = "ALS TABELLE:\n\n"
     rtn += "===== Auswertung der Verteilung =====\n"
     rtn += "| Name | Thema | Wahl |"
