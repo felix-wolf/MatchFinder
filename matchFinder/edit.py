@@ -8,8 +8,13 @@ bp = Blueprint('edit', __name__, url_prefix='/edit')
 
 @bp.before_request
 def check_status():
-    if session.get('is_authenticated') != True:
-        return redirect(url_for('home.index'))
+	"""
+	If the user is unauthenticated,
+	this method redirects to the homepage.
+	Called before each request to this subdomain
+	"""
+	if session.get('is_authenticated') != True:
+		return redirect(url_for('home.index'))
 
 @bp.route('/')
 def index():

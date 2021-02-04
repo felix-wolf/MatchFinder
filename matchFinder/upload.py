@@ -12,6 +12,11 @@ bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.before_request
 def check_status():
+    """
+    If the user is unauthenticated,
+    this method redirects to the homepage.
+    Called before each request to this subdomain
+    """
     if session.get('is_authenticated') != True:
         return redirect(url_for('home.index'))
 
