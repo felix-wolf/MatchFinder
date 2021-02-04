@@ -89,28 +89,40 @@
 		</div>
 	</div>
 </div>
-* Informationen zu zulässigen Dateien und Formaten gibt es <a href="https://github.com/felix-wolf/MatchFinder/blob/master/README.md">hier.</a>
+* Informationen zu zulässigen Dateien und Formaten gibt es <a href="https://github.com/felix-wolf/MatchFinder/blob/master/documentation/fachliches.md#erstellung-mittels-datei">hier.</a>
 
 {% endblock %}
 
 {% block vuejs %}
 {{ super() }}
-<script type="text/javascript">
 
+<script type="text/javascript">
 
 	var app = new Vue({
 		el: "#app",
 		delimiters: ['${', '}'],
 		data: {
+			// number of teilnehmer to create
 			number_teilnehmer: 1,
+			// number of themen to create
 			number_themen: 1
 		},
 		methods: {
+			/**
+			* makes sure that the number of teilnehmer to create is never
+			* below 1
+			* @param {event} event the clickevent
+			*/
 			onChangeTeilnehmer(event) {
 				if (event.target.value <= 0) {
 					this.number_teilnehmer = 1
 				}
 			},
+			/**
+			* makes sure that the number of themen to create is never
+			* below 1
+			* @param {event} event the clickevent
+			*/
 			onChangeThemen(event) {
 				if (event.target.value <= 0) {
 					this.number_themen = 1
@@ -121,6 +133,4 @@
 
 </script>
 
-
 {% endblock %}
-

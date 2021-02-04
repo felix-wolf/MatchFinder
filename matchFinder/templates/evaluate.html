@@ -117,11 +117,19 @@
 		el: "#app",
 		delimiters: ['${', '}'],
 		data: {
+			// number of teilnehmer that have entered their präferenzen.
 			current: 0,
+			// total number of teilnehmer for this verteilung
 			total: 0,
+			// wether the number of participated teilnehmer is
+			// not greater than the number of slots
 			within_limit: true
 		},
 		methods: {
+			/**
+			* reads json a hidden field, stores the data in vue data,
+			* calculates the within_limit value.
+			*/
 			update() {
 				const jsonData = document.getElementById("information").value
 				const json = JSON.parse(jsonData)
