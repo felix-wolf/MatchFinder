@@ -8,7 +8,7 @@ class Verteilung(db.Model):
 	to the präferenzen
 	"""
 
-	__tablename__ = "verteilung"
+	__tablename__ = "verteilungen"
 	id = db.Column(db.Integer, primary_key=True)
 	min_votes = db.Column(db.Integer, default=1)
 	name = db.Column(db.String(80), nullable=False)
