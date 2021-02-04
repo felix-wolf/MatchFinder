@@ -2,6 +2,12 @@ from flask_sqlalchemy import *
 from .. import db
 
 class Teilnehmer(db.Model):
+	"""
+	Database scheme for the teilnehmer table.
+	It references the list of teilnehmer it belongs to via the list_id,
+	has a convenience backref to its präferenzen.
+	"""
+
 	__tablename__ = "teilnehmer"
 	id = db.Column(db.Integer, primary_key=True)
 	list_id = db.Column(db.Integer, db.ForeignKey("teilnehmer_lists.id"), nullable=False)

@@ -1,7 +1,6 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for,
     send_file, after_this_request, current_app as app)
-from werkzeug.utils import secure_filename
 from . import database_helper
 from . import matchCalculator
 from . import helper
@@ -12,11 +11,27 @@ bp = Blueprint('evaluate', __name__, url_prefix='/evaluate')
 
 @bp.route('/')
 def index():
-	verteilungen = database_helper.get_all_verteilungen()
-	return render_template('evaluate.html', verteilungen=verteilungen)
+    """
+    loads all verteilungen, so one can be selected.
+    """
+
+    verteilungen = database_helper.get_all_verteilungen()
+    return render_template('evaluate.html', verteilungen=verteilungen)
 
 @bp.route('/from_db', methods=['POST'])
 def from_db():
+    """
+    Evaluates a verteilung from database data.
+    First, it gathers data from the request form.
+    Then, it loads the teilnehmer and themen from the database that belong to
+    this verteilung.
+    If a thema allows 2 or more teilnehmer, the name of the thema needs to
+    be duplicated to account for the higher number of teilnehmer per thema.
+    In the end, the calculated data is passed to the matchCalculator for the
+    calculation.
+    It then renders the results.
+    """
+
     verteilung_id = request.form.get('verteilung', None)
     verteilung = database_helper.get_verteilung_by_id(verteilung_id)
     max_per = verteilung.max_teilnehmer_per_thema
@@ -36,25 +51,33 @@ def from_db():
         local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(
             [teil.first_name + " " + teil.last_name] + praeferenz, max_per)
         teilnehmer_pref.append(local_teilnehmer_pref)
-    assignments = matchCalculator.calculate_from_db(teilnehmer_pref, themen)
+    assignments = matchCalculator.calculateMatchFromList(teilnehmer_pref, themen)
     assignments = helper.sort_by_median(assignments)
     return render_template('results.html', data=assignments, name=verteilung.name)
 
 @bp.route('csv_upload', methods=['POST'])
 def csv_upload():
-    uploaded_file = request.files['file']
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        name, file_ext = os.path.splitext(filename)
-        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-            abort(400)
-        assignments = matchCalculator.calculateFromCSV(uploaded_file)
+    """
+    handles calculations from files.
+    Checks if file is valid, then processes it in matchCalculator
+    """
+
+    file = request.files['file']
+    if helper.validate_file(file, app):
+        assignments = matchCalculator.calculateFromCSV(file)
         assignments = helper.sort_by_median(assignments)
-    return render_template('results.html', data=assignments, name=name)
+    else:
+        abort(400)
+    return render_template('results.html', data=assignments, name=file.filename)
 
 
 @bp.route('export', methods=['GET', 'POST'])
 def export():
+    """
+    Handles file export.
+    saves a temp file for calculations, deletes it afterwards
+    """
+
     data_string = request.form.get('data', None)
     if data_string != None:
         data_string = data_string.replace('\'', '\"')
@@ -70,6 +93,7 @@ def export():
                 filename += ".txt"
                 f.write(helper.create_txt(data["studis"]))
         path = "../verteilung.txt"
+
         @after_this_request
         def remove_file(response):
             try:

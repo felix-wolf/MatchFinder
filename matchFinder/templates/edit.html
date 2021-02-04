@@ -204,9 +204,9 @@
 						</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-							<a class="dropdown-item" href="{{ url_for('edit.action', verteilung_id=verteilung.id, action='teilen') }}">Teilen</a>
+							<a class="dropdown-item" href="{{ url_for('edit.share', verteilung_id=verteilung.id) }}">Teilen</a>
 
-							<a class="dropdown-item" href="{{ url_for('edit.action', verteilung_id=verteilung.id, action='löschen') }}">Löschen</a>
+							<a class="dropdown-item" href="{{ url_for('edit.delete', id=verteilung.id, type='verteilung') }}">Löschen</a>
 						</div>
 					</div>
 				</td>

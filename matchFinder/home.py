@@ -9,4 +9,9 @@ def index():
 
 @bp.route('/<message>')
 def index_with_message(message):
+	"""
+	passes a message to the template to indicate success of certain
+	operations
+	"""
+
 	return render_template('home.html', message=message)

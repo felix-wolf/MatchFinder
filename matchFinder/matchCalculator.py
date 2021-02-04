@@ -6,40 +6,68 @@ import random
 import copy
 
 def calculateFromCSV(file):
-    # csv datei einlesen
+    """
+    process data from a csv file into a form the the system can handle
+
+    Parameter
+    ----------
+    file : []
+        the file that holds the data
+
+    Returns
+    ----------
+    []
+        the results
+    """
+
+    # read csv file
     df = pd.read_csv(file)
-    # strings mit zahlen ersetzen
+    # replace strings with numbers
     full_matrix = df.replace(
         [np.NAN, "Veto", "Zehntwahl", "Neuntwahl", "Achtwahl", "Siebtwahl",
         "Sechstwahl", "Fünftwahl", "Viertwahl", "Drittwahl", "Zweitwahl", "Erstwahl"],
         [100, DISALLOWED, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
-    # matrix zu 2d liste konvertieren
+    # convert pandas matrix to 2d list
     themen = full_matrix.columns.tolist()
+    # pop names
     themen.pop(0)
     # convert matrix to list
     full_matrix = np.array(full_matrix.values.tolist()).tolist()
     return calculateMatchFromList(full_matrix, themen)
 
-def calculate_from_db(teilnehmer_pref, themen):
-    return calculateMatchFromList(teilnehmer_pref, themen)
-
-
 def calculateMatchFromList(full_matrix, themen):
+    """
+    calculate a number of matches from a list input.
+    refer to line comments for more details
+
+    Parameter
+    ----------
+    full_matrix : []
+        multi-dimensional array holding the data
+    themen: [Thema]
+        list of available themen
+
+    Returns
+    ----------
+    []
+        the results
+    """
+
     assignment = []
-    # matrix mischen (um jede Kombination auszuprobieren)
+    # do below number of rows times, to fully rotate the matrix
     for x in range(len(full_matrix)):
         local_assignment = {}
-        # liste rotieren
+        # rotate the list
         rotate_list(full_matrix, 1)
-        # liste kopieren
+        # copy the list
         reduced_matrix = copy.deepcopy(full_matrix)
-        # Namen entfernen, string to int konvert
+        # delete names of teilnehmer, convert strings to numbers
         for row in range(len(reduced_matrix)):
             for column in range(len(reduced_matrix[row]) - 1):
                 if column == 0:
                     reduced_matrix[row].pop(column)
                 reduced_matrix[row][column] = int(float(reduced_matrix[row][column]))
-        # match berechnen
+        # calculate match
         indexes = Munkres().compute(reduced_matrix)
         #print(indexes)
         #print_matrix(reduced_matrix, msg='Lowest cost through this matrix:')
@@ -67,4 +95,20 @@ def calculateMatchFromList(full_matrix, themen):
     return (assignment)
 
 def rotate_list(lst, x):
+    """
+    Rotates a matrix given as a list x number of times
+
+    Parameter
+    ----------
+    lst : []
+        the list to rotate
+    x : number
+        number of rotations to perform
+
+    Returns
+    ----------
+    []
+        the rotated list
+    """
+
     lst[:] =  lst[-x:] + lst[:-x]

@@ -6,12 +6,18 @@ from matchFinder.forms import themen_form
 from matchFinder.forms import teilnehmer_form
 from . import database_helper
 from . import txt_parser
+from . import helper
 import os
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 @bp.before_request
 def check_status():
+    """
+    If the user is unauthenticated,
+    this method redirects to the homepage.
+    Called before each request to this subdomain
+    """
     if session.get('is_authenticated') != True:
         return redirect(url_for('home.index'))
 
@@ -21,8 +27,13 @@ def index():
 
 @bp.route('/', methods=['POST'])
 def file():
+    """
+    This function takes a file and a name and saves the entries
+    into the database after parsing the file contents to arrays.
+    """
+
     uploaded_file = request.files['file']
-    if (validate_file(uploaded_file)):
+    if helper.validate_file(uploaded_file, app):
         teilnehmer_name = request.form.get('teilnehmer_name', None)
         themen_name = request.form.get('themen_name', None)
         if themen_name == None:
@@ -39,16 +50,22 @@ def file():
 
 @bp.route('/themen_manually', methods=['POST'])
 def themen_manually():
+    """
+    handles the manual creates of themen.
+    Uses WTForms to look for valid forms.
+    """
+
     themenform = themen_form.ThemenForm()
     if themenform.validate_on_submit():
         # form is filled out and valid
+        # save data to database
 
         rtn = database_helper.save_themen(
             themenform.themen.data,
             themenform.themen_name.data)
         return redirect(url_for('upload.index', items_saved=rtn))
 
-
+    # form is not filled, present form to user
     number_of_themen = request.form.get('number_themen', None)
     if number_of_themen != None and int(number_of_themen) > 0:
         for i in range(int(number_of_themen)):
@@ -59,15 +76,22 @@ def themen_manually():
 
 @bp.route('/teilnehmer_manually', methods=['POST'])
 def teilnehmer_manually():
+    """
+    handles the manual creates of teilnehmer.
+    Uses WTForms to look for valid forms.
+    """
+
     teilnehmerform = teilnehmer_form.TeilnehmerForm()
     if teilnehmerform.validate_on_submit():
         # form is filled out and valid
+        # save data to database
 
         rtn = database_helper.save_teilnehmer(
             teilnehmerform.teilnehmer.data,
             teilnehmerform.teilnehmer_name.data)
         return redirect(url_for('upload.index', items_saved=rtn))
 
+    # form is not filled, present form to user
     number_of_teilnehmer = request.form.get('number_teilnehmer', None)
     if number_of_teilnehmer != None and int(number_of_teilnehmer) > 0:
         for i in range(int(number_of_teilnehmer)):
@@ -75,13 +99,3 @@ def teilnehmer_manually():
             teilnehmerform.teilnehmer.append_entry(single_teilnehmer_form)
         return render_template('upload_teilnehmer.html', form=teilnehmerform)
     return redirect(url_for('upload.index'))
-
-
-def validate_file(file):
-    filename = secure_filename(file.filename)
-    if filename != '':
-        file_ext = os.path.splitext(filename)[1]
-        if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-            return False
-        return True
-    return False

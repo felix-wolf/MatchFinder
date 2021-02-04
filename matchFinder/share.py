@@ -10,28 +10,37 @@ bp = Blueprint('share', __name__, url_prefix='/share')
 
 @bp.before_request
 def check_status():
-    if session.get('is_authenticated') != True:
-        return redirect(url_for('home.index'))
+	"""
+	If the user is unauthenticated,
+	this method redirects to the homepage.
+	Called before each request to this subdomain
+	"""
+	if session.get('is_authenticated') != True:
+		return redirect(url_for('home.index'))
 
-#make database entry, return link to enter site
 @bp.route('/', methods=['POST'])
 def index():
-	teilnehmer_list_id = request.form.get('teilnehmer', None)
-	name = request.form.get('name', None)
-	thema_list_id = request.form.get('thema', None)
+	"""
+	gathers information about the verteilung,
+	sends them to the database helper to be saved.
+	hashes the verteilungs_id. this is simply to stop users from guessing
+	the underlying mechanics of referencing verteilungen.
+	"""
+
+	data = {}
+	data["teilnehmer_list_id"] = request.form.get('teilnehmer', None)
+	data["name"] = request.form.get('name', None)
+	data["thema_list_id"] = request.form.get('thema', None)
 	protected = request.form.get('protected', False)
 	editable = request.form.get('editable', False)
-	max_per_thema = request.form.get('max_per', 1)
-	min_votes = request.form.get('min_votes', 1)
+	data["max_per_thema"] = request.form.get('max_per', 1)
+	data["min_votes"] = request.form.get('min_votes', 1)
 	veto_allowed = request.form.get('veto_allowed', True)
-	protected = True if protected == "on" else False
-	editable = True if editable == "on" else False
-	veto_allowed = True if veto_allowed == "on" else False
+	data["protected"] = True if protected == "on" else False
+	data["editable"] = True if editable == "on" else False
+	data["veto_allowed"] = True if veto_allowed == "on" else False
 
-	id = database_helper.save_verteilung(
-		name, teilnehmer_list_id, thema_list_id,
-		protected, editable, max_per_thema,
-		min_votes, veto_allowed)
+	id = database_helper.save_verteilung(data)
 
 	hashed_verteilung_id = hashlib.sha256(str(id).encode()).hexdigest()
 
@@ -39,6 +48,11 @@ def index():
 
 @bp.route('/show/<verteilung_id>')
 def show(verteilung_id):
+	"""
+	generates a QR-Code to a verteilung,
+	passes it with the template to be rendered.
+	"""
+
 	root_url = request.url_root
 	url = root_url + 'preference?id=' + str(verteilung_id)
 	qr = qrcode.QRCode(

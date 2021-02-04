@@ -212,23 +212,45 @@
 		el: "#app",
 		delimiters: ['${', '}'],
 		data: {
+			// wether the verteilung is protected
 			protected: true,
+			// how many teilnehmer per thema?
 			max_per: 1,
+			// how many präferenzen each teilnehmer has to enter
 			min_votes: 1,
+			// wether there are enough slots for all the teilnehmer
 			within_limit: true,
+			// number of themen of a specific themenList
 			numberOfThemen: 1,
+			// number of teilnehmer of a specific teilnehmerList
 			numberOfTeilnehmer: 1
 		},
 		methods: {
+			/**
+			* called when max_per value is changed
+			* makes sure that the value is never below 1, makes a call to update()
+			* @param {event} event the click event
+			*/
 			onChangeMaxPer(event) {
 				if (event.target.value <= 0) {
 					this.max_per = 1
 				}
 				this.update()
 			},
+			/**
+			* called then value of is_protected is changed,
+			* calls update()
+			*/
 			onChangeProtected() {
 				this.update()
 			},
+			/**
+			* called when min_votes value is changed.
+			* makes sure that the is always greater than 0 and less than the number of themen
+			* as you cant prioritize more than there is
+			* makes a call to update()
+			* @param {event} event the click event
+			*/
 			onChangeMinVotes(event) {
 				if (event.target.value <= 0) {
 					this.min_votes = 1
@@ -238,17 +260,25 @@
 				}
 				this.update()
 			},
+			/**
+			* updates the within_limit value.
+			* within_limit is always true when the verteilung is not protected
+			* otherwise it depends on wether number of teilnehmer is less or equal
+			* the number of themen times max_per
+			*/
 			update() {
 				this.within_limit = this.protected ? this.numberOfTeilnehmer <= this.numberOfThemen * this.max_per : true
 			}
 		},
+		/**
+		* reads data from hidden fields, stores them in vue data.
+		*/
 		mounted() {
 			var selectedTeilnehmerValue = document.getElementById("teilnehmer")
 			var selectedThemenValue = document.getElementById("thema")
 			if (selectedThemenValue != null) {
 				selectedThemenValue = selectedThemenValue.value
 				this.numberOfThemen = document.getElementById("number_themen" + selectedThemenValue).value
-				console.log(this.numberOfThemen)
 			}
 			if (selectedTeilnehmerValue != null) {
 				selectedTeilnehmerValue = selectedTeilnehmerValue.value

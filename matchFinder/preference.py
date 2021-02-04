@@ -11,6 +11,11 @@ bp = Blueprint('preference', __name__, url_prefix='/preference')
 
 @bp.route('<verteilung_id>')
 def set_preference(verteilung_id):
+	"""
+	loads the verteilung to and id, presents the user with a form
+	asking him to enter some credentials
+	"""
+
 	verteilung = database_helper.get_verteilung_by_hashed_id(verteilung_id)
 	if verteilung != None:
 		return render_template('validate.html', id=verteilung_id,
@@ -23,40 +28,60 @@ def set_preference(verteilung_id):
 @bp.route('/validate/', methods=['POST'])
 @limiter.limit("5 per minute", error_message="Too many requests! Try again later.")
 def validate():
+	"""
+	Validates a user by its matrikelnummer.
+	If the entered number is valid, the user is redirected to the next page.
+	If not, an error is displayed and the form is presented again.
+	"""
+
 	data = request.form.get('data', None)
 	obj = json.loads(data)
 	hashed_verteilung_id = obj['id']
 	protected = obj["protected"]
-	if protected == "True":
-		matr_nr = request.form.get('matr_nr', None)
-		error, verteilung, teilnehmer = helper.check_user_credentials(matr_nr,
-											hashed_verteilung_id)
-		if error:
-			return render_template('validate.html', id=hashed_verteilung_id,
-					protected=protected, error=error)
-		else:
-			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
-			return render_template("preference.html", teilnehmer=teilnehmer,
-					themen=themen, verteilung_id=verteilung.id,
-					veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
+	matr_nr = request.form.get('matr_nr', None)
+	error, verteilung, teilnehmer = helper.check_user_credentials(matr_nr,
+										hashed_verteilung_id)
+	if error:
+		return render_template('validate.html', id=hashed_verteilung_id,
+				protected=protected, error=error)
 	else:
-		first_name = request.form.get('first_name', None)
-		last_name = request.form.get('last_name', None)
-		last_name = "" if last_name == "" else last_name
-		verteilung = database_helper.get_verteilung_by_hashed_id(hashed_verteilung_id)
-		if verteilung != None:
-			teilnehmer = teilnehmer_model.Teilnehmer(first_name=first_name, matr_nr=0,
-				last_name=last_name, list_id=verteilung.teilnehmer_list_id)
-			database_helper.insert_teilnehmer(teilnehmer)
-			themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
-			return render_template("preference.html", teilnehmer=teilnehmer,
-					themen=themen, verteilung_id=verteilung.id,
-					veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
-		return render_template('validate.html', id = hashed_verteilung_id,
-			protected=False, error="error")
+		themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
+		return render_template("preference.html", teilnehmer=teilnehmer,
+				themen=themen, verteilung_id=verteilung.id,
+				veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
+
+@bp.route('/register/', methods=['POST'])
+@limiter.limit("5 per minute", error_message="Too many requests! Try again later.")
+def register():
+	"""
+	registers a new user, redirects him to the next page
+	"""
+
+	data = request.form.get('data', None)
+	obj = json.loads(data)
+	hashed_verteilung_id = obj['id']
+	first_name = request.form.get('first_name', None)
+	last_name = request.form.get('last_name', None)
+	verteilung = database_helper.get_verteilung_by_hashed_id(hashed_verteilung_id)
+	if verteilung != None:
+		teilnehmer = teilnehmer_model.Teilnehmer(first_name=first_name, matr_nr=0,
+			last_name=last_name, list_id=verteilung.teilnehmer_list_id)
+		database_helper.insert_teilnehmer(teilnehmer)
+		themen = database_helper.get_thema_list_by_id(verteilung.thema_list_id).themen
+		return render_template("preference.html", teilnehmer=teilnehmer,
+				themen=themen, verteilung_id=verteilung.id,
+				veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
+	return render_template('validate.html', id = hashed_verteilung_id,
+		protected=False, error="error")
 
 @bp.route('save', methods=['POST'])
 def save():
+	"""
+	save the Präferenzen of a user.
+	If this user updated already existing präferenzen instead
+	of entering new ones, the old präferenzen get overwritten.
+	"""
+
 	information_object = request.form.get('information', None)
 
 	obj = json.loads(information_object)

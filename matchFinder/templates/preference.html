@@ -42,9 +42,17 @@
 		el: "#app",
 		delimiters: ['${', '}'],
 		data: {
+			// json holding various information about the verteilung
 			infoJson: null,
+			// true when the user has entered enough answers
 			allNeededAnswersGiven: false,
+			// number of answers needed
 			neededAnswers: 0,
+			// 2d array holding information about if and where a
+			// präferenz is used. First item is the name of the
+			// präferenz, second is where it is used and
+			// third indicates whether an answer can be used
+			// multiple times.
 			options: [
 			["Keine Präferenz", "", true],
 			["Erstwahl", "", false],
@@ -61,8 +69,12 @@
 			],
 		},
 		methods: {
-			// restrict numbers of choices
-			// deletes veto option if not allowed
+			/**
+			* restrict numbers of choices as the user should not be able
+			* to enter a präferenz of seven if there are only 5 answers to
+			* prioritize.
+			* deletes veto option if not allowed
+			*/
 			configureAnswers() {
 				const numberOfAnswers = this.infoJson["numberOfAnswers"]
 				if (numberOfAnswers < 10) {
@@ -78,23 +90,33 @@
 					}
 				}
 			},
-			// returns valid option specific to the thema
-			// passed as object
+			/**
+			* returns valid option specific to the answer that is
+			* passed as an object
+			* @param {option} object a single entry of the options data
+			* type
+			*/
 			validOptions(object) {
 				return this.options.filter(
 					f => f[2] == true || f[1] == "" || f[1] == object
 					).map(e => e[0])
 			},
-			// called when an option is selected
-			// handles the logic of removing option from other answers
-			// when it is selected by one.
-			// It does so by storing values in the this.option data type.
-			// In nextTick(), every answer gets its selected value to avoid
-			// weird sideeffects of changing the underlying model to a select element
+			/** called when an option is selected
+			* handles the logic of removing options from other answers
+			* when it is selected by one.
+			* It does so by storing values in the this.option data type.
+			* In nextTick(), every answer gets its selected value to avoid
+			* weird side effects of changing the underlying model
+			* to a select element
+			* nextTick is vue specific and required because vue updates
+			* the dom asynchronously
+			* @param {event} event the clickevent
+			*/
 			onChange(event) {
 				const target = event.target
 				const value = target.value
 
+				// delete the selected answers old value from the options data type
 				for (i = 0; i < this.options.length; i++) {
 
 					if (this.options[i][1] == target.id) {
@@ -102,6 +124,7 @@
 					}
 				}
 
+				// insert the id of an answer next to its new priority
 				if (value != "Keine Präferenz") {
 
 					for (i = 0; i < this.options.length; i++) {
@@ -148,7 +171,10 @@
 
 			}
 		},
-		// parse json, configure form
+		/**
+		* parses the json,
+		* configures the form
+		*/
 		mounted() {
 			var json = JSON.parse(veto)
 			json["veto_allowed"] = json["veto_allowed"] == "True" ? true : false
