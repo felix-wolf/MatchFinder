@@ -4,6 +4,7 @@ from flask_limiter.util import get_remote_address
 from flask_sqlalchemy import SQLAlchemy
 from flask_limiter import Limiter
 import os
+import logging
 
 # database reference
 db = SQLAlchemy()
@@ -11,7 +12,6 @@ db = SQLAlchemy()
 limiter = Limiter(key_func=get_remote_address)
 # array holding all blacklisted ip addresses
 blocked_ip = []
-
 
 def create_app(test_config=None):
     """
@@ -45,15 +45,17 @@ def create_app(test_config=None):
         ip address is block from the service
         """
 
-        if session.get('ip_blocked') == True:
-            abort(403)
-        elif session.get('ip_blocked') == False:
-            return
-        if any(request.environ.get('REMOTE_ADDR') in entry for entry in blocked_ip):
-            session['ip_blocked'] = True
-            abort(403)
-        else:
-            session['ip_blocked'] = False
+        app.logger.debug(request.environ.get('REMOTE_ADDR'))
+        #if session.get('ip_blocked') == True:
+        #    abort(403)
+        #elif session.get('ip_blocked') == False:
+        #    return
+        #if any(request.environ.get('REMOTE_ADDR') in entry for entry in blocked_ip):
+        #    app.logger.debug("TRUE")
+        #    session['ip_blocked'] = True
+        #    abort(403)
+        #else:
+        #    session['ip_blocked'] = False
 
     @app.errorhandler(404)
     def page_not_found(e):
@@ -68,6 +70,12 @@ def create_app(test_config=None):
         """
         redirects call to index page to /home
         """
+
+        #app.logger.debug('this is a DEBUG message')
+        #app.logger.info('this is an INFO message')
+        #app.logger.warning('this is a WARNING message')
+        #app.logger.error('this is an ERROR message')
+        #app.logger.critical('this is a CRITICAL message')
 
         return redirect(url_for('home.index'))
 
@@ -106,6 +114,9 @@ with create_app().app_context():
     """
     initializes the database
     """
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
     from . import database_helper
     database_helper.init_db()
