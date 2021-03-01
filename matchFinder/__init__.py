@@ -45,17 +45,17 @@ def create_app(test_config=None):
         ip address is block from the service
         """
 
-        app.logger.debug(request.environ.get('REMOTE_ADDR'))
-        #if session.get('ip_blocked') == True:
-        #    abort(403)
-        #elif session.get('ip_blocked') == False:
-        #    return
-        #if any(request.environ.get('REMOTE_ADDR') in entry for entry in blocked_ip):
-        #    app.logger.debug("TRUE")
-        #    session['ip_blocked'] = True
-        #    abort(403)
-        #else:
-        #    session['ip_blocked'] = False
+        from . import helper
+
+        if session.get('ip_blocked') == True:
+            abort(403)
+        elif session.get('ip_blocked') == False:
+            return
+        if helper.is_blacklisted(request.environ.get('REMOTE_ADDR')):
+            session['ip_blocked'] = True
+            abort(403)
+        else:
+            session['ip_blocked'] = False
 
     @app.errorhandler(404)
     def page_not_found(e):

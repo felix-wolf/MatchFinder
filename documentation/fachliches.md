@@ -26,17 +26,17 @@ Auf der Home-Seite (```/```) findet der Nutzer allgemeine Informationen über de
 
 ## Verteilung auswerten
 
-Über den Menüpunkt *Verteilung auswerten* (```/evaluate```) wird die Funktion angeboten, Verteilungen (aus Dateien oder aus Datenbankdaten) auszuwerten. Die volle Funktionalität steht nur einem authentifizierten Benutzer zu Verfügung. Unauthentifizierte Benutzer haben nur Zugriff auf die Funktion eine Verteilung aus einer Datei zu erstellen:
+Über den Menüpunkt *Verteilung auswerten* (```/evaluate```) wird die Funktion angeboten, Verteilungen (aus Dateien oder aus Datenbankdaten) auszuwerten. Die volle Funktionalität steht nur einem authentifizierten Benutzer zu Verfügung. Nicht authentifizierte Benutzer haben nur Zugriff auf die Funktion eine Verteilung aus einer Datei zu erstellen:
 
 ### Verteilung aus einer Datei auswerten
 
 Eine Verteilung kann auch ausgewertet werden, wenn die Präferenzen als CSV-Datei vorliegen. Voraussetzung hierfür ist, dass die Datei folgendes Format unterstützt:
 
-1. die durch die Datei beschriebene Matrix ist rechteckig (alle Zeilen gleicher Länge)
+1. die durch die Datei beschriebene Matrix ist rechteckig (alle Zeilen haben gleiche Länge)
 2. in der ersten Zeile sind die Namen der Gruppen / Themen, wobei Zelle 0,0 frei bleibt bzw. nur einen Platzhalter beinhaltet
-3. in der ersten Spalte befinden sich die Namen der Teilnehmer und sind nur durch Leerzeichen getrennt, keine Kommata
+3. in der ersten Spalte befinden sich die Namen der Teilnehmer. Sie dürfen Leerzeichen enthalten, aber keine Kommata
 4. die Präferenzen sind als Bezeichnung angegeben, nicht als Zahl (Erstwahl statt 1, Zweitwahl statt 2 etc.)
-5. die maximal angebenen Präferenz ist die Zehntwahl, darüber hinaus werden keine weiteren Präferenzen angegeben
+5. die maximal auszugebende Präferenz ist die Zehntwahl, darüber hinaus werden keine weiteren Präferenzen angegeben
 
 **Beispielformat**: Eine formatgerechte Datei sieht demnach so aus:
 
@@ -56,7 +56,7 @@ Soll eine Verteilung ausgewertet werden, kann dies mit dem Auswählen des *Auswe
 
 Sind noch keine Daten in der Datenbank angelegt, steht dem authentifizierten Benutzer die gleiche Funktionalität (wie [oben](#verteilung-aus-einer-datei-auswerten) beschrieben) zur Verfügung. Er erhält außerdem noch einen Verweis auf die *Verteilung anlegen*-Funktion, über welche er eine Verteilung anlegen kann.
 
-Existiert jedoch eine Verteilung in der Datenbank, kann diese ausgewählt werden, um sie auszuwerten. Unter dem Auswahlelement wird u.U. darauf hingewiesen, dass eine Auswertung noch nicht ausgewertet werden sollte. Beispiel:
+Existiert jedoch eine Verteilung in der Datenbank, kann diese ausgewählt werden, um sie auszuwerten. Unter dem Auswahlelement wird u. U. darauf hingewiesen, dass eine Auswertung noch nicht ausgewertet werden sollte. Beispiel:
 
 ![image](images/warning.png)
 
@@ -82,7 +82,7 @@ Verteilung1 habe die Kosten [2,2,2]. Verteilung2 habe die Kosten [1,2,3]. Damit 
 
 In diesem Anwendungsfall ist eine geringere Abweichung besser, also wird Verteilung1 gegenüber Verteilung2 bevorzugt und über ihr angezeigt.
 
-Pro Verteilungsvariante wird nun angezeigt, welcher Studi welches Thema bekommen hat und die wievielte Wahl es jeweils war.
+Pro Verteilungsvariante wird nun angezeigt, welcher Student welches Thema bekommen hat und die wievielte Wahl es jeweils war.
 
 Die Seite bietet dem Benutzer Exportfunktionen in zwei Formate:
 
@@ -224,9 +224,9 @@ Die Tabelle der Verteilungen kann nicht ausgeklappt werden, sie bietet jedoch al
 ## Präferenzvergabe
 
 Bei der Präferenzvergabe prioritisiert ein Teilnehmer die ihm/ihr angebotenen Gruppen oder Themen.
-Die Priorität wird von Erstwahl bis Zehntwahl angegeben, u.U. gibt es ein Veto.
+Die Priorität wird von Erstwahl bis Zehntwahl angegeben, u. U. gibt es ein Veto.
 
-Bevor die Präferenzen vergeben werden können, wird der Benutzer u.U. aufgefordert, sich mittels seiner Matrikelnummer zu authentifizieren. Ist die Verteilung offen, hat er stattdessen die Möglichkeit, seinen Vor- und Nachnamen einzutragen, wobei nur der Vorname Pflicht ist.
+Bevor die Präferenzen vergeben werden können, wird der Benutzer u. U. aufgefordert, sich mittels seiner Matrikelnummer zu authentifizieren. Ist die Verteilung offen, hat er stattdessen die Möglichkeit, seinen Vor- und Nachnamen einzutragen, wobei nur der Vorname Pflicht ist.
 
 Wird bei der Präferenzvergabe eine der Antwortmöglichkeiten (z.B. Erstwahl) für eine der Themen angegeben, verschwindet diese Priorität aus den Antwortmöglichkeiten der anderen Themen.
 
