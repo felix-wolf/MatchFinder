@@ -46,7 +46,7 @@ def create_app(test_config=None):
         """
 
         from . import helper
-
+        app.logger.debug(request.environ.get('REMOTE_ADDR'))
         if session.get('ip_blocked') == True:
             abort(403)
         elif session.get('ip_blocked') == False:
@@ -119,4 +119,4 @@ with create_app().app_context():
     app.logger.setLevel(gunicorn_logger.level)
 
     from . import database_helper
-    database_helper.init_db()
+    #database_helper.init_db()
