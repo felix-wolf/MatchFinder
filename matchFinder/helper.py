@@ -3,6 +3,7 @@ from operator import itemgetter
 from munkres import DISALLOWED
 from statistics import median
 from . import database_helper
+from . import txt_parser
 from functools import reduce
 import random
 import copy
@@ -269,6 +270,36 @@ def validate_file(file, app):
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             return False
         return True
+    return False
+
+def is_blacklisted(ip_address):
+    """
+    checks whether an ip_address is on the blacklist
+    by checking if every single value is within the given range
+
+    Parameter
+    ----------
+    ip_address : string
+        the ip_address to check
+
+    Returns
+    ----------
+    boolean
+        True if blacklisted, false else
+    """
+
+    addresses = txt_parser.load_values_from_file('list_of_blocked_ips.txt')
+    for entry in addresses:
+        entry = entry.split(":")
+        if len(entry) == 2:
+            s = entry[1].split('-')
+            min_ip, max_ip = [[int(i) for i in j.split('.')] for j in s]
+            ip = [int(i) for i in ip_address.split('.')]
+            for ind, val in enumerate(ip):
+                if val < min_ip[ind] or val > max_ip[ind]:
+                    break
+                if (ind == 3):
+                    return True
     return False
 
 def create_csv(data):
