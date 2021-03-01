@@ -2,7 +2,7 @@
 
 # Installation
 
-Weitere Informationen sind [diesem Guide](https://flask.palletsprojects.com/en/1.1.x/installation/#install-create-env) und [diesem Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/) zu entnehmen.
+In diesem Kapitel ist beschrieben, welche Abhängigkeiten installiert sein müssen, um die Flask-App zu starten und sie weiterzuentwickeln. Darüber hinaus können weitere Informationen zur Funktionsweise von Flask-Applikationen und deren Entwicklung [diesem Guide](https://flask.palletsprojects.com/en/1.1.x/installation/#install-create-env) und [diesem Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/) der Herausgeber von Flask entnommen werden.
 
 ##### Environment erstellen
 
@@ -21,26 +21,28 @@ python3 -m venv venv
 Benötigte Dependencies innerhalb es aktivierten Environment installieren:
 
 ```bash
-pip3 install flask
+pip install flask
 
-pip3 install flask_sqlalchemy
+pip install flask_sqlalchemy
 
-pip3 install munkres
+pip install munkres
 
-pip3 install pandas
+pip install pandas
 
-pip3 install markdown
+pip install markdown
 
-pip3 install flask_limiter
+pip install flask_limiter
 
-pip3 install Flask-WTF
+pip install Flask-WTF
 
-pip3 install qrcode
+pip install qrcode
 
-pip3 install Pillow
+pip install Pillow
 
-pip3 install bcrypt
+pip install bcrypt
 ```
+
+Innerhalb des Environment kann der Befehl ```pip``` verwendet werden, um ```pip3``` auszuführen.
 
 ##### Die App ausführen
 
@@ -55,4 +57,4 @@ Alternativ kann mit
 ```bash
 flask run --host=0.0.0.0
 ```
-die Flask App gestartet werden und allen Geräten im gleichen Netz zur Verfügung gestellt werden. Die App kann dann über ```<IP DES HOSTS>:5000``` erreicht werden.
+die Flask App gestartet und allen Geräten im gleichen Netz zur Verfügung gestellt werden. Die App kann dann über ```<IP DES HOSTS>:5000``` erreicht werden.
