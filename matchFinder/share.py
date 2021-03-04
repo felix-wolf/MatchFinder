@@ -54,7 +54,7 @@ def show(verteilung_id):
 	"""
 
 	root_url = request.url_root
-	url = root_url + 'preference?id=' + str(verteilung_id)
+	url = root_url + 'preference/' + str(verteilung_id)
 	qr = qrcode.QRCode(
 		version=1,
 		error_correction=qrcode.constants.ERROR_CORRECT_H,
