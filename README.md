@@ -7,4 +7,4 @@ Die Dokumentation besteht aus zwei Teilen:
 1. [Die Dokumention beschreibt technische Details der Umsetzung.](documentation/dokumentation.md)
 2. [Die Spezifikation beschreibt, was dieses Tool leisten soll.](documentation/spezifikation.md)
 
-Zusätzlich wird in dieser [Installationsanleitung](documentation/dokumentation.md) beschrieben, wie die App und ihre Dependencies in einer lokalen Umgebung installiert und gestartet werden kann.
+Zusätzlich wird in dieser [Installationsanleitung](documentation/installation.md) beschrieben, wie die App und ihre Dependencies in einer lokalen Umgebung installiert und gestartet werden kann.
