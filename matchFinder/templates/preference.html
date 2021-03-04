@@ -13,7 +13,7 @@
 			{% for thema in themen %}
 			<div class="input-group mb-2">
 				<div class="input-group-prepend w-50">
-					<span class="text-left input-group-text w-100">{{thema.thema_name}}{%if thema.zeit != ""%},<br>Zeit: {{thema.zeit}}{% endif %}{%if thema.zeit != "" %},<br>Betreuer: {{thema.betreuer}}{% endif %}</span>
+					<span class="text-left input-group-text w-100">{{thema.thema_name}}{%if thema.zeit != ""%},<br>Zeit: {{thema.zeit}}{% endif %}{%if thema.betreuer != "" %},<br>Betreuer: {{thema.betreuer}}{% endif %}</span>
 				</div>
 				<select @change="onChange($event)" class="form-control custom-select mr-sm-2" tag="selector" name="{{loop.index}}" id="{{loop.index}}">
 					<option v-for="(item, index) in validOptions({{loop.index}})">
