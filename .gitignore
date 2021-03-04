@@ -215,7 +215,6 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows
 
-config.py
 passwords.txt
 test.db
 poll.csv
