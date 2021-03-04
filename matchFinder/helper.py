@@ -291,7 +291,7 @@ def is_blacklisted(ip_address):
     addresses = txt_parser.load_values_from_file('list_of_blocked_ips.txt')
     for entry in addresses:
         entry = entry.split(":")
-        if len(entry) == 2:
+        if len(entry) == 2 and ip_address != '':
             s = entry[1].split('-')
             min_ip, max_ip = [[int(i) for i in j.split('.')] for j in s]
             ip = [int(i) for i in ip_address.split('.')]
