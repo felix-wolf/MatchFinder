@@ -15,7 +15,7 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text">Name der Teilnehmergruppe</span>
 				</div>
-				{{ form.teilnehmer_name(size=20, class="form-control", placeholder="required") }}
+				{{ form.teilnehmer_name(size=20, class="form-control", placeholder="erforderlich") }}
 			</div>
 			{% for single_teilnehmer_form in form.teilnehmer.entries %}
 			{{ single_teilnehmer_form.hidden_tag() }}
@@ -24,7 +24,7 @@
 				<div class="input-group-prepend w-25">
 					<span class="input-group-text w-100">Vorname</span>
 				</div>
-				{{ single_teilnehmer_form.first_name(value="", size=20, class="form-control", placeholder="required") }}
+				{{ single_teilnehmer_form.first_name(value="", size=20, class="form-control", placeholder="erforderlich") }}
 			</div>
 
 			<div class="input-group mb-2">
@@ -38,7 +38,7 @@
 				<div class="input-group-prepend w-25">
 					<span class="input-group-text w-100">Matrikelnummer</span>
 				</div>
-				{{ single_teilnehmer_form.matr_nr(value="", size=20, class="form-control", placeholder="required") }}
+				{{ single_teilnehmer_form.matr_nr(value="", size=20, class="form-control", placeholder="erforderlich") }}
 			</div>
 			{% endfor %}
 

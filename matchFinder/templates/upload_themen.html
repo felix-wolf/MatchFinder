@@ -15,7 +15,7 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text">Name der Gruppen / Themen</span>
 				</div>
-				{{ form.themen_name(size=20, class="form-control", placeholder="required") }}
+				{{ form.themen_name(size=20, class="form-control", placeholder="erforderlich") }}
 			</div>
 			{% for single_thema_form in form.themen.entries %}
 			{{ single_thema_form.hidden_tag() }}
@@ -24,7 +24,7 @@
 				<div class="input-group-prepend w-25">
 					<span class="input-group-text w-100">Name</span>
 				</div>
-				{{ single_thema_form.thema_name(value="", size=20, class="form-control", placeholder="required") }}
+				{{ single_thema_form.thema_name(value="", size=20, class="form-control", placeholder="erforderlich") }}
 			</div>
 
 			<div class="input-group mb-2">
