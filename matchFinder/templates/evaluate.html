@@ -44,7 +44,7 @@
 
 			{% endfor %}
 
-			<div v-if="(current / total < 0.8)">
+			<div v-if="(current / total) < 0.8">
 				<div class="alert alert-danger" role="alert">
 					Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
 				</div>
