@@ -66,7 +66,10 @@ def calculateMatchFromList(full_matrix, themen):
             for column in range(len(reduced_matrix[row]) - 1):
                 if column == 0:
                     reduced_matrix[row].pop(column)
-                reduced_matrix[row][column] = int(float(reduced_matrix[row][column]))
+                if reduced_matrix[row][column] == 'Veto':
+                    reduced_matrix[row][column] = DISALLOWED
+                else:
+                    reduced_matrix[row][column] = int(reduced_matrix[row][column])
         # calculate match
         indexes = Munkres().compute(reduced_matrix)
         #print(indexes)
