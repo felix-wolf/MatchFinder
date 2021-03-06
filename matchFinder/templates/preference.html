@@ -137,11 +137,13 @@
 				// make sure every select element has the correct
 				// answer selected
 				this.$nextTick(() => {
-
+					// loop runs once for each html element (for thema)
 					for (i = 1; i <= {{themen | length}}; i++) {
-
+						// select element
 						const element = document.getElementById(i)
 						var index = 0
+						// index will contain how many answers are not taken
+						// until this element's id is assigned
 						for (j = 0; j < this.options.length; j++) {
 							if (this.options[j][1] == element.id) {
 								break
@@ -150,20 +152,23 @@
 								index++
 							}
 						}
-
+						// numberOfOptions contains the total amount of answers to present
+						// this is always 'Keine Präferenz' + the current selected answer
+						// + all answers that are not taken yet
 						var numberOfOptions = 0
 						for (j = 0; j < this.options.length; j++) {
 							if (this.options[j][1] == "" || this.options[j][1] == element.id) {
 								numberOfOptions++
 							}
 						}
-
-						if (element.value != this.options[0][0] && index < numberOfOptions) {
+						// if the element has an answer selected, setting it as
+						// selected ensures that each answer has the correct value
+						if (index < numberOfOptions) {
 							element.options[index].selected = true
 						}
 					}
 
-					// calculate all Needed answers given value
+					// calculate allNeededAnswersGiven value
 					const filtered = this.options.filter(option =>
 						option[1] != "")
 					this.allNeededAnswersGiven = filtered.length >= this.neededAnswers
