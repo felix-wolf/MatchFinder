@@ -1,6 +1,5 @@
 from werkzeug.utils import secure_filename
 from operator import itemgetter
-from munkres import DISALLOWED
 from statistics import median
 from . import database_helper
 from . import txt_parser
@@ -9,9 +8,10 @@ import random
 import copy
 import os
 
-def convert_praef_to_num(praef):
+def convert_praef_to_numberstring(praef):
     """
-    converts a präferenz given as a string to a number.
+    converts a präferenz given as a string into
+    the corresponding number as a string.
 
     Parameter
     ----------
@@ -21,71 +21,31 @@ def convert_praef_to_num(praef):
     Returns
     ----------
     <multiple>
-        returns either a number, Munkres.DISALLOWED or the input if
+        returns either a string or the input if
         nothing is applicable
     """
 
     if praef == "Erstwahl":
-        return 1
+        return '1'
     if praef == "Zweitwahl":
-        return 2
+        return '2'
     if praef == "Drittwahl":
-        return 3
+        return '3'
     if praef == "Viertwahl":
-        return 4
+        return '4'
     if praef == "Fünftwahl":
-        return 5
+        return '5'
     if praef == "Sechstwahl":
-        return 6
+        return '6'
     if praef == "Siebtwahl":
-        return 7
+        return '7'
     if praef == "Achtwahl":
-        return 8
+        return '8'
     if praef == "Neuntwahl":
-        return 9
+        return '9'
     if praef == "Zehntwahl":
-        return 10
-    if praef == "Veto":
-        return DISALLOWED
+        return '10'
     return praef
-
-def comvert_num_to_praef(num):
-    """
-    converts a number (or a string) to a praeferenz.
-
-    Parameter
-    ----------
-    num : multiple
-        number to be converted
-
-    Returns
-    ----------
-    <multiple>
-        returns either a präferenz the input if
-        nothing is applicable
-    """
-
-    if num == 1 or num == '1':
-        return "Erstwahl"
-    if num == 2 or num == '2':
-        return "Zweitwahl"
-    if num == 3 or num == '3':
-        return "Drittwahl"
-    if num == 4 or num == '4':
-        return "Viertwahl"
-    if num == 5 or num == '5':
-        return "Fünftwahl"
-    if num == 6 or num == '6':
-        return "Sechstwahl"
-    if num == 7 or num == '7':
-        return "Siebtwahl"
-    if num == 8 or num == '8':
-        return "Achtwahl"
-    if num == 9 or num == '9':
-        return "Neuntwahl"
-    if num == 10 or num == '10':
-        return "Zehntwahl"
-    return num
 
 def check_user_credentials(matr_nr, hashed_verteilung_id):
     """
@@ -229,7 +189,7 @@ def convert_preferences(praeferenzen):
 
     indices_of_no_praefs = []
     for index, praef in enumerate(praeferenzen):
-        praeferenzen[index] = convert_praef_to_num(praef)
+        praeferenzen[index] = convert_praef_to_numberstring(praef)
         if praef == "Keine Präferenz":
             indices_of_no_praefs.append(index)
     possible_number = 1
@@ -241,10 +201,9 @@ def convert_preferences(praeferenzen):
                 break
             else: possible_number += 1
 
-    if len(indices_of_no_praefs) == len (praeferenzen):
+    if len(indices_of_no_praefs) == len(praeferenzen):
         random.shuffle(praeferenzen)
-    preference_string = "".join(list(map(
-        lambda x: str(convert_praef_to_num(x)) + ",", praeferenzen)))
+    preference_string = "".join(list(map(lambda x: str(x) + ",", praeferenzen)))
     return preference_string[:-1]
 
 def validate_file(file, app):
