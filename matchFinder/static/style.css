@@ -2,6 +2,30 @@ body {
   font-size: .875rem;
 }
 
+:root {
+  --background-primary: #fff;
+  --color-primary: #333;
+}
+
+html[data-theme='dark'] {
+  --background-primary: #030303;
+  --color-primary: #ccc;
+}
+
+html {
+  transition: color 600ms, background-color 600ms;
+  background: var(--background-primary);
+  color: var(--color-primary);
+}
+
+h1, h2, h3, h4, h5, h6, p, a {
+  color: var(--color-primary);
+}
+
+body {
+  background-color: var(--background-primary) !important;
+}
+
 .feather {
   width: 16px;
   height: 16px;
@@ -13,6 +37,7 @@ body {
  */
 
 .sidebar {
+  background-color: var(--background-primary) !important;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -22,7 +47,16 @@ body {
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
+nav {
+  background-color: var(--background-primary);
+}
+
+col-md-2 d-none d-md-block bg-light sidebar {
+  background-color: var(--background-primary);
+}
+
 .sidebar-sticky {
+  background-color: var(--background-primary);
   position: relative;
   top: 0;
   height: calc(100vh - 48px);
