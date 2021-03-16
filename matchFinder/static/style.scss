@@ -1,0 +1,9 @@
+$primary_1: #123456;
+
+@import "scss/functions";
+@import "scss/variables";
+@import "scss/mixins";
+
+p {
+	background-color: $gray-100;
+}
