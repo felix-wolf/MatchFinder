@@ -5,6 +5,7 @@ from matchFinder.models import teilnehmer_list_model
 from matchFinder.models import verteilung_model
 from matchFinder.models import password_model
 from matchFinder.models import praeferenz_model
+from sqlalchemy.exc import IntegrityError
 from . import db
 import hashlib
 
@@ -152,9 +153,15 @@ def save_teilnehmer(teilnehmer_liste, list_name):
 		name = list_name,
 		teilnehmer = memberlist)
 	db.session.add(list)
-	db.session.commit()
 
-	return len(teilnehmer_liste)
+	try:
+		db.session.commit()
+	except IntegrityError as e:
+		db.session.rollback()
+		return 0, "Eine der Matrikelnummern ist bereits vergeben."
+    	# unique constraint error, matr_nr already exists
+
+	return len(teilnehmer_liste), None
 
 def save_themen(themen, list_name):
 	"""
