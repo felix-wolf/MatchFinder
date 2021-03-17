@@ -38,11 +38,11 @@ def file():
         themen_name = request.form.get('themen_name', None)
         if themen_name == None:
             teilnehmer = txt_parser.array_from_teilnehmer(uploaded_file)
-            rtn = database_helper.save_teilnehmer(teilnehmer, teilnehmer_name)
+            number_saved, error = database_helper.save_teilnehmer(teilnehmer, teilnehmer_name)
         elif teilnehmer_name == None:
             themen = txt_parser.array_from_themen(uploaded_file)
-            rtn = database_helper.save_themen(themen, themen_name)
-        return redirect(url_for('upload.index', items_saved=rtn))
+            number_saved = database_helper.save_themen(themen, themen_name)
+        return redirect(url_for('upload.index', items_saved=number_saved))
     else:
         abort(400)
     return redirect(url_for('upload.index', items_saved=False))
@@ -86,10 +86,13 @@ def teilnehmer_manually():
         # form is filled out and valid
         # save data to database
 
-        rtn = database_helper.save_teilnehmer(
+        number_saved, error = database_helper.save_teilnehmer(
             teilnehmerform.teilnehmer.data,
             teilnehmerform.teilnehmer_name.data)
-        return redirect(url_for('upload.index', items_saved=rtn))
+        if error == None:
+            return redirect(url_for('upload.index', items_saved=number_saved))
+        else:
+            return redirect(url_for('upload.index', error=error))
 
     # form is not filled, present form to user
     number_of_teilnehmer = request.form.get('number_teilnehmer', None)

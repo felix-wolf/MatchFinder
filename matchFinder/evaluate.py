@@ -48,8 +48,11 @@ def from_db():
         else:
             praeferenz = praeferenz.praeferenzen
         praeferenz = praeferenz.split(',')
+        last_two_digits = str(teil.matr_nr % 100) if teil.matr_nr % 100 != 0 else '00'
+        censored_matr_nr = "(**" + last_two_digits + ")"
+        concat_name = teil.first_name + " " + teil.last_name + " " + censored_matr_nr
         local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(
-            [teil.first_name + " " + teil.last_name] + praeferenz, max_per)
+            [concat_name] + praeferenz, max_per)
         teilnehmer_pref.append(local_teilnehmer_pref)
     assignments = matchCalculator.calculateMatchFromList(teilnehmer_pref, themen)
     assignments = helper.sort_by_median(assignments)

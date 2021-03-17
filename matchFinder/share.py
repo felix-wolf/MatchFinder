@@ -40,11 +40,12 @@ def index():
 	data["editable"] = True if editable == "on" else False
 	data["veto_allowed"] = True if veto_allowed == "on" else False
 
-	id = database_helper.save_verteilung(data)
-
-	hashed_verteilung_id = hashlib.sha256(str(id).encode()).hexdigest()
-
-	return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
+	id, error = database_helper.save_verteilung(data)
+	if error == None:
+		hashed_verteilung_id = hashlib.sha256(str(id).encode()).hexdigest()
+		return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
+	else:
+		return redirect(url_for('create.index', error=error))
 
 @bp.route('/show/<verteilung_id>')
 def show(verteilung_id):
