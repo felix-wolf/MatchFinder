@@ -11,7 +11,7 @@ class Verteilung(db.Model):
 	__tablename__ = "verteilungen"
 	id = db.Column(db.Integer, primary_key=True)
 	min_votes = db.Column(db.Integer, default=1)
-	name = db.Column(db.String(80), nullable=False)
+	name = db.Column(db.String(80), nullable=False, unique=True)
 	editable = db.Column(db.Boolean, default=False)
 	protected = db.Column(db.Boolean, default=True)
 	veto_allowed = db.Column(db.Boolean, default=True)

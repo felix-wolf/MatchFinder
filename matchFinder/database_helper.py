@@ -236,5 +236,10 @@ def save_verteilung(data):
 		min_votes = data["min_votes"],
 		veto_allowed = data["veto_allowed"])
 	db.session.add(local_verteilung)
-	db.session.commit()
-	return local_verteilung.id
+	try:
+		db.session.commit()
+	except IntegrityError as e:
+		db.session.rollback()
+		return 0, "Es existiert bereits eine Verteilung mit diesem Namen."
+    	# unique constraint error, matr_nr already exists
+	return local_verteilung.id, None
