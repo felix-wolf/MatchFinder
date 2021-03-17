@@ -9,7 +9,11 @@
 <div class="alert alert-success" role="alert">
 	{{ request.args.get('items_saved') }} Einträge gespeichert!
 </div>
-{% endif %}
+{% elif request.args.get('error')%}
+<div class="alert alert-danger" role="alert">
+	Fehler: {{request.args.get('error') }}
+</div>
+{% endif%}
 
 <p>Hier können Listen von Themen oder Teilnehmer gespeichert werden, um daraus später Verteilungen zu erstellen.</p>
 

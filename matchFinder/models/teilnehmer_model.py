@@ -14,4 +14,4 @@ class Teilnehmer(db.Model):
 	praeferenzen = db.relationship("Praeferenz", cascade="all,delete", backref="teilnehmer", lazy=True)
 	first_name = db.Column(db.String(80), nullable=False)
 	last_name = db.Column(db.String(80))
-	matr_nr = db.Column(db.Integer)
+	matr_nr = db.Column(db.Integer, unique=True)
