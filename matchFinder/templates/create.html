@@ -6,6 +6,12 @@
 
 {% block body %}
 
+{% if request.args.get('error')%}
+<div class="alert alert-danger" role="alert">
+	Fehler: {{request.args.get('error') }}
+</div>
+{% endif%}
+
 <div id="app">
 	{% if (themen|length > 0) and (teilnehmer|length == 0) and session['is_authenticated'] == True %}
 
