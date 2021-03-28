@@ -22,59 +22,56 @@
 	<h5>Wähle eine Verteilung, die du auswerten willst:</h5>
 
 	<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
-		<form method=post action="{{ url_for('evaluate.from_db') }}" enctype="multipart/form-data">
+		<div class="input-group mb-2">
+			<div class="input-group-prepend">
+				<span class="input-group-text">Name der Verteilung</span>
+			</div>
+			<select @change="onChange()" class="custom-select" name="verteilung" id="verteilung">
+				{% for verteilung in verteilungen %}
+				<option value="{{verteilung.id}}">{{verteilung.name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div v-if="(current / total) < 0.8">
+			<div class="alert alert-danger" role="alert">
+				Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
+			</div>
+		</div>
+
+		<div v-if="total <= 0">
+			<div class="alert alert-danger" role="alert">
+				Kein Teilnehmer hat seine Präferenzen für diese Verteilung angegeben.<br>Da dies eine freue Verteilung ist, existiert keine Teilnehmerliste. Sie kann nicht ausgewertet werden.
+			</div>
 			<div class="input-group mb-2">
-				<div class="input-group-prepend">
-					<span class="input-group-text">Name der Verteilung</span>
-				</div>
-				<select @change="onChange()" class="custom-select" name="verteilung" id="verteilung">
-					{% for verteilung in verteilungen %}
-					<option value="{{verteilung.id}}">{{verteilung.name}}</option>
-					{% endfor %}
-				</select>
+				<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
 			</div>
+		</div>
 
-			{% for verteilung in verteilungen %}
-
-			<input type="hidden" id="information" name="information{{verteilung.id}}" value='{
-			"numberOfTeilnehmer": "{{verteilung.teilnehmer.teilnehmer | length}}",
-			"numberOfPraefs": "{{verteilung.praeferenzen | length}}",
-			"obergrenze": "{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}",
-			"auslastung": "{{verteilung.teilnehmer.teilnehmer|length}}"}'>
-
-			{% endfor %}
-
-			<div v-if="(current / total) < 0.8">
-				<div class="alert alert-danger" role="alert">
-					Von ${total} Teilnehmer haben ${current} ihre Präferenzen angegeben. Sicher, dass du auswerten möchtest?
-				</div>
+		<div v-if="! within_limit">
+			<div class="alert alert-danger" role="alert">
+				Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt.<br>Die Verteilung kann nicht ausgewertet werden.
 			</div>
-
-			<div v-if="total <= 0">
-				<div class="alert alert-danger" role="alert">
-					Kein Teilnehmer hat seine Präferenzen für diese Verteilung angegeben.<br>Da dies eine freue Verteilung ist, existiert keine Teilnehmerliste. Sie kann nicht ausgewertet werden.
-				</div>
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
-				</div>
+			<div class="input-group mb-2">
+				<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
 			</div>
+		</div>
 
-			<div v-if="! within_limit">
-				<div class="alert alert-danger" role="alert">
-					Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt.<br>Die Verteilung kann nicht ausgewertet werden.
-				</div>
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Auswerten" disabled>
-				</div>
+		{% for verteilung in verteilungen %}
+
+		<input type="hidden" id="information" name="information{{verteilung.id}}" value='{
+		"numberOfTeilnehmer": "{{verteilung.teilnehmer.teilnehmer | length}}",
+		"numberOfPraefs": "{{verteilung.praeferenzen | length}}",
+		"obergrenze": "{{verteilung.max_teilnehmer_per_thema * verteilung.thema_list.themen|length}}",
+		"auslastung": "{{verteilung.teilnehmer.teilnehmer|length}}"}'>
+
+		<div v-if="total > 0 && within_limit">
+			<div class="input-group mb-2">
+				<a class="btn btn-primary" href="{{ url_for('edit.evaluate', id=verteilung.id) }}">Auswerten</a>
 			</div>
+		</div>
 
-			<div v-if="total > 0 && within_limit">
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Auswerten">
-				</div>
-			</div>
-
-		</form>
+		{% endfor %}
 	</div>
 </div>
 

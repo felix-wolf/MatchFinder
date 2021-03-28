@@ -74,3 +74,16 @@ def share(verteilung_id):
 
 	hashed_verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
 	return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
+
+@bp.route('/evaluate/<int:id>')
+def evaluate(id):
+	"""
+	redirects to the evaluating screen of a verteilung
+
+	Parameters
+	----------
+	id : int
+    	the verteilung's id
+	"""
+
+	return redirect(url_for('evaluate.from_id', verteilung_id=id))
