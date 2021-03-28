@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for,
+    Blueprint, session, render_template, request, redirect, url_for,
     send_file, after_this_request, current_app as app)
 from . import database_helper
 from . import matchCalculator
@@ -18,8 +18,8 @@ def index():
     verteilungen = database_helper.get_all_verteilungen()
     return render_template('evaluate.html', verteilungen=verteilungen)
 
-@bp.route('/from_db', methods=['POST'])
-def from_db():
+@bp.route('/from_id/<int:verteilung_id>')
+def from_id(verteilung_id):
     """
     Evaluates a verteilung from database data.
     First, it gathers data from the request form.
@@ -31,8 +31,9 @@ def from_db():
     calculation.
     It then renders the results.
     """
+    if session.get('is_authenticated') != True:
+        return redirect(url_for('home.index'))
 
-    verteilung_id = request.form.get('verteilung', None)
     verteilung = database_helper.get_verteilung_by_id(verteilung_id)
     max_per = verteilung.max_teilnehmer_per_thema
     teilnehmer = verteilung.teilnehmer.teilnehmer

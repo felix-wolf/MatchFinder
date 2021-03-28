@@ -37,7 +37,7 @@ def index():
 		themen=thema_all,
 		verteilungen=verteilungen_all)
 
-@bp.route('/delete/<int:id>/<type>', methods=["GET"])
+@bp.route('/delete/<int:id>/<type>')
 def delete(id, type):
 	"""
 	Deletes an entity identified by its id.
@@ -61,7 +61,7 @@ def delete(id, type):
 
 	return redirect(url_for("edit.index"))
 
-@bp.route('/action/<int:verteilung_id>', methods=["GET"])
+@bp.route('/share/<int:verteilung_id>')
 def share(verteilung_id):
 	"""
 	redirects to the sharing screen of a verteilung
@@ -74,3 +74,16 @@ def share(verteilung_id):
 
 	hashed_verteilung_id = hashlib.sha256(str(verteilung_id).encode()).hexdigest()
 	return redirect(url_for('share.show', verteilung_id=hashed_verteilung_id))
+
+@bp.route('/evaluate/<int:id>')
+def evaluate(id):
+	"""
+	redirects to the evaluating screen of a verteilung
+
+	Parameters
+	----------
+	id : int
+    	the verteilung's id
+	"""
+
+	return redirect(url_for('evaluate.from_id', verteilung_id=id))
