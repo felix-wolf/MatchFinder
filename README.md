@@ -8,3 +8,5 @@ Die Dokumentation besteht aus zwei Teilen:
 2. [Die Spezifikation beschreibt, was dieses Tool leisten soll.](documentation/spezifikation.md)
 
 Zusätzlich wird in dieser [Installationsanleitung](documentation/installation.md) beschrieben, wie die App und ihre Dependencies in einer lokalen Umgebung installiert und gestartet werden kann.
+
+[![GitHub Release](https://img.shields.io/badge/version-v0.0.1-success)]() 
