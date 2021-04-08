@@ -231,6 +231,23 @@ def validate_file(file, app):
         return True
     return False
 
+def build_cencored_matr(matr_nr):
+    """
+    builds a cencored version from a matrikelnummer by replacing all
+    characters after the first two with *
+    Parameter
+    ----------
+    matr_nr : string
+        the matrikelnummer as cleartext
+
+    Returns
+    ----------
+    string
+        cencored matrikelnummer
+    """
+    last_two_digits = str(matr_nr % 100) if matr_nr % 100 != 0 else '00'
+    return "(**" + last_two_digits + ")"
+
 def is_blacklisted(ip_address):
     """
     checks whether an ip_address is on the blacklist

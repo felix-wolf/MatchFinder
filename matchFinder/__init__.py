@@ -103,6 +103,9 @@ def create_app(test_config=None):
     from . import evaluate
     app.register_blueprint(evaluate.bp)
 
+    from . import preview
+    app.register_blueprint(preview.bp)
+
     db.init_app(app)
 
     from . import txt_parser
