@@ -2,10 +2,11 @@ from flask import (
 	Blueprint, redirect, render_template, request, url_for)
 
 bp = Blueprint('home', __name__, url_prefix='/home')
+version = "0.0.1"
 
 @bp.route('/')
 def index():
-	return render_template('home.html')
+	return render_template('home.html', version=version)
 
 @bp.route('/<message>')
 def index_with_message(message):
@@ -14,4 +15,4 @@ def index_with_message(message):
 	operations
 	"""
 
-	return render_template('home.html', message=message)
+	return render_template('home.html', message=message, version=version)
