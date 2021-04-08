@@ -9,4 +9,4 @@ Die Dokumentation besteht aus zwei Teilen:
 
 Zusätzlich wird in dieser [Installationsanleitung](documentation/installation.md) beschrieben, wie die App und ihre Dependencies in einer lokalen Umgebung installiert und gestartet werden kann.
 
-[![GitHub Release](https://img.shields.io/badge/version-v0.0.1-success)]() 
+[![GitHub Release](https://img.shields.io/badge/version-v0.0.2-success)]() 

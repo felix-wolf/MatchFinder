@@ -15,6 +15,25 @@
 
 {% block body %}
 
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+    		<div class="modal-header">
+				<h4 class="modal-title">Möchtest du wirklich löschen?</h4>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      		</div>
+      		<div class="modal-body">
+      			<p>Bist du sicher, dass du den Eintrag löschen möchtest?</p>
+      		</div>
+      		<div class="modal-footer">
+        			<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        			<button type="button" id="delete_button" class="btn btn-danger" data-dismiss="modal">Löschen</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+
 {% if teilnehmer_lists %}
 
 <h4>Teilnehmer-Listen</h4>
@@ -29,11 +48,11 @@
 		</thead>
 		<tbody>
 			{% for teilnehmer_list in teilnehmer_lists %}
-			<tr data-toggle="collapse" data-target="#subtable_teilnehmer_{{teilnehmer_list.id}}" class="clickable">
-				<td>{{teilnehmer_list.id}}</td>
-				<td>{{teilnehmer_list.name}}</td>
+			<tr>
+				<td data-toggle="collapse" data-target="#subtable_teilnehmer_{{teilnehmer_list.id}}" class="clickable">{{teilnehmer_list.id}}</td>
+				<td data-toggle="collapse" data-target="#subtable_teilnehmer_{{teilnehmer_list.id}}" class="clickable">{{teilnehmer_list.name}}</td>
 				<td>
-					<a class="btn btn-sm btn-danger" href="{{ url_for('edit.delete', id=teilnehmer_list.id, type='teilnehmer') }}">Löschen</a>
+					<button onclick="delete_entry('{{teilnehmer_list.id}}', 'teilnehmer')" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal">Löschen</button>
 				</td>
 			</tr>
 			<tr class="hide-table-padding">
@@ -86,11 +105,11 @@
 
 			{% for thema_list in thema_lists %}
 
-			<tr data-toggle="collapse" data-target="#subtable_thema_{{thema_list.id}}" class="clickable">
-				<td>{{thema_list.id}}</td>
-				<td>{{thema_list.name}}</td>
+			<tr>
+				<td data-toggle="collapse" data-target="#subtable_thema_{{thema_list.id}}" class="clickable">{{thema_list.id}}</td>
+				<td data-toggle="collapse" data-target="#subtable_thema_{{thema_list.id}}" class="clickable">{{thema_list.name}}</td>
 				<td>
-					<a class="btn btn-sm btn-danger" href="{{ url_for('edit.delete', id=thema_list.id, type='thema') }}">Löschen</a>
+					<button onclick="delete_entry('{{thema_list.id}}', 'thema')" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal">Löschen</button>
 				</td>
 			</tr>
 			<tr class="hide-table-padding">
@@ -208,7 +227,7 @@
 
 							<a class="dropdown-item" href="{{ url_for('edit.evaluate', id=verteilung.id) }}">Auswerten</a>
 
-							<a class="dropdown-item" href="{{ url_for('edit.delete', id=verteilung.id, type='verteilung') }}">Löschen</a>
+							<button onclick="delete_entry('{{verteilung.id}}', 'verteilung')" class="dropdown-item" data-toggle="modal" data-target="#myModal">Löschen</button>
 						</div>
 					</div>
 				</td>
@@ -291,4 +310,37 @@
 
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+
+/**
+* this function build the delete button for the html modal.
+* sort of hacky way to do it, good candidate for a refactoring.
+* the basic url is built by jinja and stored in reference variable.
+* then, when the function is invoked, the identifier and the type are replaced
+* by simple string replacements. The button is then injected into the model
+* using jquery.
+* @param {identifier} the object's identifier to delete
+* @param {entityType} the object's type
+*/
+function delete_entry(identifier, entityType) {
+	const cancel_button = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>'
+	var reference = "href='{{ url_for('edit.delete', id='-1', type='entityType') }}'"
+	reference = reference.replace("-1", identifier)
+	reference = reference.replace("entityType", entityType)
+
+	$( ".modal-footer" ).replaceWith('<div class="modal-footer">'
+		+ cancel_button
+		+ '<a id="delete_button" class="btn btn-danger"'
+		+ reference
+		+ '>Löschen</a></div>');
+}
+
+</script>
+
+{% endblock %}
+{% block vuejs %}
 {% endblock %}
