@@ -2,7 +2,7 @@ from flask import (
 	Blueprint, redirect, render_template, request, url_for)
 
 bp = Blueprint('home', __name__, url_prefix='/home')
-version = "0.0.1"
+version = "0.0.2"
 
 @bp.route('/')
 def index():
