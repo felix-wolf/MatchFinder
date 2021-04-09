@@ -196,15 +196,13 @@ def convert_preferences(praeferenzen):
             indices_of_no_praefs.append(index)
 
     possible_number = 1
+    random.shuffle(indices_of_no_praefs)
     for index in indices_of_no_praefs:
         while True:
             if not possible_number in praeferenzen:
                 praeferenzen[index] = possible_number
                 break
             else: possible_number += 1
-
-    if len(indices_of_no_praefs) == len(praeferenzen):
-        random.shuffle(praeferenzen)
     preference_string = "".join(list(map(lambda x: str(x) + ",", praeferenzen)))
     return preference_string[:-1]
 
