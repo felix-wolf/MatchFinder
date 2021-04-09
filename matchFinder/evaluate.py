@@ -49,8 +49,7 @@ def from_id(verteilung_id):
         else:
             praeferenz = praeferenz.praeferenzen
         praeferenz = praeferenz.split(',')
-        last_two_digits = str(teil.matr_nr % 100) if teil.matr_nr % 100 != 0 else '00'
-        censored_matr_nr = "(**" + last_two_digits + ")"
+        censored_matr_nr = helper.build_cencored_matr(teil.matr_nr)
         concat_name = teil.first_name + " " + teil.last_name + " " + censored_matr_nr
         local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(
             [concat_name] + praeferenz, max_per)

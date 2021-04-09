@@ -15,6 +15,28 @@
 
 {% block body %}
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+    		<div class="modal-header">
+				<h4 class="modal-title">Möchtest du wirklich löschen?</h4>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      		</div>
+      		<div class="modal-body">
+      			<p>Bist du sicher, dass du den Eintrag löschen möchtest?</p>
+      		</div>
+      		<div class="modal-footer">
+        			<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        			<button type="button" id="delete_button" class="btn btn-danger" data-dismiss="modal">Löschen</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+
 {% if teilnehmer_lists %}
 
 <h4>Teilnehmer-Listen</h4>
@@ -29,17 +51,17 @@
 		</thead>
 		<tbody>
 			{% for teilnehmer_list in teilnehmer_lists %}
-			<tr data-toggle="collapse" data-target="#subtable_teilnehmer_{{teilnehmer_list.id}}" class="clickable">
-				<td>{{teilnehmer_list.id}}</td>
-				<td>{{teilnehmer_list.name}}</td>
+			<tr>
+				<td data-toggle="collapse" data-target="#subtable_teilnehmer_{{teilnehmer_list.id}}" class="clickable">{{teilnehmer_list.id}}</td>
+				<td data-toggle="collapse" data-target="#subtable_teilnehmer_{{teilnehmer_list.id}}" class="clickable">{{teilnehmer_list.name}}</td>
 				<td>
-					<a class="btn btn-sm btn-danger" href="{{ url_for('edit.delete', id=teilnehmer_list.id, type='teilnehmer') }}">Löschen</a>
+					<button onclick="delete_entry('{{teilnehmer_list.id}}', 'teilnehmer')" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal">Löschen</button>
 				</td>
 			</tr>
 			<tr class="hide-table-padding">
 				<td colspan="3">
 					<div id="subtable_teilnehmer_{{teilnehmer_list.id}}" class="collapse">
-						<table class="table table-striped" tyle="width:100%">
+						<table class="table table-striped" style="width:100%">
 							<thead>
 								<tr>
 									<th style="width: 10%">#</th>
@@ -86,17 +108,17 @@
 
 			{% for thema_list in thema_lists %}
 
-			<tr data-toggle="collapse" data-target="#subtable_thema_{{thema_list.id}}" class="clickable">
-				<td>{{thema_list.id}}</td>
-				<td>{{thema_list.name}}</td>
+			<tr>
+				<td data-toggle="collapse" data-target="#subtable_thema_{{thema_list.id}}" class="clickable">{{thema_list.id}}</td>
+				<td data-toggle="collapse" data-target="#subtable_thema_{{thema_list.id}}" class="clickable">{{thema_list.name}}</td>
 				<td>
-					<a class="btn btn-sm btn-danger" href="{{ url_for('edit.delete', id=thema_list.id, type='thema') }}">Löschen</a>
+					<button onclick="delete_entry('{{thema_list.id}}', 'thema')" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal">Löschen</button>
 				</td>
 			</tr>
 			<tr class="hide-table-padding">
 				<td colspan="3">
 					<div id="subtable_thema_{{thema_list.id}}" class="collapse">
-						<table class="table table-striped" tyle="width:100%">
+						<table class="table table-striped" style="width:100%">
 							<thead>
 								<tr>
 									<th style="width: 10%">#</th>
@@ -144,24 +166,15 @@
 		<thead>
 			<tr>
 				<th style="width: 10">#</th>
-				<th style="width: 14%">Name</th>
-				<th style="width: 10%"># Teilnehmer</th>
-				<th style="width: 10%"># Themen</th>
-				<th style="width: 10%"># / Gruppe</th>
-				<th style="width: 10%">Min-Votes</th>
-				<th style="width: 6%">
-					<span data-feather="x-octagon"></span>
-				</th>
-				<th style="width: 6%">
-					<span data-feather="edit"></span>
-				</th>
-				<th style="width: 6%">
-					<span data-feather="lock"></span>
-				</th>
-				<th style="width: 6%">
+				<th style="width: 20%">Name</th>
+				<th style="width: 12%"># Teilnehmer</th>
+				<th style="width: 12%"># Themen</th>
+				<th style="width: 10%">
 					<span data-feather="user"></span>
 				</th>
+				<th style="width: 12%">Infos</th>
 				<th style="width: 12%">Aktion</th>
+				<th style="width: 12%">Löschen</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -171,46 +184,43 @@
 			<tr>
 				<td>{{verteilung.id}}</td>
 				<td>{{verteilung.name}}</td>
-				<td>{{verteilung.teilnehmer.id}}</td>
-				<td>{{verteilung.thema_list.id}}</td>
-				<td>{{verteilung.max_teilnehmer_per_thema}}</td>
-				<td>{{verteilung.min_votes}}</td>
-				<td>
-					{% if verteilung.veto_allowed %}
-					Ja
-					{% else %}
-					Nein
-					{% endif %}
-				</td>
-				<td>
-					{% if verteilung.editable %}
-					Ja
-					{% else %}
-					Nein
-					{% endif %}
-				</td>
-				<td>
-					{% if verteilung.protected %}
-					Ja
-					{% else %}
-					Nein
-					{% endif %}
-				</td>
+				<td>{{verteilung.teilnehmer.teilnehmer | length}}</td>
+				<td>{{verteilung.thema_list.themen | length}}</td>
 				<td>{{verteilung.praeferenzen | length}} / {{verteilung.teilnehmer.teilnehmer | length}}</td>
 				<td>
-					<div class="dropdown">
-						<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Aktionen
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-							<a class="dropdown-item" href="{{ url_for('edit.share', verteilung_id=verteilung.id) }}">Teilen</a>
-
-							<a class="dropdown-item" href="{{ url_for('edit.evaluate', id=verteilung.id) }}">Auswerten</a>
-
-							<a class="dropdown-item" href="{{ url_for('edit.delete', id=verteilung.id, type='verteilung') }}">Löschen</a>
-						</div>
-					</div>
+					<a tabindex="0" role="button" id="info{{verteilung.id}}" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content='
+						# / Gruppe: {{verteilung.max_teilnehmer_per_thema}}<br>
+						Min-Votes: {{verteilung.min_votes}}<br>
+						Veto erlaubt: {% if verteilung.veto_allowed %}Ja{% else %}Nein{% endif %}<br>
+						editierbar: {% if verteilung.editable %}Ja{% else %}Nein{% endif %}<br>
+						geschützt: {% if verteilung.protected %}Ja{% else %}Nein{% endif %}<br>
+						Id der Themaliste: {{verteilung.thema_list.id}}<br>
+						Id der Teilnehmerliste: {{verteilung.teilnehmer.id}}<br>
+						'>
+  							Infos
+						</a>
+						<script type="text/javascript">
+							$('#info{{verteilung.id}}').popover({
+								trigger: 'focus'
+							});
+						</script>
+				</td>
+				<td>
+					<a tabindex="0" role="button" id="popoverData{{verteilung.id}}" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content='
+						<a class="btn btn-secondary btn-block" href="{{ url_for("edit.share", verteilung_id=verteilung.id) }}">Teilen</a>
+						<a class="btn btn-secondary btn-block" href="{{ url_for("edit.evaluate", id=verteilung.id) }}">Auswerten</a>
+						<a class="btn btn-secondary btn-block" href="{{ url_for("preview.index", verteilung_id=verteilung.id) }}">Vorschau</a>
+						'>
+  							Aktion
+						</a>
+						<script type="text/javascript">
+							$('#popoverData{{verteilung.id}}').popover({
+								trigger: 'focus'
+							});
+						</script>
+				</td>
+				<td>
+					<button onclick="delete_entry('{{verteilung.id}}', 'verteilung')" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Löschen</button>
 				</td>
 			</tr>
 
@@ -246,11 +256,15 @@
 			{% if verteilungen %}
 			<tr>
 				<td># Teilnehmer</td>
-				<td>Die Id der TeilnehmerListe, die zu der Verteilung gehört.</td>
+				<td>Anzahl der Teilnehmer, die zu der Verteilung gehören.</td>
 			</tr>
 			<tr>
 				<td># Themen</td>
-				<td>Die Id der ThemenListe, die zu der Verteilung gehört.</td>
+				<td>Anzahl der Themen, die zu der Verteilung gehören.</td>
+			</tr>
+			<tr>
+				<td><span data-feather="user"></span></td>
+				<td>Gibt an, wieviele der Teilnehmer schon ihre Präferenzen abgegeben haben.</td>
 			</tr>
 			<tr>
 				<td># / Gruppe</td>
@@ -261,20 +275,16 @@
 				<td>Die minimale Anzahl an Stimmen, die jeder Teilnehmer beim Abgeben der Präferenzen setzen muss.</td>
 			</tr>
 			<tr>
-				<td><span data-feather="x-octagon"></span></td>
+				<td>Veto erlaubt</td>
 				<td>Gibt an, ob die Verteilung die Vergabe eines Vetos erlaubt.</td>
 			</tr>
 			<tr>
-				<td><span data-feather="edit"></span></td>
+				<td>editierbar</td>
 				<td>Gibt an, ob die Präferenzen der Teilnehmer im Nachhinein noch bearbeitet werden dürfen.</td>
 			</tr>
 			<tr>
-				<td><span data-feather="lock"></span></td>
+				<td>geschützt</td>
 				<td>Gibt an, ob die Verteilung geschützt ist, also ob sich Teilnehmer mit ihrer Matrikelnummer anmelden müssen.</td>
-			</tr>
-			<tr>
-				<td><span data-feather="user"></span></td>
-				<td>Gibt an, wieviele der Teilnehmer schon ihre Präferenzen abgegeben haben.</td>
 			</tr>
 			{% endif %}
 		</tbody>
@@ -291,4 +301,39 @@
 
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+
+/**
+* this function build the delete button for the html modal.
+* sort of hacky way to do it, good candidate for a refactoring.
+* the basic url is built by jinja and stored in reference variable.
+* then, when the function is invoked, the identifier and the type are replaced
+* by simple string replacements. The button is then injected into the model
+* using jquery.
+* @param {identifier} the object's identifier to delete
+* @param {entityType} the object's type
+*/
+function delete_entry(identifier, entityType) {
+	const cancel_button = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>'
+	var reference = "href='{{ url_for('edit.delete', id='-1', type='entityType') }}'"
+	reference = reference.replace("-1", identifier)
+	reference = reference.replace("entityType", entityType)
+
+	$( ".modal-footer" ).replaceWith('<div class="modal-footer">'
+		+ cancel_button
+		+ '<a id="delete_button" class="btn btn-danger"'
+		+ reference
+		+ '>Löschen</a></div>');
+}
+
+</script>
+
+{% endblock %}
+{% block bootstrap %}
+{% endblock %}
+{% block vuejs %}
 {% endblock %}

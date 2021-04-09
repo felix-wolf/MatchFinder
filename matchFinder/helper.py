@@ -8,10 +8,12 @@ import random
 import copy
 import os
 
-def convert_praef_to_numberstring(praef):
+def convert_praef_to_number(praef):
     """
     converts a präferenz given as a string into
-    the corresponding number as a string.
+    the corresponding number. If the präferenz is
+    "Keine Präferenz", it does not match and if case
+    and is return as is.
 
     Parameter
     ----------
@@ -21,30 +23,30 @@ def convert_praef_to_numberstring(praef):
     Returns
     ----------
     <multiple>
-        returns either a string or the input if
+        returns either a number or the input if
         nothing is applicable
     """
 
     if praef == "Erstwahl":
-        return '1'
+        return 1
     if praef == "Zweitwahl":
-        return '2'
+        return 2
     if praef == "Drittwahl":
-        return '3'
+        return 3
     if praef == "Viertwahl":
-        return '4'
+        return 4
     if praef == "Fünftwahl":
-        return '5'
+        return 5
     if praef == "Sechstwahl":
-        return '6'
+        return 6
     if praef == "Siebtwahl":
-        return '7'
+        return 7
     if praef == "Achtwahl":
-        return '8'
+        return 8
     if praef == "Neuntwahl":
-        return '9'
+        return 9
     if praef == "Zehntwahl":
-        return '10'
+        return 10
     return praef
 
 def check_user_credentials(matr_nr, hashed_verteilung_id):
@@ -189,20 +191,18 @@ def convert_preferences(praeferenzen):
 
     indices_of_no_praefs = []
     for index, praef in enumerate(praeferenzen):
-        praeferenzen[index] = convert_praef_to_numberstring(praef)
+        praeferenzen[index] = convert_praef_to_number(praef)
         if praef == "Keine Präferenz":
             indices_of_no_praefs.append(index)
-    possible_number = 1
 
+    possible_number = 1
+    random.shuffle(indices_of_no_praefs)
     for index in indices_of_no_praefs:
         while True:
             if not possible_number in praeferenzen:
                 praeferenzen[index] = possible_number
                 break
             else: possible_number += 1
-
-    if len(indices_of_no_praefs) == len(praeferenzen):
-        random.shuffle(praeferenzen)
     preference_string = "".join(list(map(lambda x: str(x) + ",", praeferenzen)))
     return preference_string[:-1]
 
@@ -230,6 +230,23 @@ def validate_file(file, app):
             return False
         return True
     return False
+
+def build_cencored_matr(matr_nr):
+    """
+    builds a cencored version from a matrikelnummer by replacing all
+    characters after the first two with *
+    Parameter
+    ----------
+    matr_nr : string
+        the matrikelnummer as cleartext
+
+    Returns
+    ----------
+    string
+        cencored matrikelnummer
+    """
+    last_two_digits = str(matr_nr % 100) if matr_nr % 100 != 0 else '00'
+    return "(**" + last_two_digits + ")"
 
 def is_blacklisted(ip_address):
     """

@@ -13,78 +13,33 @@
 {% endif%}
 
 <div id="app">
-	{% if (themen|length > 0) and (teilnehmer|length == 0) and session['is_authenticated'] == True %}
 
-	<div class="mb-3">
-		<h5 class="mb-3">Von bestehenden Daten</h5>
-		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
-			<form method=post action="{{ url_for('share.index') }}" enctype="multipart/form-data">
+	{% if (themen|length > 0) and (teilnehmer|length >= 0) and session['is_authenticated'] == True %}
 
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100">Name</span>
-					</div>
-					<input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100">Gruppenliste</span>
-					</div>
-					<select class="custom-select" name="thema" id="thema">
-						{% for thema in themen %}
-						<option value="{{thema.id}}">{{thema.name}}</option>
-						{% endfor %}
-					</select>
-				</div>
-				{% for thema in themen %}
-				<input type="hidden" name="" id="number_themen{{thema.id}}" value="{{thema.themen | length}}">
-				{% endfor %}
-
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100"># / Gruppe</span>
-					</div>
-					<input type="number" @change="onChangeMaxPer($event)" v-model="max_per" id="max_per" name="max_per" class="form-control" value="1">
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<span class="input-group-text w-100">Mindeststimmen</span>
-					</div>
-					<input type="number" @change="onChangeMinVotes($event)" v-model="min_votes" id="min_votes" name="min_votes" class="form-control" value="1">
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<div class="input-group-text w-100">
-							<input type="checkbox" name="veto_allowed" id="veto_allowed" aria-label="Checkbox for following text input" checked>
-						</div>
-					</div>
-					<span class="form-control">Veto erlaubt</span>
-				</div>
-
-				<div class="input-group mb-2">
-					<div class="input-group-prepend w-25">
-						<div class="input-group-text w-100">
-							<input type="checkbox" @change="onChangeProtected()" name="protected" id="protected" aria-label="Checkbox for following text input" disabled>
-						</div>
-					</div>
-					<span class="form-control">geschützt</span>
-				</div>
-
-				<div class="input-group mb-2">
-					<input class="btn btn-primary" type="submit" value="Erstellen">
-				</div>
-
-			</form>
-		</div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+  		<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+      			<div class="modal-header">
+        			<h4 class="modal-title">Achtung!</h4>
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      			</div>
+      			<div class="modal-body">
+      				<p>Die ausgewählte Gruppenliste beinhaltet ${numberOfThemen}
+      				<template v-if="numberOfThemen > 1">
+  						Unterthemen.
+					</template>
+					<template v-else>
+  						Unterthema.
+					</template></p>
+        			<p>Die Mindesttimmen dürfen nicht die Anzahl der Unterthemen überschreiten.</p>
+      			</div>
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+      			</div>
+    		</div>
+  		</div>
 	</div>
 
-	{% endif %}
-	{% if (themen|length > 0) and (teilnehmer|length > 0) and session['is_authenticated'] == True %}
-
 	<div class="mb-3">
 		<h5 class="mb-3">Von bestehenden Daten</h5>
 		<div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
@@ -101,7 +56,7 @@
 					<div class="input-group-prepend w-25">
 						<span class="input-group-text w-100">Gruppenliste</span>
 					</div>
-					<select class="custom-select" name="thema" id="thema">
+					<select class="custom-select" @change="update()" name="thema" id="thema">
 						{% for thema in themen %}
 						<option value="{{thema.id}}">{{thema.name}}</option>
 
@@ -138,7 +93,7 @@
 				<div class="input-group mb-2">
 					<div class="input-group-prepend w-25">
 						<div class="input-group-text w-100">
-							<input type="checkbox" @change="onChangeProtected()" name="protected" id="protected" v-model="protected" aria-label="Checkbox for following text input" checked>
+							<input type="checkbox" @change="update()" name="protected" id="protected" v-model="protected" aria-label="Checkbox for following text input" {% if (teilnehmer|length > 0)%}checked{% else %}disabled{% endif %}>
 						</div>
 					</div>
 					<span class="form-control">geschützt</span>
@@ -149,7 +104,7 @@
 						<div class="input-group-prepend w-25">
 							<span class="input-group-text w-100">Teilnehmerliste</span>
 						</div>
-						<select class="custom-select" name="teilnehmer" id="teilnehmer" required>
+						<select class="custom-select" @change="update()" name="teilnehmer" id="teilnehmer" required>
 							{% for teilnehmer_list in teilnehmer %}
 							<option value="{{teilnehmer_list.id}}">{{teilnehmer_list.name}}</option>
 							{% endfor %}
@@ -229,7 +184,7 @@
 			// number of themen of a specific themenList
 			numberOfThemen: 1,
 			// number of teilnehmer of a specific teilnehmerList
-			numberOfTeilnehmer: 1
+			numberOfTeilnehmer: 0
 		},
 		methods: {
 			/**
@@ -238,17 +193,10 @@
 			* @param {event} event the click event
 			*/
 			onChangeMaxPer(event) {
+				this.update()
 				if (event.target.value <= 0) {
 					this.max_per = 1
 				}
-				this.update()
-			},
-			/**
-			* called then value of is_protected is changed,
-			* calls update()
-			*/
-			onChangeProtected() {
-				this.update()
 			},
 			/**
 			* called when min_votes value is changed.
@@ -258,13 +206,15 @@
 			* @param {event} event the click event
 			*/
 			onChangeMinVotes(event) {
+				this.update()
 				if (event.target.value <= 0) {
 					this.min_votes = 1
+				} else if (event.target.value > this.numberOfThemen) {
+					$('#myModal').modal("show")
+					this.min_votes = this.numberOfThemen
+				} else if (event.target.value > 10) {
+					this.min_votes = 10
 				}
-				if (event.target.value > this.numberOfThemen || event.target.value > 10) {
-					this.min_votes = event.target.value - 1
-				}
-				this.update()
 			},
 			/**
 			* updates the within_limit value.
@@ -273,24 +223,30 @@
 			* the number of themen times max_per
 			*/
 			update() {
+				var selectedTeilnehmerValue = document.getElementById("teilnehmer")
+				var selectedThemenValue = document.getElementById("thema")
+				if (selectedThemenValue != null) {
+					selectedThemenValue = selectedThemenValue.value
+					this.numberOfThemen = document.getElementById("number_themen" + selectedThemenValue).value
+				}
+				if (selectedTeilnehmerValue != null && {{teilnehmer|length }} > 0) {
+					selectedTeilnehmerValue = selectedTeilnehmerValue.value
+					numberOfTeilnehmerElement = document.getElementById("number_teilnehmer" + selectedTeilnehmerValue)
+					if (numberOfTeilnehmerElement != null) {
+						this.numberOfTeilnehmer = numberOfTeilnehmerElement.value
+					}
+				}
 				this.within_limit = this.protected ? this.numberOfTeilnehmer <= this.numberOfThemen * this.max_per : true
 			}
 		},
 		/**
-		* reads data from hidden fields, stores them in vue data.
+		* runs update function on being mounted
 		*/
 		mounted() {
-			var selectedTeilnehmerValue = document.getElementById("teilnehmer")
-			var selectedThemenValue = document.getElementById("thema")
-			if (selectedThemenValue != null) {
-				selectedThemenValue = selectedThemenValue.value
-				this.numberOfThemen = document.getElementById("number_themen" + selectedThemenValue).value
-			}
-			if (selectedTeilnehmerValue != null) {
-				selectedTeilnehmerValue = selectedTeilnehmerValue.value
-				this.numberOfTeilnehmer = document.getElementById("number_teilnehmer" + selectedTeilnehmerValue).value
-			}
 			this.update()
+			if (this.numberOfTeilnehmer == 0) {
+				this.protected = false
+			}
 		},
 	});
 

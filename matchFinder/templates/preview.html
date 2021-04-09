@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}Vorschau{% endblock %}
+
+{% block header %}Vorschau{% endblock %}
+
+{% block body %}
+
+<h6 class="mt-2 mb-4">Vorschau der Teilnehmer der Verteilung und die von ihnen abgegebenen Präferenzen.</h6>
+
+<div class="table-responsive mb-3">
+	<table class="table table-striped table-sm">
+		<thead>
+			<tr>
+				<th>Name des Teilnehmers</th>
+				{% for thema in themen.themen%}
+				<th>{{thema.thema_name}}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for praeferenz in praeferenzen %}
+
+			<tr>
+				<td>{{praeferenz.name}}</td>
+				{% for praef in praeferenz.praeferenz %}
+				<td>{{praef}}</td>
+				{% endfor %}
+			</tr>
+
+			{% endfor %}
+
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+{% block vuejs %}
+{% endblock %}
