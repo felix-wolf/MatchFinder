@@ -72,7 +72,7 @@ def register():
 				themen=themen, verteilung_id=verteilung.id,
 				veto_allowed=verteilung.veto_allowed, min_votes = verteilung.min_votes)
 	return render_template('validate.html', id = hashed_verteilung_id,
-		protected=False, error="error")
+		protected=False, error="Es ist ein Fehler aufgetreten!")
 
 @bp.route('save', methods=['POST'])
 def save():
@@ -96,6 +96,11 @@ def save():
 	preference_string = helper.convert_preferences(preferences)
 	existing_praef = database_helper.get_praeferenz(teilnehmer_id, verteilung_id)
 	if existing_praef != None:
+		if not verteilung.editable:
+			hashed_verteilung_id = hashlib.sha256(str(verteilung.id).encode()).hexdigest()
+			return render_template('validate.html', id = hashed_verteilung_id,
+				protected=verteilung.protected,
+				error="Das Bearbeiten der Präferenzen bei dieser Verteilung ist nicht erlaubt!")
 		database_helper.update_praef(existing_praef, preference_string)
 		return redirect(url_for('home.index_with_message',
 			message="Deine Präferenzen wurden aktualisiert!"))
