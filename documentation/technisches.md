@@ -45,6 +45,7 @@ Die allgemeine Struktur des Repositories und folglich auch der Flask-App lässt 
 ├── README.md
 ├── setup.sh
 ├── install.sh
+├── requirements.txt
 └── list_of_blocked_ips.txt
 ...
 ```
@@ -55,6 +56,7 @@ Die Dateien auf root haben folgende Aufgaben:
 - ```setup.sh``` started die Flask-App im Develop-Modus.
 - ```list_of_blocked_ips.txt``` ist eine Liste von IP-Adressen, die in Vergangenheit verantwortlich für Spam und unerwünschte Aufrufe waren. Bei erstmaligem Aufrufen der Webseite eines Nutzers wird geprüft, ob sich die IP-Adresse des Benutzers auf dieser Liste befindet. Ist dies der Fall, wird der Zugriff verwehrt.
 - ```README.md``` beinhaltet die Übersicht der Dokumentation.
+- ```requirements.txt``` listet alle benötigten (transitiven) Abhängigkeiten des Systems auf. Die Datei wird mit Pip Freeze generiert und kann dazu genutzt werden, ähnlich wie install.sh alle Abhängigkeiten gebündelt zu installieren.
 
 Der Unterordner ```matchFinder``` beinhaltet die Flask App.
 
@@ -63,7 +65,7 @@ Der Unterordner ```matchFinder``` beinhaltet die Flask App.
 - **Models**: In ```models``` befinden sich die ORM-Klassen für ```SQLAlchemy```, also die Vorlagen aller Datenbanktabellen.
 - **Static**: Im ```static``` Ordner sind statische HTML-Resourcen, wie das Favicon, das CSS für das Layout und die Vuejs-Library gespeichert.
 - **Templates**: Der ```templates```-Ordner beinhaltet alle HTML-Templates der App, die mit Jinja ausgebaut werden
-- **Documentation**: In ```documentation``` liegen die Markdown-Dateien der Dokumentation.
+- **Documentation**: In ```documentation``` liegen die Markdown-Dateien der Dokumentation und die verwendeten Abbildungen.
 
 ## Layout
 
@@ -121,7 +123,7 @@ Eine formatgerechte Datei sieht demnach so aus
 Name,Thema1,Thema2,Thema3,Thema4
 Teilnehmer1,Erstwahl,Zweitwahl,Drittwahl,Viertwahl
 Teilnehmer2,Viertwahl,Drittwahl,Zweitwahl,Erstwahl
-Teilnehmer3,Erstwahl,Zweitwahl,Drittwahl,Viertwahl
+Teilnehmer3,Erstwahl,Zweitwahl,,Viertwahl
 Teilnehmer4,Viertwahl,Zweitwahl,Drittwahl,Erstwahl
 ```
 
@@ -132,11 +134,11 @@ Das System unterstützt momentan bis zu 10 Präferenzen. Die bedeutet, dass die 
 Dieser Umstand ist eine bewusste Entscheidung. Unter anderem sprechen diese Gründe für eine Begrenzung:
 
 1. In den seltensten Fällen möchte ein Teilnehmer mehr als 10 Präferenzen angeben. Die Wahrscheinlichkeit, nicht eine der ersten 10 Wahlen zu bekommen ist bei moderat großen Themen und Teilnehmern gering.
-2. Um den Teilnehmer die Vergabe einer ```Erstwahl``` anstatt einer ```1``` zu ermöglichen, müssen diese Antwortmöglichkeiten hardgecodet werden und können nicht (anders als Zahlen) dynamisch generiert werden. Hier stellt sich die Frage, ob sich eine Implementation von beispielsweise 100 Antwortmöglichkeiten überhaupt lohnt, wenn in den meisten Fällen nur die ersten 10 Vergeben werden.
+2. Um den Teilnehmern die Vergabe einer ```Erstwahl``` anstatt einer ```1``` zu ermöglichen, müssen diese Antwortmöglichkeiten hardgecodet werden und können nicht (anders als Zahlen) dynamisch generiert werden. Hier stellt sich die Frage, ob sich eine Implementation von beispielsweise 100 Antwortmöglichkeiten überhaupt lohnt, wenn in den meisten Fällen nur die ersten 10 Vergeben werden.
 
 ### [password_helper.py](../matchFinder/password_helper.py)
 
-Die Datei ```password_helper``` ist zuständig für das Generieren und Überprüfen von Passwörtern. MatchFinder benutzt kein vollständiges User-Password-System, hierfür existiert schlichtweg keine Notwendigkeit. Vielmehr können sich User über zuvor definierte geheime Schlüssen gegenüber dem System authentifizieren. Einmal authentifiziert stehen dem User dann eine Vielzahl von Funktionen zur Verfügung, die vor dem Zugriff eines unauthorisiertem Benutzers verborgen und blockiert sind.
+Die Datei ```password_helper``` ist zuständig für das Generieren und Überprüfen von Passwörtern. MatchFinder benutzt kein vollständiges User-Password-System, hierfür existiert schlichtweg keine Notwendigkeit. Vielmehr können sich User über zuvor definierte geheime Schlüssel gegenüber dem System authentifizieren. Einmal authentifiziert stehen dem User dann eine Vielzahl von Funktionen zur Verfügung, die vor dem Zugriff eines unauthorisiertem Benutzers verborgen und blockiert sind.
 
 Geschützte Seitenendpunkte sind visuell in der Seitenleiste nicht sichtbar und die einzelnen Endpunkte überprüfen bei jedem Zugriff den Status des Nutzers. Ist dieser nicht berechtigt wird der User auf die Hauptseite zurückgeleitet:
 
@@ -147,21 +149,22 @@ def check_status():
         return redirect(url_for('home.index'))
 ```
 
-Die auf diese Weise geschützen Endpunkte sind: ```/share, /edit, /upload, /create```.
+Die auf diese Weise geschützen Endpunkte sind: ```/share, /edit, /preview, /upload, /create```.
 
-Mithilfe der ```Session``` können Informationen über die Session des Nutzers gespeichert werden. In diesem Fall wird sie genutzt für die Authentifizierung mittels Passwort. In ihr wird auch gespeichert, ob der Seitenbesucher von einer vertrauenswürdigen IP-Adresse die Seite ansteuert (mehr dazu [hier](#initpy)).
+Mithilfe der ```Session``` können Informationen über die Session des Nutzers gespeichert werden. In diesem Fall wird sie genutzt für die Authentifizierung mittels Passwort. In ihr wird auch gespeichert, ob der Seitenbesucher mit einer vertrauenswürdigen IP-Adresse die Seite ansteuert (mehr dazu [hier](#initpy)).
 
 Diese Informationen werden in einem Cookie gespeichert. Dieser Cookie ist der einzige, der auf der Webseite zum Einsatz kommt. Es gibt **kein** Tracking oder ähnliches.
 
 ### Endpunkte
 
-Pro Endpunkt der Flaskapp gibt es eine Datei, ein sog. Blueprint. Die Endpunkte der App sind:
+Pro Endpunkt der Flaskapp gibt es eine Datei, die einen sog. Blueprint definiert. Die Endpunkte der App sind:
 
 - [/auth](../matchFinder/auth.py)
 - [/create](../matchFinder/create.py)
 - [/edit](../matchFinder/edit.py)
 - [/evaluate](../matchFinder/evaluate.py)
 - [/home](../matchFinder/home.py)
+- [/preview](../matchFinder/preview.py)
 - [/preference](../matchFinder/preference.py)
 - [/share](../matchFinder/share.py)
 - [/upload](../matchFinder/upload.py)
@@ -192,7 +195,7 @@ Im Folgenden soll kurz etwas zu den verwendeten Erweiterungen gesagt werden:
 
 #### [Flask-Limiter](https://flask-limiter.readthedocs.io/en/stable/)
 
-Mit Flask-Limiter kann die Anzahl der Zugriffe global oder auf spezifische Endpunkte begrenzt werden. Dies wird von MatchFinder genutzt, um einzelne Endpunkte vor Brute-Force-Angriffen zu schützen und die gesamte App gegen Angriffe robuster zu machen. Der Endpunkt für die allgemeine Authentifikation und die der Matrikelnummereingabe haben ein Limit von 5 Requests pro Minute.
+Mit Flask-Limiter kann die Anzahl der Zugriffe global oder auf spezifische Endpunkte begrenzt werden. Dies wird von MatchFinder genutzt, um einzelne Endpunkte vor Brute-Force-Angriffen zu schützen und die gesamte App gegen Angriffe robuster zu machen. Der Endpunkt für die allgemeine Authentifikation und die der Matrikelnummereingabe haben ein Limit von 5 Anfragen pro Minute.
 
 #### [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 
