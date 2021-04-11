@@ -18,6 +18,7 @@
 		- [Teilnehmer](#teilnehmer)
 		- [Themen / Gruppen](#gruppen-themen)
 - [Angelegte Daten](#angelegte-daten)
+- [Vorschau](#vorschau)
 - [Präferenzvergabe](#praferenzvergabe)
 
 ## Home
@@ -26,11 +27,11 @@ Auf der Home-Seite (```/```) findet der Nutzer allgemeine Informationen über de
 
 ## Verteilung auswerten
 
-Über den Menüpunkt *Verteilung auswerten* (```/evaluate```) wird die Funktion angeboten, Verteilungen (aus Dateien oder aus Datenbankdaten) auszuwerten. Die volle Funktionalität steht nur einem authentifizierten Benutzer zu Verfügung. Nicht authentifizierte Benutzer haben nur Zugriff auf die Funktion eine Verteilung aus einer Datei zu erstellen:
+Über den Menüpunkt *Verteilung auswerten* (```/evaluate```) wird die Funktion angeboten, Verteilungen (aus Dateien oder aus Datenbankdaten) auszuwerten. Die volle Funktionalität steht nur einem authentifizierten Benutzer zu Verfügung. Nicht authentifizierte Benutzer haben nur Zugriff auf die Funktion eine Verteilung aus einer Datei auszuwerten:
 
 ### Verteilung aus einer Datei auswerten
 
-Eine Verteilung kann auch ausgewertet werden, wenn die Präferenzen als CSV-Datei vorliegen. Voraussetzung hierfür ist, dass die Datei folgendes Format unterstützt:
+Eine Verteilung kann ausgewertet werden, wenn die Präferenzen als CSV-Datei vorliegen. Voraussetzung hierfür ist, dass die Datei folgendem Format folgt:
 
 1. die durch die Datei beschriebene Matrix ist rechteckig (alle Zeilen haben gleiche Länge)
 2. in der ersten Zeile sind die Namen der Gruppen / Themen, wobei Zelle 0,0 frei bleibt bzw. nur einen Platzhalter beinhaltet
@@ -64,7 +65,7 @@ Dies kann mehrere Gründe haben:
 
 1. kein Teilnehmer hat an der Verteilung teilgenommen
 2. nicht alle Teilnehmern haben an der Verteilung teilgenommen (wie im Beispiel, die Schwelle liegt bei 80%)
-3. Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt (Anzahl Themen * Slots pro Thema). Dies kann nur bei offenen Verteilungen vorkommen, bei denen die Anzahl der Teilnehmer im Voraus nicht bekannt ist.
+3. Es haben mehr Teilnehmer an der Verteilung teilgenommen, als es Plätze gibt (Anzahl Plätze = Anzahl Themen * erlaubte Teilnehmer pro Thema). Dies kann nur bei offenen Verteilungen vorkommen, bei denen die Anzahl der Teilnehmer im Voraus nicht bekannt ist.
 
 Während 1-2 lediglich Warnungen sind, führt 3. dazu, dass die Verteilung nicht ausgewertet werden kann. Die Verteilung muss erneut erstellt und Präferenzen erneut vergeben werden.
 
@@ -76,17 +77,17 @@ In der Abbildung
 
 ![image](images/results.png)
 
-ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen Gesamtkosten haben. Gibt es mehr als eine solcher Resultate, werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Das beste Resultat ist immer das Oberste. Hier ein Beispiel zur Erklärung:
+ist beispielhaft dargestellt, wie die Resultate einer Auswertung präsentiert werden. Je nach Datenlage gibt es 1-n mögliche Verteilungen von Teilnehmern aus Themen, welche alle die gleichen optimalen (d.h. optimalen) Gesamtkosten haben. Gibt es mehr als eine solcher Resultate, werden diese untereinander angezeigt, wobei nach dem Median und der absoluten Abweichung des Medians sortiert wird. Das beste Resultat ist immer das Oberste. Hier ein Beispiel zur Erklärung:
 
-Verteilung1 habe die Kosten [2,2,2]. Verteilung2 habe die Kosten [1,2,3]. Damit haben beide Verteilungen einen Median von 2. Jedoch ist die absolute Abweichung vom Median bei Verteilung1 0, während sie bei Verteilung2 2 ist.
-
+Verteilung1 habe die Kosten [2,2,2], Verteilung2 die Kosten [1,2,3]. Damit haben beide Verteilungen einen Median von 2. Jedoch ist die absolute Abweichung vom Median bei Verteilung1 0, während sie bei Verteilung2 2 ist.
 In diesem Anwendungsfall ist eine geringere Abweichung besser, also wird Verteilung1 gegenüber Verteilung2 bevorzugt und über ihr angezeigt.
-
 Pro Verteilungsvariante wird nun angezeigt, welcher Student welches Thema bekommen hat und die wievielte Wahl es jeweils war.
 
-Die Seite bietet dem Benutzer Exportfunktionen in zwei Formate:
+#### Export
 
-1. **CSV-Datei**: Hier wird die Tabelle in CSV-Format umgewandelt und ausgegeben, nützlich für Programme wie Microsoft Excel o.ä.
+Die Seite bietet dem Benutzer Exportfunktionen in zwei Formaten an:
+
+1. **CSV-Datei**: Hier wird die Tabelle ins CSV-Format umgewandelt und ausgegeben, nützlich für Programme wie Microsoft Excel o.ä.
 2. **WikiDocs-Format**: Speziell implementiert für den Arbeitsbereich Wissenschaftliches Rechnen an der UHH, die auf ihrer Webseite WikiDocs verwenden. Bei diesem Format handelt es sich um eine verändertes Markdown.
 
 ## Verteilung erstellen
@@ -95,7 +96,7 @@ Die Seite bietet dem Benutzer Exportfunktionen in zwei Formate:
 
 Sind zuvor Teilnehmer und Gruppen angelegt worden, kann auf dieser Unterseite eine Verteilung erstellt werden. Wenn nicht, beinhaltet die Seite einen Verweis auf die [*Daten-anlegen*](#daten-anlegen)-Funktion, über welche dann Teilnehmer und Gruppen / Themen erstellt werden können.
 
-Verteilungen zu erstellen bedeutet, zu einer gegebenen Gruppe eine Liste an Teilnehmern (vorausgesetzt, die Verteilung ist geschützt) zuzuordnen und den Teilnehmern die Möglichkeit zu geben, ihre Präferenzen zu den Themen / Gruppen abzugeben.
+Verteilungen zu erstellen bedeutet, zu einer gegebenen Liste von Themen eine Liste an Teilnehmern (vorausgesetzt, die Verteilung ist geschützt) zuzuordnen und den Teilnehmern die Möglichkeit zu geben, ihre Präferenzen zu den Themen abzugeben. Eine Verteilung wird dabei beschrieben durch eine Reihe von Eigenschaften:
 
 Eine Verteilung wird dabei beschrieben durch eine Reihe von Eigenschaften:
 
@@ -103,7 +104,7 @@ Eine Verteilung wird dabei beschrieben durch eine Reihe von Eigenschaften:
 - **Gruppenliste**: Die Liste der Gruppen / Themen, zu denen Präferenzen angegeben werden sollen
 - **# / Gruppe**: Diese Eigenschaft gibt an, wie viele Teilnehmer auf eine Gruppe kommen dürfen. Beispiel: Ist *# / Gruppe = 1*, so darf nur ein Teilnehmer auf jede Gruppe verteilt werden, eine 1:1 Beziehung. Ist *# / Gruppe = n*, mit n > 1, handelt es sich um eine 1:n Beziehung, wobei nur dann jede Gruppe voll ist, wenn es genau ```längeDerGruppeliste * # / Gruppe``` Teilnehmer gibt.
 - **Mindeststimmen**: Gibt an, wie viele Präferenzen jeder Teilnehmer mindestens vergeben muss. Dabei ist der Wert nach unten bis 1 und nach oben bis 10 bzw. Anzahl der Themen beschränkt (je nach dem, was zuerst eintritt).
-- **Veto erlaubt**: Wenn der Haken gesetzt ist darf ein Teilnehmer eine der angebotenen Themen / Gruppen vollkommen ausgeschließen.
+- **Veto erlaubt**: Wenn der Haken gesetzt ist darf ein Teilnehmer eine der angebotenen Themen / Gruppen vollkommen ausschließen.
 - **geschützt**: Ist diese Option angewählt, muss sich jeder Teilnehmer mit seiner Matrikelnummer gegenüber dem System authentifizieren, bevor er seine Präferenzen angeben darf. Ist die Option nicht ausgewählt fallen die beiden nächsten Optionen weg
 - **Teilnehmerliste**: Soll die Verteilung geschützt sein, muss im Vorhinein feststehen, welche Teilnehmer teilnehmen werden. Über diese Option wird diese Teilnehmerliste ausgewählt.
 - **editierbar**: Diese Option gibt an, ob Teilnehmer nach dem ersten Bestätigen ihrer Präferenzen ihre Angabe erneut anpassen dürfen. Diese Funktion gilt für alle Teilnehmer und unbegrenzt oft.
@@ -189,6 +190,8 @@ Beispieldateiinhalt Variante 1:
 2 	7654321 	Musterfrau 	Marie 		Übungen Gr. 05 (Do. 14-16 Uhr)
 ```
 
+Der Inhalt der Zeitpunkt-Spalte aus Variante zwei wird verworfen.
+
 #### Themen / Gruppen
 
 Themen / Gruppen werden als CSV-Dateien hochgeladen, dabei ist das Format:
@@ -209,25 +212,35 @@ Thema5,,
 
 ## Angelegte Daten
 
-![image](images/saved_data.png)
+![image](images/saved_data1.png)
 
-Die Seite *Angelegte Daten* (```/edit```) bietet die Funktion, die angelegten Daten zu betrachten und zu bearbeiten.
+Die Seite *Angelegte Daten* (```/edit```) bietet die Funktion, die angelegten Daten zu betrachten und zu bearbeiten. Die Seite ist in vier Abschnitte aufgeteilt: Jeweils eine Tabelle für Teilnehmer, Gruppen / Themen und Verteilungen und eine Legende. Die Legende zeigt nur diejenigen Symbole an, die für die existierenden Daten relevant sind. Gibt es keine Daten, wird die Legende ausgeblendet.
 
-Die Seite ist in vier Abschnitte aufgeteilt: Jeweils eine Tabelle für Teilnehmer, Gruppen / Themen und Verteilungen und eine Legende. Die Legende zeigt nur diejenigen Symbole an, die für die existierenden Daten relevant sind. Gibt es keine Daten, wird die Legende ausgeblendet
+Die Tabellen für Teilnehmer und Gruppen / Themen zeigen auf oberster Ebene die Listen von Teilnehmer bzw. Gruppen Themen und es wird eine Löschfunktion angeboten. Listen lassen sich nur als Ganzes löschen und die einzelnen Einheiten können nicht bearbeitet werden. Bevor ein Eintrag endgültig gelöscht wird, wird der Benutzer um Bestätigung gebeten, um ein versehentliches Löschen zu vermeiden. Durch einen Klick auf eine Liste wird die Tabelle ausgeklappt und der Listeninhalt wird angezeigt.
 
-Die Tabellen für Teilnehmer und Gruppen / Themen zeigen auf oberster Ebene die Listen von Teilnehmer bzw. Gruppen Themen und es wird eine Löschfunktion angeboten. Listen lassen sich nur als Ganzes löschen und die einzelnen Einheiten können nicht bearbeitet werden.
+Die Tabelle der Verteilungen kann nicht ausgeklappt werden. Über den Infos-Knopf wird ein Tooltip angezeigt, in dem sich weitere Details und Parametereinstellungen (z.B. ob sie geschützt ist) befinden. Über den Aktion-Knopf kann die Verteilung ausgewertet, geteilt oder in der Vorschaufunktion (siehe Abschnitt [Vorschau](#vorschau)) betrachtet werden. Die Teilen-Funktion leitet den Benutzer zur [Teilen-Seite](#verteilung-teilen)weiter, die Löschfunktion wird ebenfalls angeboten.
 
-Durch einen Klick auf eine Liste wird die Tabelle ausgeklappt und der Listeninhalt wird angezeigt.
+Werden Themen- oder Teilnehmerlisten gelöscht, die Teil von bestehenden Verteilungen sind, werden diese Verteilungen ebenfalls gelöscht.
 
 Die Tabelle der Verteilungen kann nicht ausgeklappt werden, sie bietet jedoch als Aktionen die Löschfunktion und eine Funktion zum Teilen. Die Teilen-Funktion leitet den Benutzer zur [Teilen-Seite](#verteilung-teilen) weiter.
+
+## Vorschau
+
+Über die *Vorschau*-Funktion (```/preview```) können die Präferenzen der Teilnehmer einer Verteilung eingesehen werden. Dies ist besonders nützlich, um herauszufinden, welche Teilnehmer noch nicht ihre Präferenzen angegeben haben. Zusätzlich kann die Vorschau-Funktion dazu dienen, die zugrundeliegenden Daten von Verteilungsergebnissen einzusehen.
+
+Die folgende Abbildung zeigt eine Beispielverteilung mit den Teilnehmer Max und Lisa und den Gruppen Heute und Morgen. Während Max seine Präferenzen schon verteilt hat, hat Lisa noch keine angegeben.
+
+![image](images/preview.png)
+
+Eine Verteilung kann in der Vorschau über den entsprechenden Knopf unter ```Aktion``` auf der ```Angelegte Daten```-Seite betrachtet werden.
 
 ## Präferenzvergabe
 
 Bei der Präferenzvergabe prioritisiert ein Teilnehmer die ihm/ihr angebotenen Gruppen oder Themen.
-Die Priorität wird von Erstwahl bis Zehntwahl angegeben, u. U. gibt es ein Veto.
+Die Priorität wird von Erstwahl bis Zehntwahl angegeben, u. U. kann ein Thema mittels Veto ausgeschlossen werden.
 
-Bevor die Präferenzen vergeben werden können, wird der Benutzer u. U. aufgefordert, sich mittels seiner Matrikelnummer zu authentifizieren. Ist die Verteilung offen, hat er stattdessen die Möglichkeit, seinen Vor- und Nachnamen einzutragen, wobei nur der Vorname Pflicht ist.
+Bei den Verteilungen wird zwischen offenen und geschützten Verteilungen unterschieden. Ist die Verteilung geschützt wird der Benutzer aufgefordert, sich mittels seiner Matrikelnummer zu authentifizieren, bevor die Präferenzen vergeben werden können. Ist die Verteilung offen, hat er stattdessen die Möglichkeit, seinen Vor- und Nachnamen einzutragen, wobei nur der Vorname Pflicht ist.
 
-Wird bei der Präferenzvergabe eine der Antwortmöglichkeiten (z.B. Erstwahl) für eine der Themen angegeben, verschwindet diese Priorität aus den Antwortmöglichkeiten der anderen Themen.
+Wird bei der Präferenzvergabe eine der Antwortmöglichkeiten (z.B. Erstwahl) für eine der Themen angegeben, verschwindet diese Priorität aus den Antwortmöglichkeiten der anderen Themen. Themen, die mit 'Keine Präferenz' markiert sind, werden vom System mit passenden, zufälligen Gewichten versehen, um eine faire und sichere Verteilung zu gewährleisten.
 
 ## [zurück nach oben](#zuruck-zur-ubersicht)
