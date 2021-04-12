@@ -38,7 +38,7 @@ def from_id(verteilung_id):
     max_per = verteilung.max_teilnehmer_per_thema
     teilnehmer = verteilung.teilnehmer.teilnehmer
     thema_list = database_helper.get_thema_list_by_id(verteilung.thema_list_id)
-    themen = list(map(lambda x: x.thema_name, thema_list.themen))
+    themen = list(map(lambda x: x.thema_name + " (Betr: " + x.betreuer + ")", thema_list.themen))
     themen = helper.duplicate_themen(themen, max_per)
     teilnehmer_pref = []
     for teil in teilnehmer:
@@ -50,7 +50,8 @@ def from_id(verteilung_id):
             praeferenz = praeferenz.praeferenzen
         praeferenz = praeferenz.split(',')
         censored_matr_nr = helper.build_cencored_matr(teil.matr_nr)
-        concat_name = teil.first_name + " " + teil.last_name + " " + censored_matr_nr
+        name = teil.first_name + " " + teil.last_name if teil.last_name != "" else teil.first_name
+        concat_name = name + " " + censored_matr_nr
         local_teilnehmer_pref = helper.duplicate_teilnehmer_praefs(
             [concat_name] + praeferenz, max_per)
         teilnehmer_pref.append(local_teilnehmer_pref)
