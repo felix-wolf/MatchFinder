@@ -323,9 +323,9 @@ def create_txt(data):
         thema_split = thema.partition(" (Betr: ")
         print(thema_split)
         if len(thema_split) == 3:
-            rtn += "- " + thema[0] + " ((" + thema_split[2] + ")" + " -- "
+            rtn += "* " + thema[0] + " ((" + thema_split[2] + ")" + " -- "
         else:
-            rtn += "- " + thema + " -- "
+            rtn += "* " + thema + " -- "
         rtn += "".join(map(str, map(lambda x: x + ", ", sorted(list(
                     map(lambda c: c[0].split(" (**")[0], filter(lambda x: x[1] == thema, data)))))))
         rtn = rtn[:-2] + "\n"
