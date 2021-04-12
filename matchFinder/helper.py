@@ -315,13 +315,18 @@ def create_txt(data):
     rtn += "===== Auswertung der Verteilung =====\n"
     rtn += "| Name | Thema | Wahl |"
     for studi in data:
-        rtn += "\n|" + studi[0] + "|" + studi[1] + "|" + str(studi[2]) + "|"
+        rtn += "\n|" + studi[0].split(" (**")[0] + "|" + studi[1] + "|" + str(studi[2]) + "|"
     rtn += "\n\n\n\nALS LISTE:\n\n"
     rtn += "===== Auswertung der Verteilung =====\n"
     themen = sorted(list(set(map(lambda x: x[1], data))))
     for thema in themen:
-        rtn += "- " + thema + " -- "
+        thema_split = thema.partition(" (Betr: ")
+        print(thema_split)
+        if len(thema_split) == 3:
+            rtn += "- " + thema[0] + " ((" + thema_split[2] + ")" + " -- "
+        else:
+            rtn += "- " + thema + " -- "
         rtn += "".join(map(str, map(lambda x: x + ", ", sorted(list(
-                    map(lambda c: c[0], filter(lambda x: x[1] == thema, data)))))))
+                    map(lambda c: c[0].split(" (**")[0], filter(lambda x: x[1] == thema, data)))))))
         rtn = rtn[:-2] + "\n"
     return rtn
